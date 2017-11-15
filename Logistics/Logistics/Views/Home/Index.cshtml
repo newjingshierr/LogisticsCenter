@@ -1,31 +1,62 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
+﻿<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Content/jquery-1.9.1.js"></script>
+    <link href="~/Content/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <script src="~/Content/bootstrap/js/bootstrap.js"></script>
+    <script src="~/Scripts/Home/Index.js"></script>
+    <script type="text/javascript">
+        //打开页面的时候保存票据信息
+        var UserName = '@ViewBag.UserName';
+        var Ticket = '@ViewBag.Ticket';
+    </script>
+</head>
+<body>
+    <div>当前登录用户：'@ViewBag.UserName'</div>
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+    <div id="div_test">
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+
+
+    <div style="text-align:center;">
+        <div>用户名：<input type="text" id="txt_username" /></div>
+        <div>密  码：<input type="password" id="txt_password" /></div>
+        <div><input type="button" value="登录" id="btn_login" class="btn-default" /></div>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+
+
+</body>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+
+
+        $(function () {
+            $("#btn_login").click(function () {
+                $.ajax({
+                    type: "get",
+                    url: "http://localhost:27221/api/User/Login",
+                    data: { strUser: $("#txt_username").val(), strPwd: $("#txt_password").val() },
+                    success: function (data, status) {
+                        if (status == "success") {
+                            if (!data.bRes) {
+                                alert("登录失败");
+                                return;
+                            }
+                            alert("登录成功");
+                            //登录成功之后将用户名和用户票据带到主界面
+                            window.location = "/Home/Index?UserName=" + data.UserName + "&Ticket=" + data.Ticket;
+                        }
+                    },
+                    error: function (e) {
+                    },
+                    complete: function () {
+
+                    }
+
+                });
+            });
+        });
+</script>
+</html>

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
+using System.Web.Routing;
 
 namespace Logistics
 {
@@ -9,8 +11,9 @@ namespace Logistics
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API 配置和服务
 
+            //跨域配置
+            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
             // Web API 路由
             config.MapHttpAttributeRoutes();
 
@@ -19,6 +22,9 @@ namespace Logistics
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            RouteTable.Routes.MapHttpRoute(name: "DefaultApiSession",
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional }).RouteHandler = new SessionControllerRouteHandler();
         }
     }
 }

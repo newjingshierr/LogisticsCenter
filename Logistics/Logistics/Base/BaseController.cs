@@ -6,10 +6,12 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Filters;
 
 namespace Logistics
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class BaseController : ApiController
     {
 
@@ -39,7 +41,19 @@ namespace Logistics
         }
 
 
-      
+
+
+
+    }
+
+    [RequestAuthorize]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    public class BaseAuthController : BaseController
+    {
+
+        public BaseAuthController()
+        {
+        }
 
 
     }
