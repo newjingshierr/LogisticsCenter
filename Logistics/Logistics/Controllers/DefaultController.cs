@@ -7,8 +7,10 @@ using System.Net.Http;
 using System.Net;
 using System.Web.Http;
 
+
 namespace Logistics.Controllers
 {
+    [RoutePrefix(ApiConstants.PrefixApi + "api/budgetbalance")]
     public class DefaultController : ApiController
     {
 
