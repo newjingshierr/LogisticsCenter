@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logistics-Busniess", "Logis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logistics-DAL", "Logistics-DAL\Logistics-DAL.csproj", "{8B0CF182-CF0A-47FF-8ACA-90730B1B1652}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logistics.Core", "Logistics.Core\Logistics.Core.csproj", "{D0D82B90-71C7-42D7-BBD4-E10E1651499D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logistics.Console", "Logistics.Console\Logistics.Console.csproj", "{6F84F88E-175F-4B0C-8D8B-323BF84E998C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{8B0CF182-CF0A-47FF-8ACA-90730B1B1652}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B0CF182-CF0A-47FF-8ACA-90730B1B1652}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B0CF182-CF0A-47FF-8ACA-90730B1B1652}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0D82B90-71C7-42D7-BBD4-E10E1651499D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0D82B90-71C7-42D7-BBD4-E10E1651499D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0D82B90-71C7-42D7-BBD4-E10E1651499D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0D82B90-71C7-42D7-BBD4-E10E1651499D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F84F88E-175F-4B0C-8D8B-323BF84E998C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F84F88E-175F-4B0C-8D8B-323BF84E998C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F84F88E-175F-4B0C-8D8B-323BF84E998C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F84F88E-175F-4B0C-8D8B-323BF84E998C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

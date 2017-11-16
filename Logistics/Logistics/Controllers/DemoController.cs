@@ -8,6 +8,7 @@ using Logistics_Busniess;
 using Logistics_Model;
 using Logistics;
 using Logistics_Busniess;
+using Logistics.Core;
 
 namespace Logistics.Controllers
 {
@@ -23,6 +24,8 @@ namespace Logistics.Controllers
         [Route("")]
         public ResponseMessage<List<demo>> DemoGetAll([FromUri] DemoGetByNameRequest request)
         {
+
+            Log4net.Error("ddddddddd");
             int totalCount = 0;
             if (request.PageIndex < 1)
                 request.PageIndex = 1;
