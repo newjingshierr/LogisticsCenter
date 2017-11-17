@@ -71,6 +71,7 @@
     <Compile Include="Common\ConvertHelper.cs" />
     <Compile Include="ConnectionManager.cs" />
     <Compile Include="Demo.cs" />
+    <Compile Include="Log\ExceptionLogDAL.cs" />
     <Compile Include="Proc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -84,7 +85,9 @@
       <Name>Logistics-Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="User\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\procedure\pro.sql" />
     <Content Include="Scripts\table\table.sql" />

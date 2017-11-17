@@ -16,7 +16,7 @@ COLLATE utf8_general_ci;
 
 
 CREATE TABLE `log` (
-`id`  int(11) NOT NULL AUTO_INCREMENT ,
+`ID`  int(11) NOT NULL AUTO_INCREMENT ,
 `log_datetime`  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
 `log_thread`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 `log_level`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,

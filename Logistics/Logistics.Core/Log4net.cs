@@ -17,9 +17,10 @@ namespace Logistics.Core
         public static string ConfigFileName = "log4net.config";
         private static log4net.ILog logger = LogManager.GetLogger(typeof(Log4net));
 
-          static Log4net()
+        static Log4net()
         {
             string path = System.Web.HttpContext.Current.Server.MapPath(ConfigFileName);
+            path = path.Replace("\\_api\\ver(1.0)\\api", "");
             if (File.Exists(path))
             {
                 log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(path));

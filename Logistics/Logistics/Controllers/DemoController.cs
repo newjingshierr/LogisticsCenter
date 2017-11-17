@@ -9,6 +9,7 @@ using Logistics_Model;
 using Logistics;
 using Logistics_Busniess;
 using Logistics.Core;
+using Akmii;
 
 namespace Logistics.Controllers
 {
@@ -25,7 +26,10 @@ namespace Logistics.Controllers
         public ResponseMessage<List<demo>> DemoGetAll([FromUri] DemoGetByNameRequest request)
         {
 
-            Log4net.Error("ddddddddd");
+
+            LogHelper log = LogHelper.GetLogger(typeof(DemoController));
+            log.ErrorFormat( "HolidayBalanceInsert is error!");
+
             int totalCount = 0;
             if (request.PageIndex < 1)
                 request.PageIndex = 1;
@@ -42,6 +46,7 @@ namespace Logistics.Controllers
             catch (Exception ex)
             {
                 return GetErrorResult(result, ex.Message);
+               
             }
 
         }
