@@ -78,6 +78,10 @@
       <Project>{77c17831-8a53-4701-b6b7-283721a86a3d}</Project>
       <Name>Logistics-Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Logistics.Core\Logistics.Core.csproj">
+      <Project>{d0d82b90-71c7-42d7-bbd4-e10e1651499d}</Project>
+      <Name>Logistics.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -28,7 +28,7 @@ namespace Logistics.Controllers
 
 
             LogHelper log = LogHelper.GetLogger(typeof(DemoController));
-            log.ErrorFormat( "HolidayBalanceInsert is error!");
+            log.ErrorFormat("HolidayBalanceInsert is error!");
 
             int totalCount = 0;
             if (request.PageIndex < 1)
@@ -46,9 +46,32 @@ namespace Logistics.Controllers
             catch (Exception ex)
             {
                 return GetErrorResult(result, ex.Message);
-               
+
             }
 
         }
+
+
+        [HttpPost]
+        [Route("Item")]
+        public ResponseMessage<string> Insert([FromUri] demo request)
+        {
+
+            var result = false;
+            try
+            {
+                result = DemoManger.Insert(request);
+
+                return GetResult(result.ToString());
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result.ToString(), ex.Message);
+
+            }
+
+        }
+
+
     }
 }

@@ -13,8 +13,10 @@ namespace Logistics_DAL
         {
 
             MySqlParameter[] parameters = {
-                        new MySqlParameter("@_ID", model.ID),
-                        new MySqlParameter("@_name", model.name)
+                        new MySqlParameter("@_TenantID", model.TenantID),
+                        new MySqlParameter("@_ID",model.ID),
+                        new MySqlParameter("@_name", model.Name),
+                        new MySqlParameter("@_CreatedBy",model.CreatedBy)
             };
 
             int result = 0;

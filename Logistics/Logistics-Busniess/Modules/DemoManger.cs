@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Logistics_Model;
 using Logistics_DAL;
+using Logistics.Core;
 
 
 namespace Logistics_Busniess
@@ -16,5 +17,14 @@ namespace Logistics_Busniess
             return DemoDAL.GetAllByName(request, ref totalCount);
 
         }
+
+        public static bool Insert(demo request)
+        {
+            request.ID = IdWorker.GetID();
+            request.TenantID = IdWorker.GetID();
+            request.CreatedBy = IdWorker.GetID();
+            return DemoDAL.Insert(request);
+        }
+
     }
 }

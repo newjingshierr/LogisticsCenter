@@ -40,6 +40,15 @@ namespace Logistics
                 Message = "success"
             };
         }
+        protected ResponseMessage<T> GetResult<T>(T data)
+        {
+            return new ResponseMessage<T>
+            {
+                Data = data,
+                Status = 0,
+                Message = "success"
+            };
+        }
 
 
     }

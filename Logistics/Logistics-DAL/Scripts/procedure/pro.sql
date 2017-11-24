@@ -22,3 +22,15 @@ BEGIN
     AND IF(_Name != '', Name = _Name, 1 = 1)
     AND CreatedBy = _CreatedBy);
 END
+
+
+
+CREATE DEFINER = 'admin_test'@'%'
+PROCEDURE yungalaxy_z_251.logistics_Demo_Insert(_TenantID bigint(20),
+_Name nvarchar(250),
+_CreatedBy bigint  )
+BEGIN
+ INSERT INTO logistics_demo(TenantID,name,CreatedBy,ModifiedBy) 
+  VALUES(_TenantID,_Name,_CreatedBy,_CreatedBy) ON DUPLICATE KEY UPDATE
+  name=_Name,ModifiedBy=_CreatedBy;
+END

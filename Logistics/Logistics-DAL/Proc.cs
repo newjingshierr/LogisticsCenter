@@ -10,7 +10,7 @@ namespace Logistics_DAL
     {
         public class Demo
         {
-            public const string Demo_Insert = "Demo_Insert";
+            public const string Demo_Insert = "logistics_Demo_Insert";
 
             public const string Demo_Select_By_Name = "logistics_Demo_Select_By_Name";
         }
