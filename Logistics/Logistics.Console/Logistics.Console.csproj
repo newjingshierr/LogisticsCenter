@@ -52,5 +52,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Logistics.Core\Logistics.Core.csproj">
+      <Project>{d0d82b90-71c7-42d7-bbd4-e10e1651499d}</Project>
+      <Name>Logistics.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

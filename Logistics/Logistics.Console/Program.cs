@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Logistics.Core;
 
 namespace Logistics.Console
 {
@@ -11,13 +12,8 @@ namespace Logistics.Console
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine(CData.Num);///A  
-            //Console.WriteLine(CData.Num);///B             
-            //Console.ReadLine();
-            // SimpleClass.print();
-            // Log4net.Error("ddd");
+            var reslt = IdWorker.GetID();
 
-            Log4net.Error("111");
         }
     }
 
