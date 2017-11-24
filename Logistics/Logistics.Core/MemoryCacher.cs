@@ -21,17 +21,43 @@ namespace Logistics.Core
         {
             MemoryCache memoryCache = MemoryCache.Default;
             return memoryCache.Add(key, value, absExpiration);
+
         }
 
-        public static void Delete(string key)
+        public static bool set(string key, object value, DateTimeOffset absExpiration)
         {
             MemoryCache memoryCache = MemoryCache.Default;
-            if (memoryCache.Contains(key))
+            try
             {
-                memoryCache.Remove(key);
+                memoryCache.Set(key, value, absExpiration);
             }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+
         }
 
+        public static bool Delete(string key)
+        {
+            try
+            {
+                MemoryCache memoryCache = MemoryCache.Default;
+                if (memoryCache.Contains(key))
+                {
+                    memoryCache.Remove(key);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
 
 
     }

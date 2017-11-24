@@ -51,6 +51,27 @@ namespace Logistics.Controllers
 
         }
 
+        [HttpPost]
+        [Route("Items")]
+        public ResponseMessage<string> BatchInsert(DemoBatchInsert request)
+        {
+
+            var result = false;
+            try
+            {
+                result = DemoManger.BatchInsert(request.demos);
+
+                return GetResult(result.ToString());
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result.ToString(), ex.Message);
+
+            }
+
+        }
+
+
 
         [HttpPost]
         [Route("Item")]
@@ -67,10 +88,74 @@ namespace Logistics.Controllers
             catch (Exception ex)
             {
                 return GetErrorResult(result.ToString(), ex.Message);
+            }
+
+        }
+
+
+        [HttpPut]
+        [Route("Item")]
+        public ResponseMessage<string> Update([FromUri] DemoUpdateRequest request)
+        {
+
+            var result = false;
+            try
+            {
+                result = DemoManger.UpdateDemoByID(request);
+
+                return GetResult(result.ToString());
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result.ToString(), ex.Message);
 
             }
 
         }
+
+
+        [HttpDelete]
+        [Route("Item")]
+        public ResponseMessage<string> Delete([FromUri] DemoDeleteRequest request)
+        {
+
+            var result = false;
+            try
+            {
+                result = DemoManger.DeleteDemoByID(request);
+
+                return GetResult(result.ToString());
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result.ToString(), ex.Message);
+
+            }
+
+        }
+
+
+        [HttpGet]
+        [Route("Item")]
+        public ResponseMessage<demo> Get([FromUri] DemoGetRequest request)
+        {
+
+            var result = new demo();
+            try
+            {
+                result = DemoManger.GetDemoByID(request);
+
+                return GetResult(result);
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+
+        }
+
+
 
 
     }

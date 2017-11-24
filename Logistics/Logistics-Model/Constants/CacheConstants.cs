@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logistics_Model.Constants
+namespace Logistics_Model
 {
     public class CacheConstants
     {
@@ -18,6 +18,18 @@ namespace Logistics_Model.Constants
         public static string GetUserInformationByUserID(long userID)
         {
             return $"User_Information_{userID}";
+        }
+        /*Demo*/
+
+        public static string GetDemoByID(long ID, long TenantID)
+        {
+            return $"Demo_{TenantID}_{ID}";
+        }
+
+        public static DateTime GetDemoByIDTime()
+        {
+
+            return DateTime.Now.AddMinutes(10);
         }
     }
 }

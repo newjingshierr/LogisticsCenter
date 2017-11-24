@@ -13,6 +13,13 @@ namespace Logistics_DAL
             public const string Demo_Insert = "logistics_Demo_Insert";
 
             public const string Demo_Select_By_Name = "logistics_Demo_Select_By_Name";
+
+            public const string Demo_Select_By_ID = "logistics_Demo_Select_By_ID";
+
+            public const string Demo_Delete_By_ID = "logistics_Demo_Delete_By_ID";
+
+            public const string Demo_Modify_By_ID = "logistics_Demo_Modify_By_ID";
+
         }
     }
 }

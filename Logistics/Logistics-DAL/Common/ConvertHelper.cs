@@ -111,6 +111,11 @@ namespace Logistics_DAL
             }
             return ListCollection;
         }
+
+        public static T DtToModel(DataTable dt)
+        {
+            return DtToList(dt).FirstOrDefault();
+        }
     }
 
 }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Logistics_Model;
-using Logistics_Model.Constants;
 
 namespace Logistics.Core
 {

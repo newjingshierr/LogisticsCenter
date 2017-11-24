@@ -5,14 +5,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Logistics.Core;
+using Enyim.Caching;
+using Enyim.Caching.Configuration;
+using Enyim.Caching.Memcached;
+using System.Net;
 
 namespace Logistics.Console
 {
-    class Program
+    [Serializable]
+    public class AA {
+        public int a;
+    }
+
+
+  public  class Program
     {
         static void Main(string[] args)
         {
-            var reslt = IdWorker.GetID();
+            //MemcachedClientConfiguration config = new MemcachedClientConfiguration();
+            //config.Servers.Add(new IPEndPoint(IPAddress.Loopback, 11211));
+            //config.Protocol = MemcachedProtocol.Binary;
+            //config.Authentication.Type = typeof(PlainTextAuthenticator);
+            //config.Authentication.Parameters["userName"] = "demo";
+            //config.Authentication.Parameters["password"] = "demo";
+
+            //var mc = new MemcachedClient(config);
+
+            //for (var i = 0; i < 100; i++)
+            //    mc.Store(StoreMode.Set, "Hello", "World");
+            // MemcachedHelper.Instance().SetValue("11", "22", "44");
+            AA aa = new AA();
+            aa.a = 2;
+            
+            MemcachedHelper.Instance().SetValue("33", "22", aa);
+            var obj = MemcachedHelper.Instance().GetValue("33", "22");
+
+
 
         }
     }
