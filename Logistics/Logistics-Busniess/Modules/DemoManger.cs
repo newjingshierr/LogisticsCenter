@@ -50,7 +50,7 @@ namespace Logistics_Busniess
                 if (result != null)
                 {
 
-                    MemcachedHelper.Instance().SetValue(AppModeEnum.Demo.ToString(),
+                    MemcachedHelper.Instance().SetValue<demo>(AppModeEnum.Demo.ToString(),
                         CacheConstants.GetDemoByID(item.ID, item.TenantID),
                         result, CacheConstants.GetDemoByIDTime());
                 }

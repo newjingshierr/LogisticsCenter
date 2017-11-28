@@ -37,8 +37,8 @@ namespace Logistics.Console
             AA aa = new AA();
             aa.a = 2;
             
-            MemcachedHelper.Instance().SetValue("33", "22", aa);
-            var obj = MemcachedHelper.Instance().GetValue("33", "22");
+            //MemcachedHelper.Instance().SetValue("33", "22", aa);
+           // var obj = MemcachedHelper.Instance().GetValue("33", "22");
 
 
 

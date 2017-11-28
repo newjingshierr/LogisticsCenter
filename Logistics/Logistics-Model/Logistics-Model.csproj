@@ -64,6 +64,8 @@
     <Compile Include="Enum\AppModeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\DemoRequest.cs" />
+    <Compile Include="Response\DemoResponse.cs" />
+    <Compile Include="Response\DemoView.cs" />
     <Compile Include="VieModels\Role.cs" />
     <Compile Include="VieModels\UserInformation.cs" />
   </ItemGroup>
