@@ -143,7 +143,7 @@ namespace Logistics.Controllers
             var result = new demo();
             try
             {
-                result = DemoManger.GetDemoByID(request);
+                result = DemoManger.GetDemoByIDCahced(request);
 
                 return GetResult(result);
             }

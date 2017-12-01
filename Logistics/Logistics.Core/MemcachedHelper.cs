@@ -4,6 +4,7 @@ using Enyim.Caching;
 using Enyim.Caching.Configuration;
 using Enyim.Caching.Memcached;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Logistics.Core
 {
@@ -82,6 +83,9 @@ namespace Logistics.Core
             key = groupName + "-" + key;
             return mclient.Get(key);
         }
+
+
+
         /// <summary>  
         /// 通过key 来得到一个对象(前类型)  
         /// </summary>  
@@ -110,12 +114,72 @@ namespace Logistics.Core
             key = groupName + "-" + key;
             return mclient.Remove(key);
         }
+
+        public bool Remove(string key)
+        {
+            return mclient.Remove(key);
+        }
         /// <summary>  
         /// 清除所有cache  
         /// </summary>  
         public void RemoveAll()
         {
             mclient.FlushAll();
+        }
+        public Task<T> GetAsync<T>(String key)
+        {
+            var tcs = new TaskCompletionSource<T>();
+            Task.Factory.StartNew(() => tcs.TrySetResult(Get<T>(key)));
+            return tcs.Task;
+        }
+
+        public T Get<T>(string key)
+        {
+            var value = mclient.Get(key) + "";
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return default(T);
+            }
+            else
+            {
+                return SerializationService.DeserializeJsonTo<T>(value);
+            }
+        }
+
+
+        public Task<T> GetOrSet<T>(string key, Func<T> func, DateTime expiresAt)
+        {
+            return GetAsync<T>(key).ContinueWith<T>(d =>
+            {
+                if (d.Result == null)
+                {
+                    var rs = func.Invoke();
+                    if (rs != null)
+                    {
+                        Task.Factory.StartNew(() =>
+                        {
+                           Store<T>(StoreMode.Set, key, rs, expiresAt);
+                        });
+                    }
+                    return rs;
+                }
+                else
+                {
+                    return d.Result;
+                }
+            });
+        }
+
+        public bool Store<T>(StoreMode mode, string key, T value, DateTime expiresAt)
+        {
+            if (value.GetType() == typeof(String))
+            {
+                return mclient.Store(mode, key, value, expiresAt);
+            }
+            else
+            {
+                return mclient.Store(mode, key, SerializationService.SerializationToJson(value), expiresAt);
+            }
         }
     }
 }

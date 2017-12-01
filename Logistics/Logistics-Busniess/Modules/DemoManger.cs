@@ -63,13 +63,47 @@ namespace Logistics_Busniess
 
         }
 
+        public static demo GetDemoByIDCahced(DemoGetRequest item)
+        {
+            return GetDemoByIDCahced(item.ID, item.TenantID);
+        }
+        public static demo GetDemoByIDCahced(long ID, long TenantID, bool isCache = true, bool isWrite = false)
+        {
+            var key = CacheConstants.GetDemoByID(ID, TenantID);
+            if (!isCache)
+            {
+                MemcachedHelper.Instance().Remove(key);
+            }
+
+            var result = MemcachedHelper.Instance().GetOrSet(key, () =>
+            {
+                var model = DemoDAL.GetItem(ID, TenantID);
+
+                return model;
+
+            }, CacheConstants.GetDemoByIDTime()).Result;
+            return result;
+        }
+
         public static bool DeleteDemoByID(DemoDeleteRequest item)
         {
-            return DemoDAL.Delete(item);
+            bool dbResult = false;
+            dbResult = DemoDAL.Delete(item);
+            if (dbResult)
+            {
+                GetDemoByIDCahced(item.ID, item.TenantID,false);
+            }
+            return dbResult;
         }
 
         public static bool UpdateDemoByID(DemoUpdateRequest item)
         {
+            bool dbResult = false;
+            dbResult = DemoDAL.Update(item);
+            if (dbResult)
+            {
+                GetDemoByIDCahced(item.ID, item.TenantID, false);
+            }
             return DemoDAL.Update(item);
         }
 
