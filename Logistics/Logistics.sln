@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logistics-Web", "Logistics\Logistics-Web.csproj", "{1B816E14-501D-4862-A530-A9EC7CC89001}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logistics.Core", "Logistics.Core\Logistics.Core.csproj", "{D0D82B90-71C7-42D7-BBD4-E10E1651499D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logistics.Console", "Logistics.Console\Logistics.Console.csproj", "{6F84F88E-175F-4B0C-8D8B-323BF84E998C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logistics.Common", "Logistics.Common\Logistics.Common.csproj", "{EAA5D8CF-B810-4EAE-9C03-2D43972F3EA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{6F84F88E-175F-4B0C-8D8B-323BF84E998C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F84F88E-175F-4B0C-8D8B-323BF84E998C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F84F88E-175F-4B0C-8D8B-323BF84E998C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAA5D8CF-B810-4EAE-9C03-2D43972F3EA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAA5D8CF-B810-4EAE-9C03-2D43972F3EA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAA5D8CF-B810-4EAE-9C03-2D43972F3EA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAA5D8CF-B810-4EAE-9C03-2D43972F3EA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

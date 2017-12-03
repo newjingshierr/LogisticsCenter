@@ -68,10 +68,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\ConvertHelper.cs" />
     <Compile Include="ConnectionManager.cs" />
     <Compile Include="Demo.cs" />
-    <Compile Include="Log\ExceptionLogDAL.cs" />
     <Compile Include="Proc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -80,17 +78,22 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Logistics-Model\Logistics-Model.csproj">
-      <Project>{77c17831-8a53-4701-b6b7-283721a86a3d}</Project>
-      <Name>Logistics-Model</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <Folder Include="Log\" />
     <Folder Include="User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\procedure\pro.sql" />
     <Content Include="Scripts\table\table.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Logistics-Model\Logistics-Model.csproj">
+      <Project>{77c17831-8a53-4701-b6b7-283721a86a3d}</Project>
+      <Name>Logistics-Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logistics.Common\Logistics.Common.csproj">
+      <Project>{eaa5d8cf-b810-4eae-9c03-2d43972f3ea8}</Project>
+      <Name>Logistics.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

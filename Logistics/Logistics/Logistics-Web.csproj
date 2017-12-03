@@ -181,10 +181,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Base\BaseController.cs" />
     <Compile Include="Base\EnableCorsAttribute.cs" />
-    <Compile Include="Common\ApiConstants.cs" />
-    <Compile Include="Common\RequestAuthorizeAttribute.cs" />
-    <Compile Include="Common\Response\ResponseMessage.cs" />
-    <Compile Include="Common\SessionRouteHandler.cs" />
+    <Compile Include="Authorize\RequestAuthorizeAttribute.cs" />
+    <Compile Include="Authorize\SessionRouteHandler.cs" />
     <Compile Include="Controllers\ChargingController.cs" />
     <Compile Include="Controllers\DemoController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -218,6 +216,7 @@
     </Content>
     <Content Include="log4net.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -251,7 +250,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
@@ -286,6 +285,10 @@
     <ProjectReference Include="..\Logistics-Model\Logistics-Model.csproj">
       <Project>{77c17831-8a53-4701-b6b7-283721a86a3d}</Project>
       <Name>Logistics-Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logistics.Common\Logistics.Common.csproj">
+      <Project>{eaa5d8cf-b810-4eae-9c03-2d43972f3ea8}</Project>
+      <Name>Logistics.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Logistics.Core\Logistics.Core.csproj">
       <Project>{d0d82b90-71c7-42d7-bbd4-e10e1651499d}</Project>

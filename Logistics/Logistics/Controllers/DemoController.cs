@@ -6,14 +6,13 @@ using System.Net.Http;
 using System.Web.Http;
 using Logistics_Busniess;
 using Logistics_Model;
-using Logistics;
-using Logistics_Busniess;
 using Logistics.Core;
 using Akmii;
+using Logistics.Common;
 
 namespace Logistics.Controllers
 {
-    [RoutePrefix(ApiConstants.PrefixApi + "api/demo")]
+    [RoutePrefix(ApiConstants.PrefixApi + "Demo")]
     public class DemoController : BaseController
     {
         /// <summary>

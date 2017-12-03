@@ -61,7 +61,6 @@
     <Compile Include="DB\Product.cs" />
     <Compile Include="DB\RestAPIContext.cs" />
     <Compile Include="DB\UserInformation.cs" />
-    <Compile Include="Enum\AppModeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\DemoRequest.cs" />
     <Compile Include="Response\DemoResponse.cs" />

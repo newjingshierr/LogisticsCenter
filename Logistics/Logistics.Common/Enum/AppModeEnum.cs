@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logistics_Model
+namespace Logistics.Common
 {
    public enum AppModeEnum
     {

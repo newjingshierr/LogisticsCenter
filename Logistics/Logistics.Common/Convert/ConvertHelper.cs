@@ -6,7 +6,7 @@ using System.Data;
 using System.Collections;
 using System.Reflection;
 
-namespace Logistics_DAL
+namespace Logistics.Common
 {
     public class ConvertHelper<T> where T : new()
     {

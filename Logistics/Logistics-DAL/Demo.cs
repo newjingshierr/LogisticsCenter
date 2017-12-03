@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Logistics_Model;
+using Logistics.Common;
 
 namespace Logistics_DAL
 {
