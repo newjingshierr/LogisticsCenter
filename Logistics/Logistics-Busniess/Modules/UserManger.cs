@@ -7,6 +7,7 @@ using Logistics_Model;
 using Logistics.Core;
 using Logistics_DAL;
 using Logistics.Common;
+using Logistics_Busniess;
 
 namespace Logistics_Busniess
 {
@@ -14,9 +15,20 @@ namespace Logistics_Busniess
     {
         public static bool Insert(UserRegisterRequest item)
         {
-            return true;
-            //UserInfo userInfo = new UserInfo();
-            //userInfo.UserName =
+
+            UserInfo userInfo = new UserInfo();
+            userInfo.Userid = IdWorker.GetID();
+            userInfo.Pwd = item.Pwd;
+            userInfo.Email = item.Email;
+            userInfo.Tel = item.Tel;
+            userInfo.MemeberCode = RuleManger.SetCurrentNo(BusinessConstants.Defkey.user);
+            userInfo.CreatedBy = userInfo.Userid;
+            userInfo.ModifiedBy = userInfo.Userid;
+            return Logistics_DAL.UserDAL.Insert(userInfo);
+
+
+
+
 
         }
     }

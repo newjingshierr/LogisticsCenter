@@ -21,5 +21,11 @@ namespace Logistics_DAL
             public const string Demo_Modify_By_ID = "logistics_Demo_Modify_By_ID";
 
         }
+
+
+        public class Rule
+        {
+            public const string Logistics_Businessnorule_Update_CurrentNo = "Logistics_Businessnorule_Update_CurrentNo";
+        }
     }
 }

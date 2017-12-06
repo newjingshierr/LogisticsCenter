@@ -9,6 +9,7 @@ using Enyim.Caching;
 using Enyim.Caching.Configuration;
 using Enyim.Caching.Memcached;
 using System.Net;
+using Logistics_Busniess;
 
 namespace Logistics.Console
 {
@@ -22,6 +23,8 @@ namespace Logistics.Console
     {
         static void Main(string[] args)
         {
+          // var userNo =  RuleManger.SetCurrentNo(901992431992573952, "user");
+          //  var oderNo = RuleManger.SetCurrentNo(901992431992573952, "order");
             //MemcachedClientConfiguration config = new MemcachedClientConfiguration();
             //config.Servers.Add(new IPEndPoint(IPAddress.Loopback, 11211));
             //config.Protocol = MemcachedProtocol.Binary;
@@ -34,11 +37,12 @@ namespace Logistics.Console
             //for (var i = 0; i < 100; i++)
             //    mc.Store(StoreMode.Set, "Hello", "World");
             // MemcachedHelper.Instance().SetValue("11", "22", "44");
-            AA aa = new AA();
-            aa.a = 2;
-            
+            //AA aa = new AA();
+            //aa.a = 2;
+
             //MemcachedHelper.Instance().SetValue("33", "22", aa);
-           // var obj = MemcachedHelper.Instance().GetValue("33", "22");
+            // var obj = MemcachedHelper.Instance().GetValue("33", "22");
+
 
 
 

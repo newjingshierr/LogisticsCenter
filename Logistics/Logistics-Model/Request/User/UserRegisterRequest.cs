@@ -8,9 +8,9 @@ namespace Logistics_Model
 {
     public class UserRegisterRequest
     {
-        public string email { get; set; } = "";
-        public string tel { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Tel { get; set; } = "";
 
-        public string pass { get; set; } = "";
+        public string Pwd { get; set; } = "";
     }
 }
