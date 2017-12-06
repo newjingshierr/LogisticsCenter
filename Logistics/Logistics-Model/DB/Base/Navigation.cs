@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Logistics_Model
 {
-    public class UserInformation
+    public class Navigation
     {
 
     }
-
 }

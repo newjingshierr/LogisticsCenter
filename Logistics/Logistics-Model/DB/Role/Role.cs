@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logistics_Model.DB
+namespace Logistics_Model
 {
-    class UserInformation
+    public class Role
     {
-
     }
 }

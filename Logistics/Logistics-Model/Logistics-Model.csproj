@@ -58,15 +58,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\CacheConstants.cs" />
+    <Compile Include="DB\Base\Navigation.cs" />
     <Compile Include="DB\Product.cs" />
     <Compile Include="DB\RestAPIContext.cs" />
-    <Compile Include="DB\UserInformation.cs" />
+    <Compile Include="DB\Role\Role.cs" />
+    <Compile Include="DB\User\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\DemoRequest.cs" />
+    <Compile Include="Request\User\UserRegisterRequest.cs" />
     <Compile Include="Response\DemoResponse.cs" />
     <Compile Include="Response\DemoView.cs" />
+    <Compile Include="Response\User\AllUserInfo.cs" />
     <Compile Include="VieModels\Role.cs" />
-    <Compile Include="VieModels\UserInformation.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

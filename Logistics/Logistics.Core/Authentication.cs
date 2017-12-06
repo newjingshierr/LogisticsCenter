@@ -9,11 +9,11 @@ namespace Logistics.Core
 {
     public class Authentication
     {
-        public static UserInformation userInformation { get; set; }
+        public static UserInfo userInformation { get; set; }
 
         public Authentication(long userid)
         {
-            userInformation = MemoryCacher.GetValue<UserInformation>(CacheConstants.GetUserInformationByUserID(userid));
+            userInformation = MemoryCacher.GetValue<UserInfo>(CacheConstants.GetUserInformationByUserID(userid));
         }
     }
 }
