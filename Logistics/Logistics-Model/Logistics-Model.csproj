@@ -70,7 +70,6 @@
     <Compile Include="Response\DemoResponse.cs" />
     <Compile Include="Response\DemoView.cs" />
     <Compile Include="Response\User\AllUserInfo.cs" />
-    <Compile Include="VieModels\Role.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

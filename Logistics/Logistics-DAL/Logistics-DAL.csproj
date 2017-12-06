@@ -81,7 +81,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Log\" />
-    <Folder Include="User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\procedure\pro.sql" />
