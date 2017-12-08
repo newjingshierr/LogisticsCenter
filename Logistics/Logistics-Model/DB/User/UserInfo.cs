@@ -8,6 +8,7 @@ namespace Logistics_Model
 {
     public class UserInfo
     {
+        public long TenantID { get; set; }
         public string Email { get; set; }
 
         public string Tel { get; set; }
@@ -15,7 +16,9 @@ namespace Logistics_Model
 
         public long Userid { get; set; }
 
-        public string Pwd { get; set; }
+        public byte[] Pwd { get; set; }
+
+        public string WebChatID { get; set; }
 
         public string Token { get; set; }
 

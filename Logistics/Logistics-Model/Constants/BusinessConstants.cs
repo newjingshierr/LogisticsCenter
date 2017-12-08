@@ -14,5 +14,10 @@ namespace Logistics_Model
             public const string user = "user";
             public const string order = "order";
         }
+
+        public class Admin
+        {
+            public const long TenantID = 890501594632818690;
+        }
     }
 }

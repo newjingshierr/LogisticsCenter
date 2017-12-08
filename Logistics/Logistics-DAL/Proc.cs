@@ -27,5 +27,11 @@ namespace Logistics_DAL
         {
             public const string Logistics_Businessnorule_Update_CurrentNo = "Logistics_Businessnorule_Update_CurrentNo";
         }
+
+        public class User
+        {
+            public const string Logistics_UserInfo_Insert = "Logistics_UserInfo_Insert";
+            public const string Logistics_UserInfo_Select = "Logistics_UserInfo_Select";
+        }
     }
 }

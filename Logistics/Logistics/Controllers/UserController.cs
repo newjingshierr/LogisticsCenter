@@ -4,6 +4,7 @@ using System.Web.Http;
 using System.Web.Security;
 using Logistics.Common;
 using Logistics_Model;
+using Logistics_Busniess;
 
 
 namespace Logistics.Controllers
@@ -88,9 +89,18 @@ namespace Logistics.Controllers
         public bool Register([FromUri] UserRegisterRequest request)
         {
 
+       return     UserManger.Insert(request);
 
-            return true;
         }
+        [HttpGet]
+        [Route("Check")]
+        public bool Check([FromUri] UserCheckRequest request)
+        {
+         return   UserManger.CheckPwd(request.TenantID,request.userID,request.Pwd);
+
+        }
+
+
 
         /// <summary>
         /// 增加用户
@@ -102,6 +112,7 @@ namespace Logistics.Controllers
         [Route("Item")]
         public object Add(string strUser, string strPwd)
         {
+
             if (!ValidateUser(strUser, strPwd))
             {
                 return new { bRes = false };
@@ -111,6 +122,7 @@ namespace Logistics.Controllers
                             FormsAuthentication.FormsCookiePath);
             //返回登录结果、用户信息、用户验证票据信息
             var oUser = new UserInfo { bRes = true, UserName = strUser, Password = strPwd, Ticket = FormsAuthentication.Encrypt(ticket) };
+
             //将身份信息保存在session中，验证当前请求是否是有效请求
             HttpContext.Current.Session[strUser] = oUser;
             return oUser;

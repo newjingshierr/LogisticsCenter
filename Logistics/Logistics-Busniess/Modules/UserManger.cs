@@ -18,18 +18,24 @@ namespace Logistics_Busniess
 
             UserInfo userInfo = new UserInfo();
             userInfo.Userid = IdWorker.GetID();
-            userInfo.Pwd = item.Pwd;
+            userInfo.Pwd = HashHelper.ComputeHash(item.Pwd);
             userInfo.Email = item.Email;
+            userInfo.WebChatID = "";
+            userInfo.Token = "";
+            userInfo.UserName = "";
+            userInfo.TenantID = item.TenantID;
             userInfo.Tel = item.Tel;
             userInfo.MemeberCode = RuleManger.SetCurrentNo(BusinessConstants.Defkey.user);
-            userInfo.CreatedBy = userInfo.Userid;
-            userInfo.ModifiedBy = userInfo.Userid;
-            return Logistics_DAL.UserDAL.Insert(userInfo);
-
-
-
-
-
+            userInfo.CreatedBy = BusinessConstants.Admin.TenantID;
+            userInfo.ModifiedBy = BusinessConstants.Admin.TenantID;
+            return UserDAL.Insert(userInfo);
         }
+
+        public static bool CheckPwd(long TenantID, long userID, string Pwd)
+        {
+            return UserDAL.CheckPwd(TenantID, userID, HashHelper.ComputeHash(Pwd)) == null ? false : true;
+        }
+
+
     }
 }

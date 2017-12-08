@@ -50,6 +50,7 @@
     <Compile Include="Utility\ConfigHelper.cs" />
     <Compile Include="Utility\ConvertHelper.cs" />
     <Compile Include="Utility\FileLogHelper.cs" />
+    <Compile Include="Utility\HashHelper.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
