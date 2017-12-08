@@ -24,7 +24,7 @@ namespace Logistics.Console
     {
         static void Main(string[] args)
         {
-            var result = SMSHelper.send();
+          //  var result = SMSHelper.send();
           
           // var userNo =  RuleManger.SetCurrentNo(901992431992573952, "user");
           //  var oderNo = RuleManger.SetCurrentNo(901992431992573952, "order");
