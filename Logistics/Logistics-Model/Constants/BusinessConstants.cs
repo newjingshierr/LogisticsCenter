@@ -19,5 +19,9 @@ namespace Logistics_Model
         {
             public const long TenantID = 890501594632818690;
         }
+        public class Module
+        {
+            public const string CommonSMSHelpersend = "CommonSMSHelpersend";
+        }
     }
 }

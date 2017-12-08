@@ -66,6 +66,10 @@
       <Project>{2d8055fe-c09c-44b6-94ca-9905cfca3dbe}</Project>
       <Name>Logistics-Busniess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Logistics.Common\Logistics.Common.csproj">
+      <Project>{eaa5d8cf-b810-4eae-9c03-2d43972f3ea8}</Project>
+      <Name>Logistics.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Logistics.Core\Logistics.Core.csproj">
       <Project>{d0d82b90-71c7-42d7-bbd4-e10e1651499d}</Project>
       <Name>Logistics.Core</Name>

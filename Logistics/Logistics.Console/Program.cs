@@ -10,6 +10,7 @@ using Enyim.Caching.Configuration;
 using Enyim.Caching.Memcached;
 using System.Net;
 using Logistics_Busniess;
+using Logistics.Common;
 
 namespace Logistics.Console
 {
@@ -23,14 +24,16 @@ namespace Logistics.Console
     {
         static void Main(string[] args)
         {
+            var result = SMSHelper.send();
+          
           // var userNo =  RuleManger.SetCurrentNo(901992431992573952, "user");
           //  var oderNo = RuleManger.SetCurrentNo(901992431992573952, "order");
-            //MemcachedClientConfiguration config = new MemcachedClientConfiguration();
-            //config.Servers.Add(new IPEndPoint(IPAddress.Loopback, 11211));
-            //config.Protocol = MemcachedProtocol.Binary;
-            //config.Authentication.Type = typeof(PlainTextAuthenticator);
-            //config.Authentication.Parameters["userName"] = "demo";
-            //config.Authentication.Parameters["password"] = "demo";
+          //MemcachedClientConfiguration config = new MemcachedClientConfiguration();
+          //config.Servers.Add(new IPEndPoint(IPAddress.Loopback, 11211));
+          //config.Protocol = MemcachedProtocol.Binary;
+          //config.Authentication.Type = typeof(PlainTextAuthenticator);
+          //config.Authentication.Parameters["userName"] = "demo";
+          //config.Authentication.Parameters["password"] = "demo";
 
             //var mc = new MemcachedClient(config);
 
