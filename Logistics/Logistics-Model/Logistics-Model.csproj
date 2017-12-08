@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Constants\BusinessConstants.cs" />
     <Compile Include="Constants\CacheConstants.cs" />
+    <Compile Include="DB\Base\logistics_base_sms_validate.cs" />
     <Compile Include="DB\Base\Navigation.cs" />
     <Compile Include="DB\Product.cs" />
     <Compile Include="DB\RestAPIContext.cs" />

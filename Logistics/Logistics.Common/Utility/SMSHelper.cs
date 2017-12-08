@@ -14,7 +14,20 @@ namespace Logistics.Common
 {
     public class SMSHelper
     {
-
+        public static string GetRandom()
+        {
+            Random rd = new Random();
+            string str = "";
+            while (str.Length < 4)
+            {
+                int temp = rd.Next(0, 10);
+                if (!str.Contains(temp + ""))
+                {
+                    str += temp;
+                }
+            }
+            return str;
+        }
         public static bool send(string content, SMSTypeEnum smsType, string mobile)
         {
             LogHelper log = LogHelper.GetLogger(typeof(SMSHelper));
@@ -44,7 +57,6 @@ namespace Logistics.Common
 
             return result;
         }
-        //POST方式发送得结果
         private static String doPostRequest(string url, byte[] bData)
         {
             System.Net.HttpWebRequest hwRequest;

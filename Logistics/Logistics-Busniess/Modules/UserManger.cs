@@ -37,5 +37,43 @@ namespace Logistics_Busniess
         }
 
 
+        public static bool InsertSMSValidate(SmsValidateRequest item)
+        {
+            logistics_base_sms_validate smsValidate = new logistics_base_sms_validate();
+            smsValidate.ID = IdWorker.GetID();
+            smsValidate.code = item.code;
+            smsValidate.tel = item.tel;
+            smsValidate.TenantID = item.TenantID;
+            smsValidate.startTime = System.DateTime.Now;
+            smsValidate.endTime = smsValidate.startTime.AddMinutes(15);
+            smsValidate.CreatedBy = BusinessConstants.Admin.TenantID;
+            smsValidate.ModifiedBy = BusinessConstants.Admin.TenantID;
+            return SmsValidateDal.Insert(smsValidate);
+        }
+
+        public static bool CheckSmsValidate(CheckSmsValidateRequest item)
+        {
+            var smsValidate = SmsValidateDal.GetItem(item.TenantID, item.tel);
+            return SmsValidateDal.ChekcItem(item.TenantID, item.tel, item.code, smsValidate.startTime, smsValidate.endTime) == null ? false : true;
+        }
+
+        public static bool SendSMSValidate(SendSMSValidateRequest request)
+        {
+            var radmon = SMSHelper.GetRandom();
+            var sendResult = SMSHelper.send(radmon, SMSTypeEnum.Register, request.tel);
+            var result = false;
+            if (sendResult)
+            {
+                SmsValidateRequest InsertRequest = new SmsValidateRequest();
+                InsertRequest.code = radmon;
+                InsertRequest.tel = request.tel;
+                InsertRequest.TenantID = request.TenantID;
+                result = InsertSMSValidate(InsertRequest);
+            }
+            return result;
+        }
+
+
+
     }
 }

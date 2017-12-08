@@ -6,6 +6,27 @@ using System.Threading.Tasks;
 
 namespace Logistics_Model
 {
+    public class SendSMSValidateRequest : BaseReqeust
+    {
+        public string tel { get; set; }
+
+    }
+
+    public class SmsValidateRequest : BaseReqeust
+    {
+        public string tel { get; set; }
+        public string code { get; set; }
+
+
+    }
+
+    public class CheckSmsValidateRequest : BaseReqeust
+    {
+        public string tel { get; set; }
+        public string code { get; set; }
+    }
+
+
     public class UserRegisterRequest : BaseReqeust
     {
         public string Email { get; set; } = "";

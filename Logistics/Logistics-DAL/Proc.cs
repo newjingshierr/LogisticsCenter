@@ -33,5 +33,12 @@ namespace Logistics_DAL
             public const string Logistics_UserInfo_Insert = "Logistics_UserInfo_Insert";
             public const string Logistics_UserInfo_Select = "Logistics_UserInfo_Select";
         }
+
+        public class Base
+        {
+            public const string logistics_base_sms_validate_insert = "logistics_base_sms_validate_insert";
+            public const string logistics_base_sms_validate_select = "logistics_base_sms_validate_select";
+            public const string logistics_base_sms_validate_check = "logistics_base_sms_validate_check";
+        }
     }
 }
