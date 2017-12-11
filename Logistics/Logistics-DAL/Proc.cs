@@ -8,6 +8,14 @@ namespace Logistics_DAL
 {
     public class Proc
     {
+        public class Quotation
+        {
+            public const string logistics_quotation_partition_select_by_country = "logistics_quotation_partition_select_by_country";
+
+            public const string logistics_quotation_partition_price_select_by_country = "logistics_quotation_partition_price_select_by_country";
+
+        }
+
         public class Demo
         {
             public const string Demo_Insert = "logistics_Demo_Insert";

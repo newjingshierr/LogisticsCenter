@@ -62,6 +62,8 @@
     <Compile Include="DB\Base\logistics_base_sms_validate.cs" />
     <Compile Include="DB\Base\Navigation.cs" />
     <Compile Include="DB\Product.cs" />
+    <Compile Include="DB\Quotation\Quotation.cs" />
+    <Compile Include="DB\Quotation\QuotationVM.cs" />
     <Compile Include="DB\RestAPIContext.cs" />
     <Compile Include="DB\Role\Role.cs" />
     <Compile Include="DB\User\UserInfo.cs" />
@@ -69,6 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\BaseReqeust.cs" />
     <Compile Include="Request\DemoRequest.cs" />
+    <Compile Include="Request\Quotation.cs" />
     <Compile Include="Request\User\UserRegisterRequest.cs" />
     <Compile Include="Response\DemoResponse.cs" />
     <Compile Include="Response\DemoView.cs" />
