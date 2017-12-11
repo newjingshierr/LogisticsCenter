@@ -16,7 +16,7 @@ namespace Logistics.Controllers
     public class QuotationController : BaseController
     {
         [HttpGet]
-        [Route("")]
+        [Route("Item")]
         public ResponseMessage<decimal> GetQuotationPriceByCountry([FromUri] GetQuotationPriceByCountryRequest request)
         {
 
