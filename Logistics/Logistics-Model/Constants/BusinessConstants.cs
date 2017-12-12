@@ -19,6 +19,12 @@ namespace Logistics_Model
         {
             public const long TenantID = 890501594632818690;
         }
+        public class Channel
+        {
+            public const long EMSEconomicID = 890501594632328690;
+            public const long FedxEconomicID = 890501594622318690;
+
+        }
         public class Module
         {
             public const string CommonSMSHelpersend = "CommonSMSHelpersend";

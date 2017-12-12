@@ -44,12 +44,14 @@ namespace Logistics_Busniess
 
             var count =Convert.ToDouble (actualWeight)%0.5 >0?(int) (Convert.ToDouble(actualWeight) / 0.5) + 1: (int)(Convert.ToDouble(actualWeight) / 0.5);
 
-            var partition_country_list = QuotationDal.logistics_quotation_partition_select_by_country(BusinessConstants.Admin.TenantID, request.country);
-            var QuotationPriceResult = QuotationDal.logistics_quotation_partition_price_select_by_country(BusinessConstants.Admin.TenantID, partition_country_list.partitionID);
+            var partitionCountryList = QuotationDal.selectPartitionByCountry(BusinessConstants.Admin.TenantID, request.country);
+            var QuotationPriceList = QuotationDal.SelectPartitionPrice(BusinessConstants.Admin.TenantID, partitionCountryList);
+
             firstHeavy = QuotationPriceResult.firstHeavy;
             continuedHeavy = QuotationPriceResult.continuedHeavy;
-            var result = Math.Round(firstHeavy + (count - 1) * continuedHeavy,2);
+            var result =firstHeavy + (count - 1) * continuedHeavy;
             return result;
         }
+
     }
 }

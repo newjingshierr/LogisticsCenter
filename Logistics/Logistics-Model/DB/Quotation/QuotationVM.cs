@@ -92,4 +92,42 @@ namespace Logistics_Model
         public int type { get; set; }
 
     }
+    public class QuotationChannelPriceVM
+    {
+        /// <summary>
+        /// 渠道ID
+        /// </summary>
+        public long channelID { get; set; }
+        /// <summary>
+        /// 渠道名称
+        /// </summary>
+        public String channelName { get; set; }
+
+        /// <summary>
+        /// 总重量
+        /// </summary>
+        public decimal weight { get; set; }
+
+        //时效
+        public string Prescription { get; set; }
+        /// <summary>
+        /// 总费用
+        /// </summary>
+        public decimal Amount { get; set; }
+
+        /// <summary>
+        /// 服务费
+        /// </summary>
+        public decimal ServiceAmount { get; set; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string Remark { get; set; }
+
+        /// <summary>
+        /// 条款
+        /// </summary>
+        public string Clause { get; set; }
+    }
 }

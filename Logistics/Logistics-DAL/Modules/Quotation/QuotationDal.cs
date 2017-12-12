@@ -10,48 +10,58 @@ namespace Logistics_DAL
 {
     public class QuotationDal
     {
-        public static logistics_quotation_partition_country logistics_quotation_partition_select_by_country(long TenantID, string country)
+        public static List<logistics_quotation_partition_country> selectPartitionByCountry(long TenantID, string country)
         {
             var result = new logistics_quotation_partition_country();
+            var resultList = new List<logistics_quotation_partition_country>();
+
             MySqlParameter[] parameters = {
                 new MySqlParameter("@_TenantID",TenantID),
                 new MySqlParameter("@_country", country)
             };
 
             var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Quotation.logistics_quotation_partition_select_by_country, parameters);
-            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            if (dbResult.Tables.Count > 0)
             {
-                result = ConvertHelper<logistics_quotation_partition_country>.DtToModel(dbResult.Tables[0]);
+                for (int i = 0; i < dbResult.Tables.Count; i++)
+                {
+                    result = ConvertHelper<logistics_quotation_partition_country>.DtToModel(dbResult.Tables[i]);
+                    resultList.Add(result);
+                }
+
             }
             else
             {
-                result = null;
+                resultList = null;
             }
 
-            return result;
+            return resultList;
         }
 
 
-        public static QuotationPriceVM logistics_quotation_partition_price_select_by_country(long TenantID, long partitionID)
+        public static List<QuotationPriceVM> SelectPartitionPrice(long TenantID, List<logistics_quotation_partition_country> partitionCountryList)
         {
             var result = new QuotationPriceVM();
+            var resultList = new List<QuotationPriceVM>();
+
             MySqlParameter[] parameters = {
                 new MySqlParameter("@_TenantID", TenantID),
                                 new MySqlParameter("@_partitionID",partitionID),
             };
 
             var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Quotation.logistics_quotation_partition_price_select_by_country, parameters);
-            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            if (dbResult.Tables.Count > 0)
             {
                 result = ConvertHelper<QuotationPriceVM>.DtToModel(dbResult.Tables[0]);
+                resultList.Add(result);
             }
             else
             {
-                result = null;
+                resultList = null;
             }
 
 
-            return result;
+            return resultList;
         }
 
         public static List<QuotationPriceVM> logistics_quotation_partition_price_list_select_by_country(long TenantID, List<logistics_quotation_partition_country> partitionContryList)
