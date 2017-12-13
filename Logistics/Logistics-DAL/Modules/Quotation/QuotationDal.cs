@@ -156,6 +156,10 @@ namespace Logistics_DAL
                 {
                     result = ConvertHelper<logistics_quotation_partition_country>.DtToModel(dbResult.Tables[0]);
                 }
+                else
+                {
+                    result = null;
+                }
             }
             else
             {

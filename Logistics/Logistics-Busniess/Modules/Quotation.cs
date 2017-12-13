@@ -76,11 +76,21 @@ namespace Logistics_Busniess
                 var count = Convert.ToDouble(actualWeight) % 0.5 > 0 ? (int)(Convert.ToDouble(actualWeight) / 0.5) + 1 : (int)(Convert.ToDouble(actualWeight) / 0.5);
                 //根据国家和渠道ID 获取分区
                 var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
-                //根据分区获取分区首重价格续重价格
-                var QuotationPrice = QuotationDal.SelectPartitionPrice(request.TenantID, partitionCountry.partitionID);
-                firstHeavy = QuotationPrice.firstHeavyPrice;
-                continuedHeavy = QuotationPrice.continuedHeavyPrice;
-                amount = firstHeavy + (count - 1) * continuedHeavy;
+                if (partitionCountry!= null)
+                {    
+                    //根据分区获取分区首重价格续重价格
+                    var QuotationPrice = QuotationDal.SelectPartitionPrice(request.TenantID, partitionCountry.partitionID);
+                    firstHeavy = QuotationPrice.firstHeavyPrice;
+                    continuedHeavy = QuotationPrice.continuedHeavyPrice;
+                    amount = firstHeavy + (count - 1) * continuedHeavy;
+                }
+                else
+                {
+                    amount = 0;
+                }
+
+  
+        
             }
             else if (channelID == BusinessConstants.Channel.FedxEconomicID)
             {
