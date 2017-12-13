@@ -10,7 +10,7 @@ using Enyim.Caching.Configuration;
 using Enyim.Caching.Memcached;
 using System.Net;
 using Logistics_Busniess;
-using Logistics.Common;
+
 
 namespace Logistics.Console
 {

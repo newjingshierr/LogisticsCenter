@@ -14,44 +14,80 @@ namespace Logistics_Busniess
 {
     public class QuotationManager
     {
-        // logistics_quotation_partition_country
-        public static decimal GetQuotationPriceByCountry(GetQuotationPriceByCountryRequest request)
+        public static List<QuotationChannelPriceVM> GetChannelPrice(GetQuotationPriceByCountryRequest request)
+        {
+            var AllChannels = QuotationDal.SelectAllChannels(request.TenantID);
+            var QuotationChannelPriceList = new List<QuotationChannelPriceVM>();
+            QuotationChannelPriceVM QuotationChannelPriceVM = null;
+
+            foreach (var o in AllChannels)
+            {
+                QuotationChannelPriceVM = new QuotationChannelPriceVM();
+                QuotationChannelPriceVM.Amount = GetPriceByChannelID(request, o.ID);
+                QuotationChannelPriceVM.channelID = o.ID;
+                QuotationChannelPriceVM.channelName = o.Name;
+                QuotationChannelPriceVM.Prescription = o.Prescription;
+                QuotationChannelPriceVM.Remark = o.Remark;
+                QuotationChannelPriceVM.ServiceAmount = 0;
+                QuotationChannelPriceVM.weight = request.weight;
+                QuotationChannelPriceList.Add(QuotationChannelPriceVM);
+
+            }
+
+            return QuotationChannelPriceList;
+        }
+
+
+        // 根据渠道获取价格
+        public static decimal GetPriceByChannelID(GetQuotationPriceByCountryRequest request, long channelID)
         {
             var height = request.height;
             var width = request.width;
             var length = request.length;
             var weight = request.weight;
             var volume = Math.Round(height * width * length, 2);
-            var volumeWeight = Math.Round(volume / 6000, 2);
-            var actualWeight = (decimal)0;
-            var firstHeavy = (decimal)0;
-            var continuedHeavy = (decimal)0;
+            var volumeWeight = (decimal)0.00;
+            var actualWeight = (decimal)0.00;
+            var firstHeavy = (decimal)0.00;
+            var continuedHeavy = (decimal)0.00;
+            var amount = (decimal)0.00;
 
-            if (height < 60 && width < 60 && length < 60)
-                actualWeight = weight;
-            else
+            if (channelID == BusinessConstants.Channel.EMSEconomicID)
             {
-                if (weight < volumeWeight)
-                {
-                    actualWeight = volumeWeight;
-                }
+                volumeWeight = Math.Round(volume / 6000, 2);
+                if (height < 60 && width < 60 && length < 60)
+                    actualWeight = weight;
                 else
                 {
-                    actualWeight = weight;
+                    if (weight < volumeWeight)
+                    {
+                        actualWeight = volumeWeight;
+                    }
+                    else
+                    {
+                        actualWeight = weight;
+                    }
                 }
+                var count = Convert.ToDouble(actualWeight) % 0.5 > 0 ? (int)(Convert.ToDouble(actualWeight) / 0.5) + 1 : (int)(Convert.ToDouble(actualWeight) / 0.5);
+                //根据国家和渠道ID 获取分区
+                var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
+                //根据分区获取分区价格
+                var QuotationPrice = QuotationDal.SelectPartitionPrice(request.TenantID, partitionCountry.partitionID);
+                firstHeavy = QuotationPrice.firstHeavyPrice;
+                continuedHeavy = QuotationPrice.continuedHeavyPrice;
+                amount = firstHeavy + (count - 1) * continuedHeavy;
+            }
+            else if (channelID == BusinessConstants.Channel.FedxEconomicID)
+            {
+                volumeWeight = Math.Round(volume / 5000, 2);
             }
 
-
-            var count =Convert.ToDouble (actualWeight)%0.5 >0?(int) (Convert.ToDouble(actualWeight) / 0.5) + 1: (int)(Convert.ToDouble(actualWeight) / 0.5);
-
-            var partitionCountryList = QuotationDal.selectPartitionByCountry(BusinessConstants.Admin.TenantID, request.country);
-            var QuotationPriceList = QuotationDal.SelectPartitionPrice(BusinessConstants.Admin.TenantID, partitionCountryList);
-
-            firstHeavy = QuotationPriceResult.firstHeavy;
-            continuedHeavy = QuotationPriceResult.continuedHeavy;
-            var result =firstHeavy + (count - 1) * continuedHeavy;
-            return result;
+            return DecimalHelper.formate(amount);
         }
+
+
+
+
 
     }
 }

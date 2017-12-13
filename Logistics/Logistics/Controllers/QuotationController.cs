@@ -17,14 +17,14 @@ namespace Logistics.Controllers
     {
         [HttpGet]
         [Route("Item")]
-        public ResponseMessage<decimal> GetQuotationPriceByCountry([FromUri] GetQuotationPriceByCountryRequest request)
+        public ResponseMessage<List<QuotationChannelPriceVM>> GetQuotationPriceByCountry([FromUri] GetQuotationPriceByCountryRequest request)
         {
 
-            var result = (decimal)0;
+            var result = new List<QuotationChannelPriceVM>();
 
             try
             {
-                result = QuotationManager.GetQuotationPriceByCountry(request);
+                result = QuotationManager.GetChannelPrice(request);
 
                 return GetResult(result);
             }

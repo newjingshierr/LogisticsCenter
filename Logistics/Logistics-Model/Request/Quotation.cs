@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Logistics_Model
 {
-    public class GetQuotationPriceByCountryRequest
+    public class GetQuotationPriceByCountryRequest:BaseReqeust
     {
         public string country { get; set; } = "";
         public decimal weight { get; set; } = 0;

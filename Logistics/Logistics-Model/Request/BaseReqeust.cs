@@ -8,6 +8,6 @@ namespace Logistics_Model
 {
     public class BaseReqeust
     {
-        public long TenantID { get; set; } = 892293339913785344;
+        public long TenantID { get; set; } = 890501594632818690;
     }
 }

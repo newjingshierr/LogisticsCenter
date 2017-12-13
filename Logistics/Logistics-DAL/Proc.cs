@@ -14,6 +14,8 @@ namespace Logistics_DAL
 
             public const string logistics_quotation_partition_price_select_by_country = "logistics_quotation_partition_price_select_by_country";
 
+            public const string logistics_quotation_channel_select_all = "logistics_quotation_channel_select_all";
+
         }
 
         public class Demo
