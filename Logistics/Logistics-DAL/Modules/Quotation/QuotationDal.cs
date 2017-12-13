@@ -10,6 +10,64 @@ namespace Logistics_DAL
 {
     public class QuotationDal
     {
+        public static logistics_quotation_partition GetPartitionIDByCodeChannelID(string code, long channelID, long TenantID)
+        {
+            var result = new logistics_quotation_partition();
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID", TenantID),
+                new MySqlParameter("@_code",code),
+                new MySqlParameter("@_channelID",channelID)
+
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Quotation.logistics_quotation_partition_select_by_Code_channelID, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<logistics_quotation_partition>.DtToModel(dbResult.Tables[0]);
+            }
+            else
+            {
+                result = null;
+            }
+
+
+            return result;
+        }
+
+
+
+
+
+        public static bool InsertPartitionPrice(logistics_quotation_partition_price model, AkmiiMySqlTransaction trans = null)
+        {
+
+            MySqlParameter[] parameters = {
+                        new MySqlParameter("@_TenantID", model.TenantID),
+                        new MySqlParameter("@_ID",model.ID),
+                        new MySqlParameter("@_firstHeavyPrice", model.firstHeavyPrice),
+                        new MySqlParameter("@_continuedHeavyPrice",model.continuedHeavyPrice),
+                        new MySqlParameter("@_channelID",model.channelID),
+                        new MySqlParameter("@_partitionID",model.partitionID),
+                        new MySqlParameter("@_beginHeavy",model.beginHeavy),
+                        new MySqlParameter("@_endHeavy",model.endHeavy),
+                        new MySqlParameter("@_price",model.price),
+                        new MySqlParameter("@_CreatedBy",model.CreatedBy),
+                         new MySqlParameter("@_ModifiedBy",model.ModifiedBy)
+            };
+
+            int result = 0;
+            if (trans == null)
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Quotation.logistics_quotation_partition_price_Insert, parameters);
+            }
+            else
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.Quotation.logistics_quotation_partition_price_Insert, parameters);
+            }
+            return result == 1;
+
+        }
+
         public static List<logistics_quotation_channel> SelectAllChannels(long TenantID)
         {
             var list = new List<logistics_quotation_channel>();

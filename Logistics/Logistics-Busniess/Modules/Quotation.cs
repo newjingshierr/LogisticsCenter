@@ -14,6 +14,11 @@ namespace Logistics_Busniess
 {
     public class QuotationManager
     {
+        public bool importFedex()
+        {
+
+            return true;
+        }
         public static List<QuotationChannelPriceVM> GetChannelPrice(GetQuotationPriceByCountryRequest request)
         {
             var AllChannels = QuotationDal.SelectAllChannels(request.TenantID);

@@ -132,22 +132,31 @@ namespace Logistics_Model
             set { _id = value; }
         }
         /// <summary>
-        /// firstHeavy
+        /// firstHeavyPrice
         /// </summary>		
-        private decimal _firstheavy;
-        public decimal firstHeavy
+        private decimal _firstheavyprice;
+        public decimal firstHeavyPrice
         {
-            get { return _firstheavy; }
-            set { _firstheavy = value; }
+            get { return _firstheavyprice; }
+            set { _firstheavyprice = value; }
         }
         /// <summary>
-        /// continuedHeavy
+        /// continuedHeavyPrice
         /// </summary>		
-        private decimal _continuedheavy;
-        public decimal continuedHeavy
+        private decimal _continuedheavyprice;
+        public decimal continuedHeavyPrice
         {
-            get { return _continuedheavy; }
-            set { _continuedheavy = value; }
+            get { return _continuedheavyprice; }
+            set { _continuedheavyprice = value; }
+        }
+        /// <summary>
+        /// channelID
+        /// </summary>		
+        private long _channelid;
+        public long channelID
+        {
+            get { return _channelid; }
+            set { _channelid = value; }
         }
         /// <summary>
         /// partitionID
@@ -157,6 +166,33 @@ namespace Logistics_Model
         {
             get { return _partitionid; }
             set { _partitionid = value; }
+        }
+        /// <summary>
+        /// beginHeavy
+        /// </summary>		
+        private decimal _beginheavy;
+        public decimal beginHeavy
+        {
+            get { return _beginheavy; }
+            set { _beginheavy = value; }
+        }
+        /// <summary>
+        /// endHeavy
+        /// </summary>		
+        private decimal _endheavy;
+        public decimal endHeavy
+        {
+            get { return _endheavy; }
+            set { _endheavy = value; }
+        }
+        /// <summary>
+        /// price
+        /// </summary>		
+        private decimal _price;
+        public decimal price
+        {
+            get { return _price; }
+            set { _price = value; }
         }
         /// <summary>
         /// Created
@@ -194,6 +230,7 @@ namespace Logistics_Model
             get { return _modifiedby; }
             set { _modifiedby = value; }
         }
+
 
     }
 
