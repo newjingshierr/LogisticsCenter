@@ -35,23 +35,71 @@ namespace Logistics.Console
         {
 
             string path = "Quotation.xls";
+
             using (FileStream fs = new FileStream(path, FileMode.Open))
             {
                 IWorkbook workbook = new HSSFWorkbook(fs);
-                ISheet sheet = workbook.GetSheet("Fedex报价模板");
-                int rfirst = sheet.FirstRowNum;
+
+                ISheet sheet = workbook.GetSheet("Fedex资费区");
+                IRow firstRow = sheet.GetRow(0);
+                var columnsCount = firstRow.Cells.Count();
+
+                for (int i = 0; i < columnsCount; i++)
+                {
+                    var code = firstRow.Cells[i].ToString();
+                    logistics_quotation_partition partition = new logistics_quotation_partition();
+                    partition.TenantID = 890501594632818690;
+                    partition.partitionCode = code;
+                    partition.ID = IdWorker.GetID();
+                    partition.ChannelID = BusinessConstants.Channel.FedxEconomicID;
+                    partition.CreatedBy = 890501594632818690;
+                    partition.ModifiedBy = 890501594632818690;
+                    QuotationDal.QuotaionPartitionInsert(partition);
+                    System.Console.WriteLine("channel id:" + BusinessConstants.Channel.FedxEconomicID + "Fedex资费区:" + code);
+
+                }
+
+
+                sheet = workbook.GetSheet("Fedex国家");
+                firstRow = sheet.GetRow(0);
+                columnsCount = firstRow.Cells.Count();
                 int rlast = sheet.LastRowNum;
-                IRow firstRow = sheet.GetRow(rfirst);
-                var columns = firstRow.Cells.Count();
                 IRow row = null;
+                for (int i = 0; i < rlast; i++)
+                {
+                    row = sheet.GetRow(i + 1);
+                    logistics_quotation_partition_country partitionCountry = new logistics_quotation_partition_country();
+                    partitionCountry.TenantID = 890501594632818690;
+                    partitionCountry.ChannelID = BusinessConstants.Channel.FedxEconomicID;
+                    partitionCountry.ID = IdWorker.GetID();
+                    partitionCountry.countryEnglishName = row.Cells[0].ToString();
+                    partitionCountry.countryChineseName = row.Cells[1].ToString();
+                    partitionCountry.countryCode = row.Cells[2].ToString();
+                    var partionCode = row.Cells[3].ToString();
+                    var partionID = QuotationDal.GetPartitionIDByCodeChannelID(row.Cells[3].ToString(), BusinessConstants.Channel.FedxEconomicID, 890501594632818690).ID;
+                    partitionCountry.partitionID = partionID;
+                    partitionCountry.CreatedBy = 890501594632818690;
+                    partitionCountry.ModifiedBy = 890501594632818690;
+                    QuotationDal.QuotaionCountryInsert(partitionCountry);
+                    System.Console.WriteLine("channel id:" + BusinessConstants.Channel.FedxEconomicID + "Fedex国家:" + row.Cells[2].ToString());
+                }
+
+
+
+                sheet = workbook.GetSheet("Fedex报价模板");
+                int rfirst = sheet.FirstRowNum;
+                 rlast = sheet.LastRowNum;
+                 firstRow = sheet.GetRow(rfirst);
+                var columns = firstRow.Cells.Count();
+          
 
                 logistics_quotation_partition_price partitionPrice = null;
                 for (int i = 0; i < rlast; i++)
                 {
-                    for( int j = 2; j < columns; j++)
+                    for (int j = 2; j < columns; j++)
                     {
-                        row = sheet.GetRow(i+1);
-                        var result =QuotationDal.GetPartitionIDByCodeChannelID(Convert.ToString(firstRow.Cells[j]).Trim(), BusinessConstants.Channel.FedxEconomicID, 890501594632818690);
+                        row = sheet.GetRow(i + 1);
+                        var result = QuotationDal.GetPartitionIDByCodeChannelID(Convert.ToString(firstRow.Cells[j]).Trim(), BusinessConstants.Channel.FedxEconomicID, 890501594632818690);
                         partitionPrice = new logistics_quotation_partition_price();
                         partitionPrice.TenantID = 890501594632818690;
                         partitionPrice.ID = IdWorker.GetID();
@@ -59,63 +107,24 @@ namespace Logistics.Console
                         partitionPrice.continuedHeavyPrice = 0;
                         partitionPrice.channelID = BusinessConstants.Channel.FedxEconomicID;
                         partitionPrice.partitionID = result.ID;
-                        partitionPrice.beginHeavy =Convert.ToDecimal(row.Cells[0].ToString());
+                        partitionPrice.beginHeavy = Convert.ToDecimal(row.Cells[0].ToString());
                         partitionPrice.endHeavy = Convert.ToDecimal(row.Cells[1].ToString());
-                        partitionPrice.price = row.Cells[j]  == null? 0: Convert.ToDecimal(row.Cells[j].ToString());
+                        partitionPrice.price = row.Cells[j] == null ? 0 : Convert.ToDecimal(row.Cells[j].ToString());
                         partitionPrice.CreatedBy = 890501594632818690;
                         partitionPrice.ModifiedBy = 890501594632818690;
                         QuotationDal.InsertPartitionPrice(partitionPrice);
-                        System.Console.WriteLine("channel id:"+BusinessConstants.Channel.FedxEconomicID +"distinct:"+ firstRow.Cells[j]);
+                        System.Console.WriteLine("channel id:" + BusinessConstants.Channel.FedxEconomicID + "Fedex报价模板:" + firstRow.Cells[j]);
                     }
                 }
 
+
+           
+
+
+
             }
 
-
-            //  var result = SMSHelper.send();
-
-            // var userNo =  RuleManger.SetCurrentNo(901992431992573952, "user");
-            //  var oderNo = RuleManger.SetCurrentNo(901992431992573952, "order");
-            //MemcachedClientConfiguration config = new MemcachedClientConfiguration();
-            //config.Servers.Add(new IPEndPoint(IPAddress.Loopback, 11211));
-            //config.Protocol = MemcachedProtocol.Binary;
-            //config.Authentication.Type = typeof(PlainTextAuthenticator);
-            //config.Authentication.Parameters["userName"] = "demo";
-            //config.Authentication.Parameters["password"] = "demo";
-
-            //var mc = new MemcachedClient(config);
-
-            //for (var i = 0; i < 100; i++)
-            //    mc.Store(StoreMode.Set, "Hello", "World");
-            // MemcachedHelper.Instance().SetValue("11", "22", "44");
-            //AA aa = new AA();
-            //aa.a = 2;
-
-            //MemcachedHelper.Instance().SetValue("33", "22", aa);
-            // var obj = MemcachedHelper.Instance().GetValue("33", "22");
-
-
-
-
-        }
-    }
-
-
-    public class SimpleClass
-    {
-        public static int c = 1;
-        // Static constructor
-        static SimpleClass()
-        {
-            int a = 1;
-            c = 2;
-            //
-        }
-
-        public static void print()
-        {
-            int a = 1;
-            var d = c + 1;
+            System.Console.ReadLine();
         }
     }
 }

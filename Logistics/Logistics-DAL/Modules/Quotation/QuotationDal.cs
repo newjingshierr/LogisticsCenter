@@ -10,6 +10,61 @@ namespace Logistics_DAL
 {
     public class QuotationDal
     {
+        public static bool QuotaionCountryInsert(logistics_quotation_partition_country model, AkmiiMySqlTransaction trans = null)
+        {
+
+            MySqlParameter[] parameters = {
+                        new MySqlParameter("@_TenantID", model.TenantID),
+                        new MySqlParameter("@_ID",model.ID),
+                        new MySqlParameter("@_countryEnglishName", model.countryEnglishName),
+                         new MySqlParameter("@_countryChineseName", model.countryEnglishName),
+                          new MySqlParameter("@_countryCode", model.countryCode),
+                           new MySqlParameter("@_ChannelID", model.ChannelID),
+                         new MySqlParameter("@_partitionID", model.partitionID),
+                        new MySqlParameter("@_CreatedBy",model.CreatedBy),
+                        new MySqlParameter("@_ModifiedBy",model.ModifiedBy)
+            };
+
+            int result = 0;
+            if (trans == null)
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Quotation.logistics_quotation_partition_country_insert, parameters);
+            }
+            else
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.Quotation.logistics_quotation_partition_country_insert, parameters);
+            }
+            return result == 1;
+
+        }
+
+
+        public static bool QuotaionPartitionInsert(logistics_quotation_partition model, AkmiiMySqlTransaction trans = null)
+        {
+
+            MySqlParameter[] parameters = {
+                        new MySqlParameter("@_TenantID", model.TenantID),
+                        new MySqlParameter("@_ID",model.ID),
+                        new MySqlParameter("@_partitionCode", model.partitionCode),
+                          new MySqlParameter("@_ChannelID", model.ChannelID),
+                        new MySqlParameter("@_CreatedBy",model.CreatedBy),
+                        new MySqlParameter("@_ModifiedBy",model.ModifiedBy)
+            };
+
+            int result = 0;
+            if (trans == null)
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Quotation.logistics_quotation_partition_insert, parameters);
+            }
+            else
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.Quotation.logistics_quotation_partition_insert, parameters);
+            }
+            return result == 1;
+
+        }
+
+
         public static logistics_quotation_partition GetPartitionIDByCodeChannelID(string code, long channelID, long TenantID)
         {
             var result = new logistics_quotation_partition();
@@ -122,6 +177,31 @@ namespace Logistics_DAL
             };
 
             var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Quotation.logistics_quotation_partition_price_select_by_country, parameters);
+            if (dbResult.Tables.Count > 0)
+            {
+                result = ConvertHelper<QuotationPriceVM>.DtToModel(dbResult.Tables[0]);
+
+            }
+            else
+            {
+                result = null;
+            }
+
+            return result;
+        }
+
+
+        public static QuotationPriceVM SelectPriceByPartitionIDWeight(long TenantID, long partitionID, decimal weight)
+        {
+            var result = new QuotationPriceVM();
+
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID", TenantID),
+                                new MySqlParameter("@_partitionID",partitionID),
+                                new MySqlParameter("@_weight",weight),
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Quotation.logistics_Select_Price_By_PartitionID_Weight, parameters);
             if (dbResult.Tables.Count > 0)
             {
                 result = ConvertHelper<QuotationPriceVM>.DtToModel(dbResult.Tables[0]);

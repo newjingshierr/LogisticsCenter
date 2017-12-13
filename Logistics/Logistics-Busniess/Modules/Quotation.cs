@@ -76,7 +76,7 @@ namespace Logistics_Busniess
                 var count = Convert.ToDouble(actualWeight) % 0.5 > 0 ? (int)(Convert.ToDouble(actualWeight) / 0.5) + 1 : (int)(Convert.ToDouble(actualWeight) / 0.5);
                 //根据国家和渠道ID 获取分区
                 var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
-                //根据分区获取分区价格
+                //根据分区获取分区首重价格续重价格
                 var QuotationPrice = QuotationDal.SelectPartitionPrice(request.TenantID, partitionCountry.partitionID);
                 firstHeavy = QuotationPrice.firstHeavyPrice;
                 continuedHeavy = QuotationPrice.continuedHeavyPrice;
@@ -85,7 +85,30 @@ namespace Logistics_Busniess
             else if (channelID == BusinessConstants.Channel.FedxEconomicID)
             {
                 volumeWeight = Math.Round(volume / 5000, 2);
+                if (weight > volumeWeight)
+                {
+                    actualWeight = weight;
+                }
+                else
+                {
+                    actualWeight = volumeWeight;
+                }
+    
+                if (DecimalHelper.IPFRule(length, width, height, weight)){
+
+                }
+                else
+                {
+                    //根据国家和渠道ID 获取分区
+                    var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
+                    //根据分区获取分区价格
+                    var QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID,actualWeight);
+                    firstHeavy = QuotationPrice.firstHeavyPrice;
+                    continuedHeavy = QuotationPrice.continuedHeavyPrice;
+                    amount = QuotationPrice.price;
+                }
             }
+
 
             return DecimalHelper.formate(amount);
         }

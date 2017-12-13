@@ -16,9 +16,15 @@ namespace Logistics_DAL
 
             public const string logistics_quotation_partition_price_select_by_country = "logistics_quotation_partition_price_select_by_country";
 
+            public const string logistics_Select_Price_By_PartitionID_Weight = "logistics_Select_Price_By_PartitionID_Weight";
+
             public const string logistics_quotation_channel_select_all = "logistics_quotation_channel_select_all";
 
             public const string logistics_quotation_partition_price_Insert = "logistics_quotation_partition_price_Insert";
+
+            public const string logistics_quotation_partition_insert = "logistics_quotation_partition_insert";
+
+            public const string logistics_quotation_partition_country_insert = "logistics_quotation_partition_country_insert";
 
         }
 

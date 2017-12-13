@@ -22,7 +22,7 @@ namespace Logistics_Model
         public class Channel
         {
             public const long EMSEconomicID = 890501594632328690;
-            public const long FedxEconomicID = 890301594622312390;
+            public const long FedxEconomicID = 890501594622318690;
 
         }
         public class Module

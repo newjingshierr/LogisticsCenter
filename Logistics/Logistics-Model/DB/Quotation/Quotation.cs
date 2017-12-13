@@ -328,6 +328,8 @@ namespace Logistics_Model
             set { _modifiedby = value; }
         }
 
+        public long ChannelID { get; set; }
+
     }
 
 
@@ -407,6 +409,8 @@ namespace Logistics_Model
             get { return _modifiedby; }
             set { _modifiedby = value; }
         }
+
+        public long ChannelID { get; set; }
 
     }
 }
