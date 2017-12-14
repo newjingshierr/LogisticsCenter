@@ -17,6 +17,8 @@ namespace Logistics_Busniess
         public bool importFedex()
         {
 
+
+
             return true;
         }
         public static List<QuotationChannelPriceVM> GetChannelPrice(GetQuotationPriceByCountryRequest request)
@@ -130,10 +132,10 @@ namespace Logistics_Busniess
                 volumeWeight = Math.Round(volume / 5000, 2);
                 var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
                 var QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
-                amount = Math.Round(Convert.ToDecimal((Convert.ToDouble(QuotationPrice.price) * 1.15)));
+                amount = Math.Round(Convert.ToDecimal((Convert.ToDouble(QuotationPrice.price) * 1.15)),2);
                 if (length >120 || actualWeight > 68)
                 {
-                    amount = amount + 270;
+                    amount = Math.Round(Convert.ToDecimal(Convert.ToDouble(amount) + 270 * 1.15),2);
                 }
             }
 

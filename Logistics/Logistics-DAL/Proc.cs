@@ -22,6 +22,9 @@ namespace Logistics_DAL
 
             public const string logistics_quotation_partition_price_Insert = "logistics_quotation_partition_price_Insert";
 
+
+            public const string logistics_quotation_partition_ipf_price_Insert = "logistics_quotation_partition_ipf_price_Insert";
+
             public const string logistics_quotation_partition_insert = "logistics_quotation_partition_insert";
 
             public const string logistics_quotation_partition_country_insert = "logistics_quotation_partition_country_insert";

@@ -89,7 +89,35 @@ namespace Logistics_DAL
             return result;
         }
 
+        public static bool InsertPartitionIPFPrice(logistics_quotation_partition_ipf_price model, AkmiiMySqlTransaction trans = null)
+        {
 
+            MySqlParameter[] parameters = {
+                        new MySqlParameter("@_TenantID", model.TenantID),
+                        new MySqlParameter("@_ID",model.ID),
+                        new MySqlParameter("@_firstHeavyPrice", model.firstHeavyPrice),
+                        new MySqlParameter("@_continuedHeavyPrice",model.continuedHeavyPrice),
+                        new MySqlParameter("@_channelID",model.channelID),
+                        new MySqlParameter("@_partitionID",model.partitionID),
+                        new MySqlParameter("@_beginHeavy",model.beginHeavy),
+                        new MySqlParameter("@_endHeavy",model.endHeavy),
+                        new MySqlParameter("@_price",model.price),
+                        new MySqlParameter("@_CreatedBy",model.CreatedBy),
+                         new MySqlParameter("@_ModifiedBy",model.ModifiedBy)
+            };
+
+            int result = 0;
+            if (trans == null)
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Quotation.logistics_quotation_partition_ipf_price_Insert, parameters);
+            }
+            else
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.Quotation.logistics_quotation_partition_ipf_price_Insert, parameters);
+            }
+            return result == 1;
+
+        }
 
 
 

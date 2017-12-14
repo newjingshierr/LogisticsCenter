@@ -25,6 +25,7 @@ namespace Logistics_Model
             public const long FedxEconomicID = 890501594622318690;
             public const long UPSEconomicID = 890501594622338690;
             public const long DHLEconomicID = 890501594622348690;
+            public const long TNTEconomicID = 890501594622358690;
 
         }
         public class Module
