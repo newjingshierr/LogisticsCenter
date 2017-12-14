@@ -76,8 +76,8 @@ namespace Logistics_Busniess
                 var count = Convert.ToDouble(actualWeight) % 0.5 > 0 ? (int)(Convert.ToDouble(actualWeight) / 0.5) + 1 : (int)(Convert.ToDouble(actualWeight) / 0.5);
                 //根据国家和渠道ID 获取分区
                 var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
-                if (partitionCountry!= null)
-                {    
+                if (partitionCountry != null)
+                {
                     //根据分区获取分区首重价格续重价格
                     var QuotationPrice = QuotationDal.SelectPartitionPrice(request.TenantID, partitionCountry.partitionID);
                     firstHeavy = QuotationPrice.firstHeavyPrice;
@@ -89,8 +89,8 @@ namespace Logistics_Busniess
                     amount = 0;
                 }
 
-  
-        
+
+
             }
             else if (channelID == BusinessConstants.Channel.FedxEconomicID)
             {
@@ -103,8 +103,9 @@ namespace Logistics_Busniess
                 {
                     actualWeight = volumeWeight;
                 }
-    
-                if (DecimalHelper.IPFRule(length, width, height, weight)){
+
+                if (DecimalHelper.IPFRule(length, width, height, weight))
+                {
 
                 }
                 else
@@ -112,15 +113,33 @@ namespace Logistics_Busniess
                     //根据国家和渠道ID 获取分区
                     var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
                     //根据分区获取分区价格
-                    var QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID,actualWeight);
-                    firstHeavy = QuotationPrice.firstHeavyPrice;
-                    continuedHeavy = QuotationPrice.continuedHeavyPrice;
-                    amount = QuotationPrice.price;
+                    var QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
+                    amount = Math.Round(Convert.ToDecimal((Convert.ToDouble(QuotationPrice.price) * 1.125)));
+                }
+            }
+            else if (channelID == BusinessConstants.Channel.UPSEconomicID)
+            {
+                volumeWeight = Math.Round(volume / 5000, 2);
+                var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
+                var QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
+                amount = QuotationPrice.price;
+
+            }
+            else if (channelID == BusinessConstants.Channel.DHLEconomicID)
+            {
+                volumeWeight = Math.Round(volume / 5000, 2);
+                var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
+                var QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
+                amount = Math.Round(Convert.ToDecimal((Convert.ToDouble(QuotationPrice.price) * 1.15)));
+                if (length >120 || actualWeight > 68)
+                {
+                    amount = amount + 270;
                 }
             }
 
 
-            return DecimalHelper.formate(amount);
+
+            return amount;
         }
 
 
