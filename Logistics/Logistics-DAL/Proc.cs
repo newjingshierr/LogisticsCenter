@@ -18,6 +18,8 @@ namespace Logistics_DAL
 
             public const string logistics_Select_Price_By_PartitionID_Weight = "logistics_Select_Price_By_PartitionID_Weight";
 
+            public const string logistics_Select_IPF_Price_By_PartitionID_Weight = "logistics_Select_IPF_Price_By_PartitionID_Weight";
+
             public const string logistics_quotation_channel_select_all = "logistics_quotation_channel_select_all";
 
             public const string logistics_quotation_partition_price_Insert = "logistics_quotation_partition_price_Insert";

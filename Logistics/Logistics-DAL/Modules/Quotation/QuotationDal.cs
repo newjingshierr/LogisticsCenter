@@ -246,6 +246,30 @@ namespace Logistics_DAL
 
             return result;
         }
+        public static QuotationIPFPriceVM SelectIPFPriceByPartitionIDWeight(long TenantID, long partitionID, decimal weight)
+        {
+            var result = new QuotationIPFPriceVM();
+
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID", TenantID),
+                new MySqlParameter("@_partitionID",partitionID),
+                new MySqlParameter("@_weight",weight),
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Quotation.logistics_Select_IPF_Price_By_PartitionID_Weight, parameters);
+            if (dbResult.Tables.Count > 0)
+            {
+                result = ConvertHelper<QuotationIPFPriceVM>.DtToModel(dbResult.Tables[0]);
+
+            }
+            else
+            {
+                result = null;
+            }
+
+            return result;
+        }
+
 
 
     }

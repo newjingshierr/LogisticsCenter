@@ -108,7 +108,11 @@ namespace Logistics_Busniess
 
                 if (DecimalHelper.IPFRule(length, width, height, weight))
                 {
-
+                    //根据国家和渠道ID 获取分区
+                    var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
+                    //根据分区获取分区价格
+                    var QuotationPrice = QuotationDal.SelectIPFPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
+                    amount = Math.Round(Convert.ToDecimal((Convert.ToDouble(QuotationPrice.price) * 1.125)));
                 }
                 else
                 {
@@ -122,6 +126,15 @@ namespace Logistics_Busniess
             else if (channelID == BusinessConstants.Channel.UPSEconomicID)
             {
                 volumeWeight = Math.Round(volume / 5000, 2);
+                if (weight > volumeWeight)
+                {
+                    actualWeight = weight;
+                }
+                else
+                {
+                    actualWeight = volumeWeight;
+                }
+
                 var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
                 var QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
                 amount = QuotationPrice.price;
@@ -130,17 +143,23 @@ namespace Logistics_Busniess
             else if (channelID == BusinessConstants.Channel.DHLEconomicID)
             {
                 volumeWeight = Math.Round(volume / 5000, 2);
+                if (weight > volumeWeight)
+                {
+                    actualWeight = weight;
+                }
+                else
+                {
+                    actualWeight = volumeWeight;
+                }
+
                 var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
                 var QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
-                amount = Math.Round(Convert.ToDecimal((Convert.ToDouble(QuotationPrice.price) * 1.15)),2);
-                if (length >120 || actualWeight > 68)
+                amount = Math.Round(Convert.ToDecimal((Convert.ToDouble(QuotationPrice.price) * 1.15)), 2);
+                if (length > 120 || actualWeight > 68)
                 {
-                    amount = Math.Round(Convert.ToDecimal(Convert.ToDouble(amount) + 270 * 1.15),2);
+                    amount = Math.Round(Convert.ToDecimal(Convert.ToDouble(amount) + 270 * 1.15), 2);
                 }
             }
-
-
-
             return amount;
         }
 
