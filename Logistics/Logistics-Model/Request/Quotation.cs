@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Logistics_Model
 {
+   public class  GetAllCountryByNameRequest:BaseReqeust
+    {
+        public string name { get; set; }
+    }
     public class GetQuotationPriceByCountryRequest:BaseReqeust
     {
         public string country { get; set; } = "";

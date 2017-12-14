@@ -10,6 +10,50 @@ namespace Logistics_DAL
 {
     public class QuotationDal
     {
+        public static List<logistics_base_country> GetAllCountryByName(GetAllCountryByNameRequest request)
+        {
+
+            var list = new List<logistics_base_country>();
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID",request.TenantID),
+                new MySqlParameter("@_name",request.name)
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Quotation.logistics_quotation_country_by_name, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                list = ConvertHelper<logistics_base_country>.DtToList(dbResult.Tables[0]);
+            }
+
+
+            return list;
+        }
+        public static bool InsertCountry(logistics_base_country model, AkmiiMySqlTransaction trans = null)
+        {
+
+            MySqlParameter[] parameters = {
+                        new MySqlParameter("@_TenantID", model.TenantID),
+                        new MySqlParameter("@_ID",model.ID),
+                        new MySqlParameter("@_englishName", model.englishName),
+                        new MySqlParameter("@_code",model.code),
+                        new MySqlParameter("@_chineseName",model.chineseName),
+                        new MySqlParameter("@_CreatedBy",model.CreatedBy),
+                         new MySqlParameter("@_ModifiedBy",model.ModifiedBy)
+            };
+
+            int result = 0;
+            if (trans == null)
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Quotation.logistics_base_country_insert, parameters);
+            }
+            else
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.Quotation.logistics_base_country_insert, parameters);
+            }
+            return result == 1;
+
+        }
+
         public static bool QuotaionCountryInsert(logistics_quotation_partition_country model, AkmiiMySqlTransaction trans = null)
         {
 

@@ -14,12 +14,10 @@ namespace Logistics_Busniess
 {
     public class QuotationManager
     {
-        public bool importFedex()
+        public static List<logistics_base_country> GetAllCountryByName(GetAllCountryByNameRequest request)
         {
+            return QuotationDal.GetAllCountryByName( request);
 
-
-
-            return true;
         }
         public static List<QuotationChannelPriceVM> GetChannelPrice(GetQuotationPriceByCountryRequest request)
         {

@@ -6,6 +6,93 @@ using System.Threading.Tasks;
 
 namespace Logistics_Model
 {
+    public class logistics_base_country
+    {
+
+        /// <summary>
+        /// TenantID
+        /// </summary>		
+        private long _tenantid;
+        public long TenantID
+        {
+            get { return _tenantid; }
+            set { _tenantid = value; }
+        }
+        /// <summary>
+        /// ID
+        /// </summary>		
+        private long _id;
+        public long ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        /// <summary>
+        /// englishName
+        /// </summary>		
+        private string _englishname;
+        public string englishName
+        {
+            get { return _englishname; }
+            set { _englishname = value; }
+        }
+        /// <summary>
+        /// code
+        /// </summary>		
+        private string _code;
+        public string code
+        {
+            get { return _code; }
+            set { _code = value; }
+        }
+        /// <summary>
+        /// chineseName
+        /// </summary>		
+        private string _chinesename;
+        public string chineseName
+        {
+            get { return _chinesename; }
+            set { _chinesename = value; }
+        }
+        /// <summary>
+        /// Created
+        /// </summary>		
+        private DateTime _created;
+        public DateTime Created
+        {
+            get { return _created; }
+            set { _created = value; }
+        }
+        /// <summary>
+        /// Modified
+        /// </summary>		
+        private DateTime _modified;
+        public DateTime Modified
+        {
+            get { return _modified; }
+            set { _modified = value; }
+        }
+        /// <summary>
+        /// CreatedBy
+        /// </summary>		
+        private long _createdby;
+        public long CreatedBy
+        {
+            get { return _createdby; }
+            set { _createdby = value; }
+        }
+        /// <summary>
+        /// ModifiedBy
+        /// </summary>		
+        private long _modifiedby;
+        public long ModifiedBy
+        {
+            get { return _modifiedby; }
+            set { _modifiedby = value; }
+        }
+
+    }
+
     public class logistics_quotation_channel
     {
         /// <summary>

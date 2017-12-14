@@ -13,6 +13,7 @@ using Logistics.Common;
 
 namespace Logistics.Controllers
 {
+    [RoutePrefix(ApiConstants.PrefixApi + "Quotation")]
     public class QuotationController : BaseController
     {
         [HttpGet]
@@ -35,5 +36,27 @@ namespace Logistics.Controllers
             }
 
         }
+
+        [HttpGet]
+        [Route("Country/Items")]
+        public ResponseMessage<List<logistics_base_country>> GetAllCountryByName([FromUri] GetAllCountryByNameRequest request)
+        {
+
+            var result = new List<logistics_base_country>();
+
+            try
+            {
+                result = QuotationManager.GetAllCountryByName(request);
+
+                return GetResult(result);
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+
+        }
+
     }
 }

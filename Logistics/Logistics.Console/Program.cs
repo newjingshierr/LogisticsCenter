@@ -44,27 +44,27 @@ namespace Logistics.Console
         static void Main(string[] args)
         {
             Program p = new Program();
-            p.ImportPartion(BusinessConstants.Channel.FedxEconomicID, "Fedex资费区");
-            p.ImportCounty(BusinessConstants.Channel.FedxEconomicID, "Fedex国家");
-            p.ImportQuotation(BusinessConstants.Channel.FedxEconomicID, "Fedex报价模板");
-            p.ImportIPF(BusinessConstants.Channel.FedxEconomicID, "Fedex IPF");
+            //p.ImportPartion(BusinessConstants.Channel.FedxEconomicID, "Fedex资费区");
+            //p.ImportCounty(BusinessConstants.Channel.FedxEconomicID, "Fedex国家");
+            //p.ImportQuotation(BusinessConstants.Channel.FedxEconomicID, "Fedex报价模板");
+            //p.ImportIPF(BusinessConstants.Channel.FedxEconomicID, "Fedex IPF");
 
-            p.ImportPartion(BusinessConstants.Channel.EMSEconomicID, "EMS资费区");
-            p.ImportCounty(BusinessConstants.Channel.EMSEconomicID, "EMS国家");
+            //p.ImportPartion(BusinessConstants.Channel.EMSEconomicID, "EMS资费区");
+            //p.ImportCounty(BusinessConstants.Channel.EMSEconomicID, "EMS国家");
 
 
-            p.ImportPartion(BusinessConstants.Channel.UPSEconomicID, "UPS资费区");
-            p.ImportCounty(BusinessConstants.Channel.UPSEconomicID, "UPS国家");
-            p.ImportQuotation(BusinessConstants.Channel.UPSEconomicID, "UPS报价模板");
+            //p.ImportPartion(BusinessConstants.Channel.UPSEconomicID, "UPS资费区");
+            //p.ImportCounty(BusinessConstants.Channel.UPSEconomicID, "UPS国家");
+            //p.ImportQuotation(BusinessConstants.Channel.UPSEconomicID, "UPS报价模板");
 
-            p.ImportPartion(BusinessConstants.Channel.DHLEconomicID, "DHL资费区");
-            p.ImportCounty(BusinessConstants.Channel.DHLEconomicID, "DHL国家");
-            p.ImportQuotation(BusinessConstants.Channel.DHLEconomicID, "DHL报价模板");
+            //p.ImportPartion(BusinessConstants.Channel.DHLEconomicID, "DHL资费区");
+            //p.ImportCounty(BusinessConstants.Channel.DHLEconomicID, "DHL国家");
+            //p.ImportQuotation(BusinessConstants.Channel.DHLEconomicID, "DHL报价模板");
 
-            p.ImportPartion(BusinessConstants.Channel.TNTEconomicID, "TNT资费区");
-            p.ImportCounty(BusinessConstants.Channel.TNTEconomicID, "TNT国家");
-            p.ImportQuotation(BusinessConstants.Channel.TNTEconomicID, "TNT报价模板");
-
+            //p.ImportPartion(BusinessConstants.Channel.TNTEconomicID, "TNT资费区");
+            //p.ImportCounty(BusinessConstants.Channel.TNTEconomicID, "TNT国家");
+            //p.ImportQuotation(BusinessConstants.Channel.TNTEconomicID, "TNT报价模板");
+            p.ImportAllCountries("所有国家");
             System.Console.ReadLine();
         }
 
@@ -221,6 +221,37 @@ namespace Logistics.Console
                         System.Console.WriteLine("channel id:" + channelID + quotationSheetName + ":" + firstRow.Cells[j]);
                     }
 
+
+                }
+            }
+        }
+
+
+        public void ImportAllCountries(string allCountriesName)
+        {
+            using (FileStream fs = new FileStream(path, FileMode.Open))
+            {
+                IWorkbook workbook = new HSSFWorkbook(fs);
+                sheet = workbook.GetSheet(allCountriesName);
+                rfirst = sheet.FirstRowNum;
+                rlast = sheet.LastRowNum;
+                firstRow = sheet.GetRow(rfirst);
+                var columns = firstRow.Cells.Count();
+
+                logistics_base_country partitionPrice = null;
+                for (int i = 0; i < rlast; i++)
+                {
+                        row = sheet.GetRow(i);
+                        partitionPrice = new logistics_base_country();
+                        partitionPrice.TenantID = 890501594632818690;
+                        partitionPrice.ID = IdWorker.GetID();
+                        partitionPrice.englishName = row.Cells[0].ToString();
+                        partitionPrice.code = row.Cells[1].ToString();
+                        partitionPrice.chineseName = row.Cells[2].ToString();
+                        partitionPrice.CreatedBy = 890501594632818690;
+                        partitionPrice.ModifiedBy = 890501594632818690;
+                        QuotationDal.InsertCountry(partitionPrice);
+                        System.Console.WriteLine(partitionPrice.chineseName);
 
                 }
             }

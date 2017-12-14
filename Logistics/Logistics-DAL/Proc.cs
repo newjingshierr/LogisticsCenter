@@ -10,6 +10,10 @@ namespace Logistics_DAL
     {
         public class Quotation
         {
+            public const string logistics_base_country_insert = "logistics_base_country_insert";
+
+            public const string logistics_quotation_country_by_name = "logistics_quotation_country_by_name";
+
             public const string logistics_quotation_partition_select_by_Code_channelID = "logistics_quotation_partition_select_by_Code_channelID";
 
             public const string logistics_quotation_partition_select_by_country = "logistics_quotation_partition_select_by_country";
