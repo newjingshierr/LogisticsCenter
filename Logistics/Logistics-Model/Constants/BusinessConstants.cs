@@ -18,6 +18,7 @@ namespace Logistics_Model
         public class Admin
         {
             public const long TenantID = 890501594632818690;
+
         }
         public class Channel
         {
@@ -31,6 +32,16 @@ namespace Logistics_Model
         public class Module
         {
             public const string CommonSMSHelpersend = "CommonSMSHelpersend";
+        }
+
+        public class Role
+        {
+            public const long member = 822501594632818690;
+            public const long wareHouseAdmin= 822601594632818690;
+            public const long customerService = 822701594632818690;
+            public const long finance = 822801594632818690;
+            public const long admin = 822901594632818690;
+
         }
     }
 }

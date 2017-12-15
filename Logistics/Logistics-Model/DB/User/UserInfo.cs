@@ -32,5 +32,9 @@ namespace Logistics_Model
 
         public long ModifiedBy { get; set; }
 
+        public string Ticket { get; set; }
+
+
+
     }
 }

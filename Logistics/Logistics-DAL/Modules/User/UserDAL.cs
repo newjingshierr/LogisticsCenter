@@ -9,13 +9,34 @@ namespace Logistics_DAL
 {
     public class UserDAL
     {
-
-        public static UserInfo CheckPwd(long TenantID, long userID, byte[] Pwd)
+        public static UserInfo ValidateUser(long TenantID, string user)
         {
             var result = new UserInfo();
             MySqlParameter[] parameters = {
                 new MySqlParameter("@_TenantID",TenantID),
-                new MySqlParameter("@_Userid", userID),
+                new MySqlParameter("@_User", user),
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.User.logistics_userInfo_validate, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<UserInfo>.DtToModel(dbResult.Tables[0]);
+            }
+            else
+            {
+                result = null;
+            }
+
+
+            return result;
+        }
+
+        public static UserInfo ValidateUser(long TenantID, string user, byte[] Pwd)
+        {
+            var result = new UserInfo();
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID",TenantID),
+                new MySqlParameter("@_User", user),
                  new MySqlParameter("@_Pwd", Pwd),
             };
 

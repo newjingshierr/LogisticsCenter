@@ -10,6 +10,8 @@ using System.Web.Http.Cors;
 using System.Web.Http.Filters;
 using Akmii.Core;
 using Logistics.Common;
+using Logistics_Model;
+using Akmii;
 
 namespace Logistics
 {
@@ -19,6 +21,14 @@ namespace Logistics
 
         public BaseController()
         {
+        }
+        protected ResponseMessage<T> GetErrorResult<T>(SystemStatusEnum statusCode)
+        {
+            return new ResponseMessage<T>
+            {
+                Message = statusCode.GetEnumDescription(),
+                Status = (int)statusCode
+            };
         }
 
         protected ResponseMessage<T> GetErrorResult<T>(T data, string message = "", int status = -1)

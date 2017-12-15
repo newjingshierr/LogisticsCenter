@@ -85,6 +85,7 @@
     <Folder Include="Log\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\Data\data.sql" />
     <Content Include="Scripts\procedure\pro.sql" />
     <Content Include="Scripts\table\table.sql" />
   </ItemGroup>

@@ -8,7 +8,7 @@ using Logistics.Common;
 
 namespace Logistics_DAL
 {
-    public class SmsValidateDal
+    public class ValidateDal
     {
         public static bool Insert(logistics_base_sms_validate model, AkmiiMySqlTransaction trans = null)
         {
@@ -37,18 +37,19 @@ namespace Logistics_DAL
 
         }
 
-        public static logistics_base_sms_validate ChekcItem(long TenantID, string tel, string code, DateTime startTime, DateTime endTime)
+        public static logistics_base_sms_validate ChekcItem(long TenantID, string tel, string mail, string code, DateTime startTime, DateTime endTime)
         {
             var result = new logistics_base_sms_validate();
             MySqlParameter[] parameters = {
                 new MySqlParameter("@_TenantID", TenantID),
                  new MySqlParameter("@_Tel", tel),
+                 new MySqlParameter("@_Mail", mail),
                   new MySqlParameter("@_codel", code),
                   new MySqlParameter("@_startTime", startTime),
-                   new MySqlParameter("@_endTime", endTime),
+                  new MySqlParameter("@_endTime", endTime),
             };
 
-            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetReadConn(), CommandType.StoredProcedure, Proc.Base.logistics_base_sms_validate_select, parameters);
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetReadConn(), CommandType.StoredProcedure, Proc.Base.logistics_base_sms_validate_check, parameters);
             if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
             {
                 result = ConvertHelper<logistics_base_sms_validate>.DtToModel(dbResult.Tables[0]);
@@ -57,16 +58,16 @@ namespace Logistics_DAL
             {
                 result = null;
             }
-
-
             return result;
         }
-        public static logistics_base_sms_validate GetItem(long TenantID, string tel)
+        public static logistics_base_sms_validate GetItem(long TenantID, string tel, string mail)
         {
             var result = new logistics_base_sms_validate();
             MySqlParameter[] parameters = {
                 new MySqlParameter("@_TenantID", TenantID),
-                 new MySqlParameter("@_Tel", tel)
+                 new MySqlParameter("@_Tel", tel),
+                 new MySqlParameter("@_Mail", mail),
+
             };
 
             var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetReadConn(), CommandType.StoredProcedure, Proc.Base.logistics_base_sms_validate_select, parameters);

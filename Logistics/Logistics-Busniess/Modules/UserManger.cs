@@ -1,43 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Logistics_Model;
+﻿using Logistics_Model;
 using Logistics.Core;
 using Logistics_DAL;
 using Logistics.Common;
-using Logistics_Busniess;
 
 namespace Logistics_Busniess
 {
     public class UserManger
     {
-        public static bool Insert(UserRegisterRequest item)
+
+        public static bool InsertUser(UserRegisterRequest item)
         {
 
             UserInfo userInfo = new UserInfo();
             userInfo.Userid = IdWorker.GetID();
-            userInfo.Pwd = HashHelper.ComputeHash(item.Pwd);
-            userInfo.Email = item.Email;
+            userInfo.Pwd = HashHelper.ComputeHash(item.pwd);
+            userInfo.Email = item.mail;
             userInfo.WebChatID = "";
             userInfo.Token = "";
             userInfo.UserName = "";
             userInfo.TenantID = item.TenantID;
-            userInfo.Tel = item.Tel;
+            userInfo.Tel = item.tel;
             userInfo.MemeberCode = RuleManger.SetCurrentNo(BusinessConstants.Defkey.user);
             userInfo.CreatedBy = BusinessConstants.Admin.TenantID;
             userInfo.ModifiedBy = BusinessConstants.Admin.TenantID;
             return UserDAL.Insert(userInfo);
         }
 
-        public static bool CheckPwd(long TenantID, long userID, string Pwd)
+        public static UserInfo ValidateUser(LoginRequest request)
         {
-            return UserDAL.CheckPwd(TenantID, userID, HashHelper.ComputeHash(Pwd)) == null ? false : true;
+            return UserDAL.ValidateUser(request.TenantID, request.user, HashHelper.ComputeHash(request.pwd));
         }
 
 
-        public static bool InsertSMSValidate(SmsValidateRequest item)
+        public static bool InsertSMSValidate(ValidateRequest item)
         {
             logistics_base_sms_validate smsValidate = new logistics_base_sms_validate();
             smsValidate.ID = IdWorker.GetID();
@@ -48,23 +43,28 @@ namespace Logistics_Busniess
             smsValidate.endTime = smsValidate.startTime.AddMinutes(15);
             smsValidate.CreatedBy = BusinessConstants.Admin.TenantID;
             smsValidate.ModifiedBy = BusinessConstants.Admin.TenantID;
-            return SmsValidateDal.Insert(smsValidate);
+            return ValidateDal.Insert(smsValidate);
         }
 
-        public static bool CheckSmsValidate(CheckSmsValidateRequest item)
+        public static bool CodeValidate(ValidateRequest item)
         {
-            var smsValidate = SmsValidateDal.GetItem(item.TenantID, item.tel);
-            return SmsValidateDal.ChekcItem(item.TenantID, item.tel, item.code, smsValidate.startTime, smsValidate.endTime) == null ? false : true;
+            var smsValidate = ValidateDal.GetItem(item.TenantID, item.tel, item.mail);
+            return ValidateDal.ChekcItem(item.TenantID, item.tel, item.mail, item.code, smsValidate.startTime, smsValidate.endTime) == null ? false : true;
         }
 
-        public static bool SendSMSValidate(SendSMSValidateRequest request)
+        public static bool ValidateUser(UserValidateRequest item)
+        {
+            return UserDAL.ValidateUser(item.TenantID, item.user) == null ? false : true;
+        }
+
+        public static bool SendSMS(SendSMSRequest request)
         {
             var radmon = SMSHelper.GetRandom();
             var sendResult = SMSHelper.send(radmon, SMSTypeEnum.Register, request.tel);
             var result = false;
             if (sendResult)
             {
-                SmsValidateRequest InsertRequest = new SmsValidateRequest();
+                ValidateRequest InsertRequest = new ValidateRequest();
                 InsertRequest.code = radmon;
                 InsertRequest.tel = request.tel;
                 InsertRequest.TenantID = request.TenantID;
@@ -72,8 +72,6 @@ namespace Logistics_Busniess
             }
             return result;
         }
-
-
 
     }
 }

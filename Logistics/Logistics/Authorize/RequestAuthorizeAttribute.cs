@@ -4,7 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Security;
-
+using Logistics_Busniess;
+using Logistics_Model;
 namespace Logistics
 {
     /// <summary>
@@ -40,7 +41,7 @@ namespace Logistics
             }
         }
 
-        //校验用户名密码（正式环境中应该是数据库校验）
+        //
         private bool ValidateTicket(string encryptTicket)
         {
             //解密Ticket
@@ -51,7 +52,15 @@ namespace Logistics
             string strUser = strTicket.Substring(0, index);
             string strPwd = strTicket.Substring(index + 1);
 
-            if (strUser == "admin" && strPwd == "123456")
+            //LoginRequest request = new LoginRequest();
+            //request.user = strUser;
+            //request.pwd = strPwd;
+            ////数据库验证
+            //var userInfo = UserManger.ValidateUser(request);
+
+            //和session进行比较；后续会换成缓存中；
+            var sessionToken = HttpContext.Current.Session[strUser].ToString();
+            if (encryptTicket == sessionToken)
             {
                 return true;
             }

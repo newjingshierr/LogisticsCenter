@@ -68,6 +68,7 @@
     <Compile Include="DB\Role\Role.cs" />
     <Compile Include="DB\User\UserInfo.cs" />
     <Compile Include="Enum\SendSMSTypeEnum.cs" />
+    <Compile Include="Enum\SystemStatusEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\BaseReqeust.cs" />
     <Compile Include="Request\DemoRequest.cs" />

@@ -21,63 +21,97 @@ namespace Logistics.Controllers
     }
 
     [RoutePrefix(ApiConstants.PrefixApi + "User")]
-    public class UserController : ApiController
+    public class UserController : BaseController
     {
-
-        [HttpPost]
-        [Route("Login")]
-        public object Login(string strUser, string strPwd)
+        /// <summary>
+        /// 用户名验证；
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("userValidate")]
+        public ResponseMessage<bool> UserValidate(UserValidateRequest request)
         {
-            if (!ValidateUser(strUser, strPwd))
+            if (string.IsNullOrEmpty(request.user))
             {
-                return new { bRes = false };
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidUserExistRequest);
             }
-            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, strUser, DateTime.Now,
-                            DateTime.Now.AddHours(1), true, string.Format("{0}&{1}", strUser, strPwd),
-                            FormsAuthentication.FormsCookiePath);
-            //返回登录结果、用户信息、用户验证票据信息
-            var oUser = new UserInfo { bRes = true, UserName = strUser, Password = strPwd, Ticket = FormsAuthentication.Encrypt(ticket) };
-            //将身份信息保存在session中，验证当前请求是否是有效请求
-            HttpContext.Current.Session[strUser] = oUser;
-            return oUser;
-        }
 
-        //校验用户名密码（正式环境中应该是数据库校验）
-        private bool ValidateUser(string strUser, string strPwd)
-        {
-            if (strUser == "admin" && strPwd == "123456")
+            var result = false;
+            try
             {
-                return true;
+                result = UserManger.ValidateUser(request);
+
+                return GetResult(result);
             }
-            else
+            catch (Exception ex)
             {
-                return false;
+                return GetErrorResult(result, ex.Message);
             }
+
         }
 
 
         /// <summary>
-        /// 登出的接口
+        /// 验证码验证
         /// </summary>
-        /// <param name="strUser"></param>
-        /// <param name="strPwd"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>\
+        [HttpGet]
+        [Route("codeValidate")]
+        public ResponseMessage<bool> CodeValidate(ValidateRequest request)
+        {
+            if ((string.IsNullOrEmpty(request.tel) && string.IsNullOrEmpty(request.mail)))
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidTelOrMailRequest);
+            }
+            if (string.IsNullOrEmpty(request.code))
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidCodeRequest);
+            }
+
+            var result = false;
+            try
+            {
+                result = UserManger.CodeValidate(request);
+
+                return GetResult(result);
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// 发送验证码
+        /// </summary>
+        /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        public object LogOut(string strUser, string strPwd)
+        [Route("Send")]
+        public ResponseMessage<bool> SendSMS([FromUri] SendSMSRequest request)
         {
-            if (!ValidateUser(strUser, strPwd))
+            if (string.IsNullOrEmpty(request.tel))
             {
-                return new { bRes = false };
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
             }
-            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, strUser, DateTime.Now,
-                            DateTime.Now.AddHours(1), true, string.Format("{0}&{1}", strUser, strPwd),
-                            FormsAuthentication.FormsCookiePath);
-            //返回登录结果、用户信息、用户验证票据信息
-            var oUser = new UserInfo { bRes = true, UserName = strUser, Password = strPwd, Ticket = FormsAuthentication.Encrypt(ticket) };
-            //将身份信息保存在session中，验证当前请求是否是有效请求
-            HttpContext.Current.Session[strUser] = oUser;
-            return oUser;
+            var result = false;
+            try
+            {
+                result = UserManger.SendSMS(request);
+
+                return GetResult(result);
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+
         }
+
         /// <summary>
         /// 用户注册接口
         /// </summary>
@@ -86,104 +120,86 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Register")]
-        public bool Register([FromUri] UserRegisterRequest request)
+        public ResponseMessage<bool> Register([FromUri] UserRegisterRequest request)
         {
+            if (request.pwd == request.rePwd)
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.PwdRepeatRequest);
+            }
+            if (request.pwd.Length < 6)
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.PwdLess6Request);
+            }
+            if ((string.IsNullOrEmpty(request.tel) && string.IsNullOrEmpty(request.mail)))
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidTelOrMailRequest);
+            }
+            if (string.IsNullOrEmpty(request.code))
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidCodeRequest);
+            }
 
-       return     UserManger.Insert(request);
+
+            var result = false;
+            try
+            {
+                result = UserManger.InsertUser(request);
+
+                return GetResult(result);
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
 
         }
-        [HttpGet]
-        [Route("Check")]
-        public bool Check([FromUri] UserCheckRequest request)
-        {
-         return   UserManger.CheckPwd(request.TenantID,request.userID,request.Pwd);
-
-        }
-
-
 
         /// <summary>
-        /// 增加用户
+        /// 用户登陆
         /// </summary>
         /// <param name="strUser"></param>
         /// <param name="strPwd"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("Item")]
-        public object Add(string strUser, string strPwd)
+        [Route("Login")]
+        public ResponseMessage<string> Login([FromUri] LoginRequest request)
         {
-
-            if (!ValidateUser(strUser, strPwd))
+            if (string.IsNullOrEmpty(request.user))
             {
-                return new { bRes = false };
+                return GetErrorResult<string>(SystemStatusEnum.InvalidUserNameRequest);
             }
-            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, strUser, DateTime.Now,
-                            DateTime.Now.AddHours(1), true, string.Format("{0}&{1}", strUser, strPwd),
-                            FormsAuthentication.FormsCookiePath);
-            //返回登录结果、用户信息、用户验证票据信息
-            var oUser = new UserInfo { bRes = true, UserName = strUser, Password = strPwd, Ticket = FormsAuthentication.Encrypt(ticket) };
 
-            //将身份信息保存在session中，验证当前请求是否是有效请求
-            HttpContext.Current.Session[strUser] = oUser;
-            return oUser;
-        }
-
-        /// <summary>
-        /// 删除用户
-        /// </summary>
-        /// <param name="strUser"></param>
-        /// <param name="strPwd"></param>
-        /// <returns></returns>
-        [HttpDelete]
-        [Route("Item")]
-        public object Delete(string strUser, string strPwd)
-        {
-            if (!ValidateUser(strUser, strPwd))
+            if (string.IsNullOrEmpty(request.pwd))
             {
-                return new { bRes = false };
+                return GetErrorResult<string>(SystemStatusEnum.InvalidPwdRequest);
             }
-            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, strUser, DateTime.Now,
-                            DateTime.Now.AddHours(1), true, string.Format("{0}&{1}", strUser, strPwd),
-                            FormsAuthentication.FormsCookiePath);
-            //返回登录结果、用户信息、用户验证票据信息
-            var oUser = new UserInfo { bRes = true, UserName = strUser, Password = strPwd, Ticket = FormsAuthentication.Encrypt(ticket) };
-            //将身份信息保存在session中，验证当前请求是否是有效请求
-            HttpContext.Current.Session[strUser] = oUser;
-            return oUser;
-        }
 
-        /// <summary>
-        /// 修改用户
-        /// </summary>
-        /// <param name="strUser"></param>
-        /// <param name="strPwd"></param>
-        /// <returns></returns>
-        [HttpPut]
-        [Route("Item")]
-        public object Modify(string strUser, string strPwd)
-        {
-            if (!ValidateUser(strUser, strPwd))
+            var encryptTicket = "";
+            try
             {
-                return new { bRes = false };
-            }
-            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, strUser, DateTime.Now,
-                            DateTime.Now.AddHours(1), true, string.Format("{0}&{1}", strUser, strPwd),
+                var userInfo = UserManger.ValidateUser(request);
+                if (userInfo == null)
+                {
+                    return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
+                }
+                FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, request.user, DateTime.Now,
+                            DateTime.Now.AddHours(1), true, string.Format("{0}&{1}", request.user, request.pwd),
                             FormsAuthentication.FormsCookiePath);
-            //返回登录结果、用户信息、用户验证票据信息
-            var oUser = new UserInfo { bRes = true, UserName = strUser, Password = strPwd, Ticket = FormsAuthentication.Encrypt(ticket) };
-            //将身份信息保存在session中，验证当前请求是否是有效请求
-            HttpContext.Current.Session[strUser] = oUser;
-            return oUser;
+                //token进行加密
+                encryptTicket = FormsAuthentication.Encrypt(ticket);
+                //将身份信息保存在session中
+                HttpContext.Current.Session[request.user] = encryptTicket;
+
+                return GetResult(encryptTicket);
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(encryptTicket, ex.Message);
+
+            }
+
         }
-
-
-
-
-
-
-
-
-
 
     }
 }
