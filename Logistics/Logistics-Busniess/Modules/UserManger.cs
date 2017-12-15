@@ -23,7 +23,29 @@ namespace Logistics_Busniess
             userInfo.MemeberCode = RuleManger.SetCurrentNo(BusinessConstants.Defkey.user);
             userInfo.CreatedBy = BusinessConstants.Admin.TenantID;
             userInfo.ModifiedBy = BusinessConstants.Admin.TenantID;
-            return UserDAL.Insert(userInfo);
+
+
+            logistics_base_role_user_binding roleUser = new logistics_base_role_user_binding();
+            roleUser.ID = IdWorker.GetID();
+            roleUser.RoleID = BusinessConstants.Role.member;
+            roleUser.Userid = userInfo.Userid;
+            userInfo.CreatedBy = BusinessConstants.Admin.TenantID;
+            userInfo.ModifiedBy = BusinessConstants.Admin.TenantID;
+
+            var dbResult = false;
+
+            using (var conn = ConnectionManager.GetWriteConn())
+            {
+                dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
+                {
+                    //更改balance记录；
+                    var result = true;
+                    result = UserDAL.Insert(userInfo, trans) && RoleDAL.InsertRoleUser(roleUser, trans);
+                    return result;
+                });
+            }
+
+            return dbResult;
         }
 
         public static UserInfo ValidateUser(LoginRequest request)
@@ -70,6 +92,26 @@ namespace Logistics_Busniess
                 InsertRequest.TenantID = request.TenantID;
                 result = InsertSMSValidate(InsertRequest);
             }
+            return result;
+        }
+
+
+        public static AllUserInfo GetAllUserInfoCahced( long TenantID, string usr, bool isCache = true, bool isWrite = false, AllUserInfo allInfo = null)
+        {
+            var key = CacheConstants.GetAllInfo(usr, TenantID);
+
+            if (!isCache)
+            {
+                MemcachedHelper.Instance().Remove(key);
+            }
+
+            var result = MemcachedHelper.Instance().GetOrSet(key, () =>
+            {
+                var model = allInfo;
+
+                return model;
+
+            }, CacheConstants.GetGetAllInfoTime()).Result;
             return result;
         }
 

@@ -31,5 +31,17 @@ namespace Logistics_Model
 
             return DateTime.Now.AddMinutes(10);
         }
+
+        public static DateTime GetGetAllInfoTime()
+        {
+
+            return DateTime.Now.AddDays(1);
+        }
+
+
+        public static string GetAllInfo(string user, long TenantID)
+        {
+            return $"AllInfo{TenantID}_{user}";
+        }
     }
 }

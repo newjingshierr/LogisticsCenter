@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Modules\DemoManger.cs" />
     <Compile Include="Modules\Quotation.cs" />
+    <Compile Include="Modules\RoleManager.cs" />
     <Compile Include="Modules\RuleManger.cs" />
     <Compile Include="Modules\UserManger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

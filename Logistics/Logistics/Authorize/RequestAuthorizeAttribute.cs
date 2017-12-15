@@ -51,6 +51,7 @@ namespace Logistics
             var index = strTicket.IndexOf("&");
             string strUser = strTicket.Substring(0, index);
             string strPwd = strTicket.Substring(index + 1);
+            string strTenantID = strTicket.Substring(index + 2);
 
             //LoginRequest request = new LoginRequest();
             //request.user = strUser;
@@ -58,9 +59,9 @@ namespace Logistics
             ////数据库验证
             //var userInfo = UserManger.ValidateUser(request);
 
-            //和session进行比较；后续会换成缓存中；
-            var sessionToken = HttpContext.Current.Session[strUser].ToString();
-            if (encryptTicket == sessionToken)
+            //缓存中后续会换成缓存中；
+           var cachedToken =   UserManger.GetAllUserInfoCahced(long.Parse(strTenantID), strUser).ticket;
+            if (encryptTicket == cachedToken)
             {
                 return true;
             }

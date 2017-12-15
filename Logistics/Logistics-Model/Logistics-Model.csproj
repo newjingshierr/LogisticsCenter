@@ -76,7 +76,6 @@
     <Compile Include="Request\User\UserRegisterRequest.cs" />
     <Compile Include="Response\DemoResponse.cs" />
     <Compile Include="Response\DemoView.cs" />
-    <Compile Include="Response\User\AllUserInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

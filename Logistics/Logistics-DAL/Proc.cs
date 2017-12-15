@@ -64,6 +64,11 @@ namespace Logistics_DAL
             public const string logistics_userInfo_validate = "logistics_userInfo_validate";
         }
 
+        public class Role
+        {
+            public const string logistics_base_role_user_binding_Insert = "logistics_base_role_user_binding_Insert";
+        }
+
         public class Base
         {
             public const string logistics_base_sms_validate_insert = "logistics_base_sms_validate_insert";

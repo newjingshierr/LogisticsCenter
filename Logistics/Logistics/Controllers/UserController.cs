@@ -9,16 +9,6 @@ using Logistics_Busniess;
 
 namespace Logistics.Controllers
 {
-    public class UserInfo
-    {
-        public bool bRes { get; set; }
-
-        public string UserName { get; set; }
-
-        public string Password { get; set; }
-
-        public string Ticket { get; set; }
-    }
 
     [RoutePrefix(ApiConstants.PrefixApi + "User")]
     public class UserController : BaseController
@@ -163,39 +153,46 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Login")]
-        public ResponseMessage<string> Login([FromUri] LoginRequest request)
+        public ResponseMessage<AllUserInfo> Login([FromUri] LoginRequest request)
         {
             if (string.IsNullOrEmpty(request.user))
             {
-                return GetErrorResult<string>(SystemStatusEnum.InvalidUserNameRequest);
+                return GetErrorResult<AllUserInfo>(SystemStatusEnum.InvalidUserNameRequest);
             }
 
             if (string.IsNullOrEmpty(request.pwd))
             {
-                return GetErrorResult<string>(SystemStatusEnum.InvalidPwdRequest);
+                return GetErrorResult<AllUserInfo>(SystemStatusEnum.InvalidPwdRequest);
             }
 
             var encryptTicket = "";
+            AllUserInfo allUserInfo = null;
             try
             {
                 var userInfo = UserManger.ValidateUser(request);
                 if (userInfo == null)
                 {
-                    return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
+                    return GetErrorResult<AllUserInfo>(SystemStatusEnum.InvalidUserRequest);
                 }
                 FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, request.user, DateTime.Now,
-                            DateTime.Now.AddHours(1), true, string.Format("{0}&{1}", request.user, request.pwd),
+                            DateTime.Now.AddHours(1), true, string.Format("{0}&{1}&{2}", request.user, request.pwd, request.TenantID.ToString()),
                             FormsAuthentication.FormsCookiePath);
                 //token进行加密
                 encryptTicket = FormsAuthentication.Encrypt(ticket);
-                //将身份信息保存在session中
-                HttpContext.Current.Session[request.user] = encryptTicket;
+                // 用户新增是会员角色；
 
-                return GetResult(encryptTicket);
+                //将身份信息保存在session中
+                allUserInfo = new AllUserInfo();
+                allUserInfo.ticket = encryptTicket;
+                allUserInfo.userInfo = userInfo;
+                allUserInfo.role = null;
+
+                UserManger.GetAllUserInfoCahced(request.TenantID, request.user, false);
+                return GetResult(allUserInfo);
             }
             catch (Exception ex)
             {
-                return GetErrorResult(encryptTicket, ex.Message);
+                return GetErrorResult(allUserInfo, ex.Message);
 
             }
 
