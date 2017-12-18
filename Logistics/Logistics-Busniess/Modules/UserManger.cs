@@ -26,11 +26,22 @@ namespace Logistics_Busniess
 
 
             logistics_base_role_user_binding roleUser = new logistics_base_role_user_binding();
+            roleUser.TenantID = BusinessConstants.Admin.TenantID;
             roleUser.ID = IdWorker.GetID();
             roleUser.RoleID = BusinessConstants.Role.member;
             roleUser.Userid = userInfo.Userid;
             userInfo.CreatedBy = BusinessConstants.Admin.TenantID;
             userInfo.ModifiedBy = BusinessConstants.Admin.TenantID;
+
+            ValidateRequest request = new ValidateRequest();
+            request.code = item.code;
+            request.mail = item.mail;
+            request.tel = item.tel;
+            if (!CodeValidate(request))
+            {
+                throw new LogisticsException(SystemStatusEnum.InvalidCodeRequest, $"code is not valid:{ item.code}");
+            }
+
 
             var dbResult = false;
 
@@ -60,6 +71,7 @@ namespace Logistics_Busniess
             smsValidate.ID = IdWorker.GetID();
             smsValidate.code = item.code;
             smsValidate.tel = item.tel;
+            smsValidate.mail= item.mail;
             smsValidate.TenantID = item.TenantID;
             smsValidate.startTime = System.DateTime.Now;
             smsValidate.endTime = smsValidate.startTime.AddMinutes(15);
@@ -71,7 +83,14 @@ namespace Logistics_Busniess
         public static bool CodeValidate(ValidateRequest item)
         {
             var smsValidate = ValidateDal.GetItem(item.TenantID, item.tel, item.mail);
-            return ValidateDal.ChekcItem(item.TenantID, item.tel, item.mail, item.code, smsValidate.startTime, smsValidate.endTime) == null ? false : true;
+            var result = false;
+            result = ValidateDal.ChekcItem(item.TenantID, item.tel, item.mail, item.code, smsValidate.startTime, smsValidate.endTime) == null? false:true;
+
+            if (result == false)
+            {
+                throw new LogisticsException(SystemStatusEnum.InvalidCodeRequest, $"code is not valid:{ item.code}");
+            }
+            return result;
         }
 
         public static bool ValidateUser(UserValidateRequest item)
@@ -83,6 +102,7 @@ namespace Logistics_Busniess
         {
             var radmon = SMSHelper.GetRandom();
             var sendResult = SMSHelper.send(radmon, SMSTypeEnum.Register, request.tel);
+           // var sendResult = true;
             var result = false;
             if (sendResult)
             {

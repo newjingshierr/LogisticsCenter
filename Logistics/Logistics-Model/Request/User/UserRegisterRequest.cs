@@ -46,7 +46,7 @@ namespace Logistics_Model
 
         public string rePwd { get; set; } = "";
 
-        public string code { get; set; }
+        public string code { get; set; } = "";
     }
     public class UserCheckRequest : BaseReqeust
     {

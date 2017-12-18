@@ -14,13 +14,14 @@ namespace Logistics_DAL
         {
 
             MySqlParameter[] parameters = {
-                        new MySqlParameter("@TenantID",model.TenantID) ,
-                        new MySqlParameter("@ID", model.ID) ,
-                        new MySqlParameter("@tel", model.tel) ,
-                        new MySqlParameter("@code", model.code) ,
-                        new MySqlParameter("@startTime", model.startTime) ,
-                        new MySqlParameter("@endTime", SqlDbType.DateTime) ,
-                        new MySqlParameter("@CreatedBy",model.Created),
+                        new MySqlParameter("@_TenantID",model.TenantID) ,
+                        new MySqlParameter("@_ID", model.ID) ,
+                        new MySqlParameter("@_mail", model.mail) ,
+                        new MySqlParameter("@_tel", model.tel) ,
+                        new MySqlParameter("@_code", model.code) ,
+                        new MySqlParameter("@_startTime", model.startTime) ,
+                        new MySqlParameter("@_endTime", model.endTime) ,
+                        new MySqlParameter("@_CreatedBy",model.CreatedBy),
                         new MySqlParameter("@_ModifiedBy",model.ModifiedBy),
             };
 
@@ -44,9 +45,9 @@ namespace Logistics_DAL
                 new MySqlParameter("@_TenantID", TenantID),
                  new MySqlParameter("@_Tel", tel),
                  new MySqlParameter("@_Mail", mail),
-                  new MySqlParameter("@_codel", code),
+                  new MySqlParameter("@_code", code),
                   new MySqlParameter("@_startTime", startTime),
-                  new MySqlParameter("@_endTime", endTime),
+                  new MySqlParameter("@_endTime", System.DateTime.Now),
             };
 
             var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetReadConn(), CommandType.StoredProcedure, Proc.Base.logistics_base_sms_validate_check, parameters);

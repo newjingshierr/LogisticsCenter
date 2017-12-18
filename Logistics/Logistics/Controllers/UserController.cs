@@ -20,7 +20,7 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("userValidate")]
-        public ResponseMessage<bool> UserValidate(UserValidateRequest request)
+        public ResponseMessage<bool> UserNameValidate([FromUri]UserValidateRequest request)
         {
             if (string.IsNullOrEmpty(request.user))
             {
@@ -34,9 +34,9 @@ namespace Logistics.Controllers
 
                 return GetResult(result);
             }
-            catch (Exception ex)
+            catch (LogisticsException ex)
             {
-                return GetErrorResult(result, ex.Message);
+              return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
             }
 
         }
@@ -49,7 +49,7 @@ namespace Logistics.Controllers
         /// <returns></returns>\
         [HttpGet]
         [Route("codeValidate")]
-        public ResponseMessage<bool> CodeValidate(ValidateRequest request)
+        public ResponseMessage<bool> CodeValidate([FromUri]ValidateRequest request)
         {
             if ((string.IsNullOrEmpty(request.tel) && string.IsNullOrEmpty(request.mail)))
             {
@@ -67,9 +67,9 @@ namespace Logistics.Controllers
 
                 return GetResult(result);
             }
-            catch (Exception ex)
+            catch (LogisticsException ex)
             {
-                return GetErrorResult(result, ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
             }
 
         }
@@ -94,9 +94,9 @@ namespace Logistics.Controllers
 
                 return GetResult(result);
             }
-            catch (Exception ex)
+            catch (LogisticsException ex)
             {
-                return GetErrorResult(result, ex.Message);
+            return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
 
             }
 
@@ -112,7 +112,7 @@ namespace Logistics.Controllers
         [Route("Register")]
         public ResponseMessage<bool> Register([FromUri] UserRegisterRequest request)
         {
-            if (request.pwd == request.rePwd)
+            if (request.pwd != request.rePwd)
             {
                 return GetErrorResult<bool>(SystemStatusEnum.PwdRepeatRequest);
             }
@@ -128,7 +128,10 @@ namespace Logistics.Controllers
             {
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidCodeRequest);
             }
-
+            if(HashHelper.IsSafeSqlString(request.pwd)|| HashHelper.IsSafeSqlString(request.rePwd) || HashHelper.ProcessSqlStr(request.rePwd)|| HashHelper.IsSafeSqlString(request.rePwd))
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidPwdRequest);
+            }
 
             var result = false;
             try
@@ -137,9 +140,9 @@ namespace Logistics.Controllers
 
                 return GetResult(result);
             }
-            catch (Exception ex)
+            catch (LogisticsException  ex)
             {
-                return GetErrorResult(result, ex.Message);
+                return GetErrorResult(result,ex.Status.ToString(), (int)ex.Status);
 
             }
 
@@ -153,16 +156,16 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Login")]
-        public ResponseMessage<AllUserInfo> Login([FromUri] LoginRequest request)
+        public ResponseMessage<string> Login([FromUri] LoginRequest request)
         {
             if (string.IsNullOrEmpty(request.user))
             {
-                return GetErrorResult<AllUserInfo>(SystemStatusEnum.InvalidUserNameRequest);
+                return GetErrorResult<string>(SystemStatusEnum.InvalidUserNameRequest);
             }
 
             if (string.IsNullOrEmpty(request.pwd))
             {
-                return GetErrorResult<AllUserInfo>(SystemStatusEnum.InvalidPwdRequest);
+                return GetErrorResult<string>(SystemStatusEnum.InvalidPwdRequest);
             }
 
             var encryptTicket = "";
@@ -172,7 +175,7 @@ namespace Logistics.Controllers
                 var userInfo = UserManger.ValidateUser(request);
                 if (userInfo == null)
                 {
-                    return GetErrorResult<AllUserInfo>(SystemStatusEnum.InvalidUserRequest);
+                    return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
                 }
                 FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, request.user, DateTime.Now,
                             DateTime.Now.AddHours(1), true, string.Format("{0}&{1}&{2}", request.user, request.pwd, request.TenantID.ToString()),
@@ -187,13 +190,12 @@ namespace Logistics.Controllers
                 allUserInfo.userInfo = userInfo;
                 allUserInfo.role = null;
 
-                UserManger.GetAllUserInfoCahced(request.TenantID, request.user, false);
-                return GetResult(allUserInfo);
+             //   UserManger.GetAllUserInfoCahced(request.TenantID, request.user, false);
+                return GetResult(encryptTicket);
             }
-            catch (Exception ex)
+            catch (LogisticsException ex)
             {
-                return GetErrorResult(allUserInfo, ex.Message);
-
+                return GetErrorResult(encryptTicket, ex.Status.ToString(), (int)ex.Status);
             }
 
         }

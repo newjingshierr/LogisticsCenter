@@ -41,7 +41,7 @@ namespace Logistics.Common
                 if (smsType == SMSTypeEnum.Register)
                 {
                     string template = ConfigurationManager.AppSettings["registerTemplateID"].ToString(); ;
-                    string code = string.Format("{\"code\":\"{0}\"}", content);
+                    var code = "{\"code\":\"" + content + "\"}";
                     string Pass = FormsAuthentication.HashPasswordForStoringInConfigFile(pwd + uid, "MD5");
                     var sendMessage = string.Format("?ac=send&uid={0}&pwd={1}&template={2}&mobile={3}&content={4}", uid, Pass, template, mobile, code);
                     byte[] bTemp = System.Text.Encoding.GetEncoding("GBK").GetBytes(sendMessage);

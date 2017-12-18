@@ -52,6 +52,7 @@
     <Compile Include="ApiConstants.cs" />
     <Compile Include="Clock\ClockUtil.cs" />
     <Compile Include="Enum\AppModeEnum.cs" />
+    <Compile Include="LogisticsException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseMessage.cs" />
     <Compile Include="Utility\ConfigHelper.cs" />

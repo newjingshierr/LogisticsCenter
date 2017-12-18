@@ -98,5 +98,7 @@ namespace Logistics_Model
             get { return _modifiedby; }
             set { _modifiedby = value; }
         }
+
+        public string mail { get; set; }
     }
 }
