@@ -11,7 +11,9 @@ namespace Logistics_Model
 
     public class SendSMSRequest : BaseReqeust
     {
-        public string tel { get; set; }
+        public string tel { get; set; } = "";
+        public string mail { get; set; } = "";
+        public SendTypeEnum type { get; set; }
 
     }
 

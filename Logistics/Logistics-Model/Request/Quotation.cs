@@ -8,7 +8,7 @@ namespace Logistics_Model
 {
    public class  GetAllCountryByNameRequest:BaseReqeust
     {
-        public string name { get; set; }
+        public string name { get; set; } = "";
     }
     public class GetQuotationPriceByCountryRequest:BaseReqeust
     {

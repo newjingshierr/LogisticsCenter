@@ -21,4 +21,13 @@ namespace Logistics_Model
         /// </summary>
         ReturnPackage = 2,
     }
+    public enum SendTypeEnum
+    {
+        Tel = 0,
+        Mail = 1
+    }
+    public enum MailTemplateEnum
+    {
+        Register = 0,
+    }
 }

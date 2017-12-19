@@ -28,7 +28,7 @@ namespace Logistics.Common
             }
             return str;
         }
-        public static bool send(string content, SMSTypeEnum smsType, string mobile)
+        public static bool Send(string content, SMSTypeEnum smsType, string mobile)
         {
             LogHelper log = LogHelper.GetLogger(typeof(SMSHelper));
             string sendurl = ConfigurationManager.AppSettings["sendurl"].ToString();

@@ -54,8 +54,6 @@ namespace Logistics_DAL
             return result;
         }
 
-
-
         public static bool Insert(UserInfo model, AkmiiMySqlTransaction trans = null)
         {
 

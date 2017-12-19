@@ -71,7 +71,7 @@ namespace Logistics_Busniess
             smsValidate.ID = IdWorker.GetID();
             smsValidate.code = item.code;
             smsValidate.tel = item.tel;
-            smsValidate.mail= item.mail;
+            smsValidate.mail = item.mail;
             smsValidate.TenantID = item.TenantID;
             smsValidate.startTime = System.DateTime.Now;
             smsValidate.endTime = smsValidate.startTime.AddMinutes(15);
@@ -84,7 +84,7 @@ namespace Logistics_Busniess
         {
             var smsValidate = ValidateDal.GetItem(item.TenantID, item.tel, item.mail);
             var result = false;
-            result = ValidateDal.ChekcItem(item.TenantID, item.tel, item.mail, item.code, smsValidate.startTime, smsValidate.endTime) == null? false:true;
+            result = ValidateDal.ChekcItem(item.TenantID, item.tel, item.mail, item.code, smsValidate.startTime, smsValidate.endTime) == null ? false : true;
 
             if (result == false)
             {
@@ -101,9 +101,27 @@ namespace Logistics_Busniess
         public static bool SendSMS(SendSMSRequest request)
         {
             var radmon = SMSHelper.GetRandom();
-            var sendResult = SMSHelper.send(radmon, SMSTypeEnum.Register, request.tel);
-           // var sendResult = true;
             var result = false;
+            var sendResult = false;
+
+            if (request.type == SendTypeEnum.Tel)
+            {
+                if (string.IsNullOrEmpty(request.tel))
+                {
+                    throw new LogisticsException(SystemStatusEnum.InvalidTelOrMailRequest, $"InvalidTelOrMailRequest");
+                }
+
+                sendResult = SMSHelper.Send(radmon, SMSTypeEnum.Register, request.tel);
+            }
+            else if (request.type == SendTypeEnum.Mail)
+            {
+                if (string.IsNullOrEmpty(request.mail))
+                {
+                    throw new LogisticsException(SystemStatusEnum.InvalidTelOrMailRequest, $"InvalidTelOrMailRequest");
+                }
+                sendResult = MailHelper.Send(request.mail, radmon, MailTemplateEnum.Register);
+            }
+
             if (sendResult)
             {
                 ValidateRequest InsertRequest = new ValidateRequest();
@@ -112,11 +130,11 @@ namespace Logistics_Busniess
                 InsertRequest.TenantID = request.TenantID;
                 result = InsertSMSValidate(InsertRequest);
             }
+
             return result;
         }
 
-
-        public static AllUserInfo GetAllUserInfoCahced( long TenantID, string usr, bool isCache = true, bool isWrite = false, AllUserInfo allInfo = null)
+        public static AllUserInfo GetAllUserInfoCahced(long TenantID, string usr, bool isCache = true, bool isWrite = false, AllUserInfo allInfo = null)
         {
             var key = CacheConstants.GetAllInfo(usr, TenantID);
 

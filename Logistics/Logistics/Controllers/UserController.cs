@@ -22,6 +22,11 @@ namespace Logistics.Controllers
         [Route("userValidate")]
         public ResponseMessage<bool> UserNameValidate([FromUri]UserValidateRequest request)
         {
+            if (request == null)
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+            }
+
             if (string.IsNullOrEmpty(request.user))
             {
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidUserExistRequest);
@@ -51,6 +56,11 @@ namespace Logistics.Controllers
         [Route("codeValidate")]
         public ResponseMessage<bool> CodeValidate([FromUri]ValidateRequest request)
         {
+            if (request == null)
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+            }
+
             if ((string.IsNullOrEmpty(request.tel) && string.IsNullOrEmpty(request.mail)))
             {
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidTelOrMailRequest);
@@ -83,7 +93,12 @@ namespace Logistics.Controllers
         [Route("Send")]
         public ResponseMessage<bool> SendSMS([FromUri] SendSMSRequest request)
         {
-            if (string.IsNullOrEmpty(request.tel))
+            if (request == null)
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+            }
+
+            if (string.IsNullOrEmpty(request.tel)|| string.IsNullOrEmpty(request.type.ToString()))
             {
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
             }
@@ -112,6 +127,11 @@ namespace Logistics.Controllers
         [Route("Register")]
         public ResponseMessage<bool> Register([FromUri] UserRegisterRequest request)
         {
+            if (request == null)
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+            }
+
             if (request.pwd != request.rePwd)
             {
                 return GetErrorResult<bool>(SystemStatusEnum.PwdRepeatRequest);
@@ -158,6 +178,11 @@ namespace Logistics.Controllers
         [Route("Login")]
         public ResponseMessage<string> Login([FromUri] LoginRequest request)
         {
+            if (request == null)
+            {
+                return GetErrorResult<string>(SystemStatusEnum.InvalidRequest);
+            }
+
             if (string.IsNullOrEmpty(request.user))
             {
                 return GetErrorResult<string>(SystemStatusEnum.InvalidUserNameRequest);

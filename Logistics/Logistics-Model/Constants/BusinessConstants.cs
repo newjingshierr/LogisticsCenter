@@ -43,5 +43,11 @@ namespace Logistics_Model
             public const long admin = 822901594632818690;
 
         }
+
+        public class RegisterMailTemplate
+        {
+            public const string Title = "大陆注册会员邮箱验证";
+            public const string body = "尊敬的客户，您好\r\n\n感谢您注册大陆国际会员，以下是您的注册验证码:\r\n验证码:{0}       请将验证码输入指定位置进行验证，为确保账户安全，请勿泄露您的验证码.";
+        }
     }
 }

@@ -60,6 +60,7 @@
     <Compile Include="Utility\DecimalHelper.cs" />
     <Compile Include="Utility\FileLogHelper.cs" />
     <Compile Include="Utility\HashHelper.cs" />
+    <Compile Include="Utility\MailHelper.cs" />
     <Compile Include="Utility\SMSHelper.cs" />
   </ItemGroup>
   <ItemGroup>

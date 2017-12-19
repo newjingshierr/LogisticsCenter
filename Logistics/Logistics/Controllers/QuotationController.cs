@@ -20,18 +20,21 @@ namespace Logistics.Controllers
         [Route("Item")]
         public ResponseMessage<List<QuotationChannelPriceVM>> GetQuotationPriceByCountry([FromUri] GetQuotationPriceByCountryRequest request)
         {
-
+            if (request == null)
+            {
+                return GetErrorResult<List<QuotationChannelPriceVM>>(SystemStatusEnum.InvalidRequest);
+            }
             var result = new List<QuotationChannelPriceVM>();
-
+           
             try
             {
                 result = QuotationManager.GetChannelPrice(request);
 
                 return GetResult(result);
             }
-            catch (Exception ex)
+            catch (LogisticsException ex)
             {
-                return GetErrorResult(result, ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
 
             }
 
@@ -41,6 +44,10 @@ namespace Logistics.Controllers
         [Route("Country/Items")]
         public ResponseMessage<List<logistics_base_country>> GetAllCountryByName([FromUri] GetAllCountryByNameRequest request)
         {
+            if (request == null)
+            {
+                return GetErrorResult<List<logistics_base_country>>(SystemStatusEnum.InvalidRequest);
+            }
 
             var result = new List<logistics_base_country>();
 
@@ -50,9 +57,9 @@ namespace Logistics.Controllers
 
                 return GetResult(result);
             }
-            catch (Exception ex)
+            catch (LogisticsException ex)
             {
-                return GetErrorResult(result, ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
 
             }
 

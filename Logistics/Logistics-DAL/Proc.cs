@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Logistics_DAL
 {
+    /// <summary>
+    /// 存储过程的名字一律都是小写；
+    /// </summary>
     public class Proc
     {
         public class Quotation
@@ -20,9 +23,9 @@ namespace Logistics_DAL
 
             public const string logistics_quotation_partition_price_select_by_country = "logistics_quotation_partition_price_select_by_country";
 
-            public const string logistics_Select_Price_By_PartitionID_Weight = "logistics_Select_Price_By_PartitionID_Weight";
+            public const string logistics_Select_Price_By_PartitionID_Weight = "logistics_select_price_by_partitionID_weight";
 
-            public const string logistics_Select_IPF_Price_By_PartitionID_Weight = "logistics_Select_IPF_Price_By_PartitionID_Weight";
+            public const string logistics_Select_IPF_Price_By_PartitionID_Weight = "logistics_select_ipf_price_by_partitionid_weight";
 
             public const string logistics_quotation_channel_select_all = "logistics_quotation_channel_select_all";
 
@@ -54,14 +57,14 @@ namespace Logistics_DAL
 
         public class Rule
         {
-            public const string Logistics_Businessnorule_Update_CurrentNo = "Logistics_Businessnorule_Update_CurrentNo";
+            public const string Logistics_Businessnorule_Update_CurrentNo = "logistics_businessnorule_update_currentNo";
         }
 
         public class User
         {
-            public const string Logistics_UserInfo_Insert = "Logistics_UserInfo_Insert";
-            public const string Logistics_UserInfo_Select = "Logistics_UserInfo_Select";
-            public const string logistics_userInfo_validate = "logistics_userInfo_validate";
+            public const string Logistics_UserInfo_Insert = "logistics_base_userinfo_insert";
+            public const string Logistics_UserInfo_Select = "logistics_base_userinfo_select";
+            public const string logistics_userInfo_validate = "logistics_base_userInfo_validate";
         }
 
         public class Role

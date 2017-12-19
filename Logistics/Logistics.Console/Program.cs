@@ -17,8 +17,7 @@ using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
 using Logistics_Model;
 using Logistics_DAL;
-
-
+using System.Net.Mail;
 
 namespace Logistics.Console
 {
@@ -43,7 +42,11 @@ namespace Logistics.Console
 
         static void Main(string[] args)
         {
-            Program p = new Program();
+            sendMail("fds718@163.com", "famliytree", "enzo.shi@famliytree.cn", "enzo.shi@famliytree.cn", "Infosys333", "您好！", "这是一封测试邮件!");
+
+           // Program p = new Program();
+
+
             //p.ImportPartion(BusinessConstants.Channel.FedxEconomicID, "Fedex资费区");
             //p.ImportCounty(BusinessConstants.Channel.FedxEconomicID, "Fedex国家");
             //p.ImportQuotation(BusinessConstants.Channel.FedxEconomicID, "Fedex报价模板");
@@ -64,8 +67,44 @@ namespace Logistics.Console
             //p.ImportPartion(BusinessConstants.Channel.TNTEconomicID, "TNT资费区");
             //p.ImportCounty(BusinessConstants.Channel.TNTEconomicID, "TNT国家");
             //p.ImportQuotation(BusinessConstants.Channel.TNTEconomicID, "TNT报价模板");
-            p.ImportAllCountries("所有国家");
-            System.Console.ReadLine();
+          //  p.ImportAllCountries("所有国家");
+           // System.Console.ReadLine();
+        }
+
+
+        /// <summary>
+        /// 向用户发送邮件
+        /// </summary>
+        /// <param name="ReceiveUser">接收邮件的用户</param>
+        /// <param name="SendUser">发送者显求的邮箱地址,可为空</param>
+        /// <param name="DisplayName">收件人显示发件人的联系人名，可为中文</param>
+        /// <param name="SendUserName">发送者的邮箱登陆名，可以与发送者地址一样</param>
+        /// <param name="UserPassword">发送者的登陆密码</param>
+        /// <param name="MailTitle">发送标题</param>
+        /// <param name="MailContent">发送的内容</param>
+        public static void sendMail(string ReceiveUser, string DisplayName, string SendUser, string SendUserName, string UserPassword, string MailTitle, string MailContent)
+        {
+            MailAddress toMail = new MailAddress(ReceiveUser);//接收者邮箱
+            MailAddress fromMail = new MailAddress(SendUser, DisplayName);//发送者邮箱       
+            MailMessage mail = new MailMessage(fromMail, toMail);
+            mail.Subject = MailTitle;
+            mail.IsBodyHtml = true;//是否支持HTML
+            mail.Body = MailContent;
+            SmtpClient client = new SmtpClient();
+            client.Host = "smtp.exmail.qq.com";//设置发送者邮箱对应的smtpserver
+            client.UseDefaultCredentials = false;
+          //  client.Port = 465;
+            client.Credentials = new NetworkCredential(SendUserName, UserPassword);
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            try
+            {
+                client.Send(mail);
+            }
+            catch (SmtpException ex)
+            {
+                //Console.Write(ex.Message);
+            }
+           // Console.ReadKey();
         }
 
         /// <summary>
