@@ -58,7 +58,6 @@
     <Compile Include="Utility\ConfigHelper.cs" />
     <Compile Include="Utility\ConvertHelper.cs" />
     <Compile Include="Utility\DecimalHelper.cs" />
-    <Compile Include="Utility\FileLogHelper.cs" />
     <Compile Include="Utility\HashHelper.cs" />
     <Compile Include="Utility\MailHelper.cs" />
     <Compile Include="Utility\SMSHelper.cs" />

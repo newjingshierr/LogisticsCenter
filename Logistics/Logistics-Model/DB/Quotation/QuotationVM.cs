@@ -166,7 +166,6 @@ namespace Logistics_Model
         public string Clause { get; set; }
     }
 
-
     public class QuotationIPFPriceVM
     {
         /// <summary>

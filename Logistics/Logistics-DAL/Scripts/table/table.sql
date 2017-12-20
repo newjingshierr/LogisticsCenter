@@ -1,5 +1,25 @@
 ﻿USE yungalaxy_z_251;
 
+DROP TABLE logistics_base_country;
+
+CREATE TABLE logistics_base_country (
+  TenantID bigint(20) NOT NULL COMMENT '商户ID',
+  ID bigint(20) NOT NULL COMMENT 'ID',
+  englishName varchar(250) NOT NULL COMMENT '英文名',
+  code varchar(250) DEFAULT NULL COMMENT '简称',
+  chineseName varchar(200) DEFAULT '' COMMENT '中文名',
+  Created timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP (3),
+  Modified timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
+  CreatedBy bigint(20) DEFAULT NULL,
+  ModifiedBy bigint(20) DEFAULT NULL,
+  PRIMARY KEY (TenantID, ID),
+  INDEX IDX_userinfo (englishName, code, chineseName)
+)
+ENGINE = INNODB
+AVG_ROW_LENGTH = 8192
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
 DROP TABLE logistics_base_log;
 
 CREATE TABLE logistics_base_log (
@@ -10,7 +30,7 @@ CREATE TABLE logistics_base_log (
   Message text DEFAULT NULL COMMENT '异常信息',
   Userid bigint(20) NOT NULL COMMENT '用户ID',
   Created timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
-  Modified timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
+  Modified timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
   CreatedBy bigint(20) NOT NULL,
   ModifiedBy bigint(20) NOT NULL,
   PRIMARY KEY (ID),
@@ -23,6 +43,7 @@ COLLATE utf8_general_ci;
 DROP TABLE logistics_base_navigation;
 
 CREATE TABLE logistics_base_navigation (
+  TenantID bigint(20) NOT NULL,
   ID bigint(20) NOT NULL,
   Name_CN varchar(255) DEFAULT NULL,
   Name_EN varchar(255) DEFAULT NULL,
@@ -35,7 +56,7 @@ CREATE TABLE logistics_base_navigation (
   ModifiedBy bigint(20) NOT NULL,
   ParentID int(11) DEFAULT 0,
   SortID int(11) DEFAULT NULL,
-  PRIMARY KEY (ID),
+  PRIMARY KEY (ID, TenantID),
   INDEX IDX_navigation (ParentID)
 )
 ENGINE = INNODB
@@ -45,6 +66,7 @@ COLLATE utf8_general_ci;
 DROP TABLE logistics_base_navigation_role_binding;
 
 CREATE TABLE logistics_base_navigation_role_binding (
+  TenantID bigint(20) NOT NULL,
   ID bigint(20) NOT NULL,
   NavigationID bigint(20) NOT NULL,
   RoleID bigint(20) NOT NULL,
@@ -52,10 +74,7 @@ CREATE TABLE logistics_base_navigation_role_binding (
   Modified timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
   CreatedBy bigint(20) NOT NULL,
   ModifiedBy bigint(20) NOT NULL,
-  ParentID bigint(20) DEFAULT 0,
-  SortID int(11) DEFAULT NULL,
-  PRIMARY KEY (ID),
-  INDEX IDX_navigation (NavigationID, RoleID)
+  PRIMARY KEY (TenantID, ID, NavigationID, RoleID)
 )
 ENGINE = INNODB
 CHARACTER SET utf8
@@ -64,22 +83,25 @@ COLLATE utf8_general_ci;
 DROP TABLE logistics_base_role;
 
 CREATE TABLE logistics_base_role (
+  TenantID bigint(20) NOT NULL,
   RoleID bigint(20) NOT NULL COMMENT 'ID',
   roleName varchar(200) NOT NULL COMMENT '角色名称',
   Created timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
   Modified timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
   CreatedBy bigint(20) NOT NULL,
   ModifiedBy bigint(20) NOT NULL,
-  PRIMARY KEY (RoleID),
+  PRIMARY KEY (RoleID, TenantID),
   INDEX IDX_Role (roleName)
 )
 ENGINE = INNODB
+AVG_ROW_LENGTH = 3276
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 DROP TABLE logistics_base_role_user_binding;
 
 CREATE TABLE logistics_base_role_user_binding (
+  TenantID bigint(20) NOT NULL,
   ID bigint(20) NOT NULL COMMENT 'ID',
   RoleID bigint(20) NOT NULL COMMENT 'ID',
   Userid bigint(20) NOT NULL COMMENT '用户ID',
@@ -87,32 +109,58 @@ CREATE TABLE logistics_base_role_user_binding (
   Modified timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
   CreatedBy bigint(20) NOT NULL,
   ModifiedBy bigint(20) NOT NULL,
-  PRIMARY KEY (ID),
+  PRIMARY KEY (ID, TenantID),
   UNIQUE INDEX IDX_Role (RoleID, Userid)
 )
 ENGINE = INNODB
+AVG_ROW_LENGTH = 16384
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+DROP TABLE logistics_base_sms_validate;
+
+CREATE TABLE logistics_base_sms_validate (
+  TenantID bigint(20) NOT NULL,
+  ID bigint(20) NOT NULL,
+  mail varchar(255) DEFAULT NULL COMMENT '邮箱',
+  tel varchar(50) NOT NULL COMMENT '电话',
+  code varchar(50) NOT NULL COMMENT '验证码',
+  startTime datetime NOT NULL COMMENT '验证码开始时间',
+  endTime datetime NOT NULL COMMENT '验证码结束时间',
+  Created timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
+  Modified timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
+  CreatedBy bigint(20) NOT NULL,
+  ModifiedBy bigint(20) NOT NULL,
+  PRIMARY KEY (TenantID, ID),
+  INDEX IDX_log (tel, code, startTime, endTime)
+)
+ENGINE = INNODB
+AVG_ROW_LENGTH = 4096
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 DROP TABLE logistics_base_userinfo;
 
 CREATE TABLE logistics_base_userinfo (
+  TenantID bigint(20) NOT NULL COMMENT '商户ID',
   Userid bigint(20) NOT NULL COMMENT '用户ID',
-  Token varchar(200) NOT NULL COMMENT '用户Token',
+  Email varchar(250) DEFAULT NULL,
+  Token varchar(200) DEFAULT '' COMMENT '用户Token',
   Username varchar(200) NOT NULL COMMENT '用户姓名',
-  pwd varchar(200) NOT NULL COMMENT '用户密码',
-  Tel varchar(200) NOT NULL COMMENT '电话号码',
+  Pwd blob DEFAULT NULL COMMENT '用户密码',
+  Tel varchar(200) DEFAULT NULL COMMENT '电话号码',
   WebChatID varchar(500) DEFAULT NULL COMMENT '微信号',
-  MemeberCode varchar(200) NOT NULL COMMENT '会员号',
+  MemeberCode varchar(200) DEFAULT NULL COMMENT '会员号',
   LastLoginTime timestamp NULL DEFAULT NULL COMMENT '最近一次登录时间',
-  Created timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
-  Modified timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
-  CreatedBy bigint(20) NOT NULL,
-  ModifiedBy bigint(20) NOT NULL,
-  PRIMARY KEY (Userid, Token),
-  INDEX IDX_userinfo (Username, MemeberCode)
+  Created timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP (3),
+  Modified timestamp(3) NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
+  CreatedBy bigint(20) DEFAULT NULL,
+  ModifiedBy bigint(20) DEFAULT NULL,
+  PRIMARY KEY (Userid, TenantID),
+  INDEX IDX_userinfo (Username, MemeberCode, Tel)
 )
 ENGINE = INNODB
+AVG_ROW_LENGTH = 3276
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -127,7 +175,7 @@ CREATE TABLE logistics_base_userinfo_recipients_address (
   Tel varchar(200) NOT NULL COMMENT '电话号码',
   Address varchar(2000) NOT NULL COMMENT '地址',
   Created timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
-  Modified timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
+  Modified timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
   CreatedBy bigint(20) NOT NULL,
   ModifiedBy bigint(20) NOT NULL,
   PRIMARY KEY (ID),
@@ -136,6 +184,27 @@ CREATE TABLE logistics_base_userinfo_recipients_address (
 ENGINE = INNODB
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
+
+DROP TABLE logistics_businessnorule;
+
+CREATE TABLE logistics_businessnorule (
+  DefKey varchar(255) NOT NULL COMMENT '业务标识',
+  Prefix varchar(255) NOT NULL COMMENT '编号前缀 例:[QINGJIA_{date}_{time}]',
+  StartIndex bigint(20) NOT NULL DEFAULT 0 COMMENT '开始编号',
+  CustomLength int(11) NOT NULL DEFAULT 8 COMMENT '自定义编号长度',
+  AutoIncrement int(11) NOT NULL DEFAULT 1 COMMENT '增量',
+  CurrentNo bigint(20) NOT NULL DEFAULT 0 COMMENT '当前编号',
+  Created timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
+  Modified timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
+  CreatedBy bigint(20) NOT NULL,
+  ModifiedBy bigint(20) NOT NULL,
+  PRIMARY KEY (DefKey)
+)
+ENGINE = INNODB
+AVG_ROW_LENGTH = 157
+CHARACTER SET utf8
+COLLATE utf8_general_ci
+COMMENT = '业务编号规则';
 
 DROP TABLE logistics_demo;
 
@@ -267,5 +336,113 @@ CREATE TABLE logistics_pay_receiving_address_mangement (
   INDEX IDX_receiving (Userid)
 )
 ENGINE = INNODB
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+DROP TABLE logistics_quotation_channel;
+
+CREATE TABLE logistics_quotation_channel (
+  TenantID bigint(20) NOT NULL,
+  ID bigint(20) NOT NULL,
+  Name varchar(255) NOT NULL COMMENT '渠道名称',
+  code varchar(255) NOT NULL COMMENT '渠道简称',
+  Prescription varchar(200) DEFAULT NULL COMMENT '时效备注',
+  Remark text DEFAULT NULL COMMENT '备注',
+  Clause longtext DEFAULT NULL COMMENT '条款',
+  Created timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
+  Modified timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
+  CreatedBy bigint(20) NOT NULL,
+  ModifiedBy bigint(20) NOT NULL,
+  PRIMARY KEY (TenantID, ID, code),
+  INDEX IDX_channel (Name)
+)
+ENGINE = INNODB
+AVG_ROW_LENGTH = 4096
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+DROP TABLE logistics_quotation_partition;
+
+CREATE TABLE logistics_quotation_partition (
+  TenantID bigint(20) NOT NULL,
+  ID bigint(20) NOT NULL,
+  partitionCode varchar(100) NOT NULL COMMENT '分区code',
+  ChannelID bigint(20) NOT NULL DEFAULT 0 COMMENT '渠道ID',
+  Created timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
+  Modified timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
+  CreatedBy bigint(20) NOT NULL,
+  ModifiedBy bigint(20) NOT NULL,
+  PRIMARY KEY (TenantID, ID, partitionCode, ChannelID)
+)
+ENGINE = INNODB
+AVG_ROW_LENGTH = 127
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+DROP TABLE logistics_quotation_partition_country;
+
+CREATE TABLE logistics_quotation_partition_country (
+  TenantID bigint(20) NOT NULL,
+  ID bigint(20) NOT NULL,
+  countryEnglishName varchar(100) NOT NULL COMMENT '国家英文名',
+  countryChineseName varchar(100) NOT NULL COMMENT '国家中文名',
+  countryCode varchar(50) NOT NULL COMMENT '国家代码code',
+  ChannelID bigint(20) NOT NULL DEFAULT 0 COMMENT '渠道ID',
+  partitionID bigint(20) NOT NULL COMMENT '分区ID',
+  Created timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
+  Modified timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
+  CreatedBy bigint(20) NOT NULL,
+  ModifiedBy bigint(20) NOT NULL,
+  PRIMARY KEY (TenantID, ID, partitionID, countryCode, ChannelID),
+  INDEX IDX_country (countryEnglishName, countryChineseName)
+)
+ENGINE = INNODB
+AVG_ROW_LENGTH = 2730
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+DROP TABLE logistics_quotation_partition_ipf_price;
+
+CREATE TABLE logistics_quotation_partition_ipf_price (
+  TenantID bigint(20) NOT NULL,
+  ID bigint(20) NOT NULL,
+  firstHeavyPrice decimal(15, 2) DEFAULT NULL COMMENT '首重价格',
+  continuedHeavyPrice decimal(14, 2) DEFAULT NULL COMMENT '续重价格',
+  channelID bigint(20) NOT NULL DEFAULT 0 COMMENT '渠道ID',
+  partitionID bigint(20) NOT NULL DEFAULT 0 COMMENT '分区ID',
+  beginHeavy decimal(15, 2) DEFAULT NULL COMMENT '起始重量',
+  endHeavy decimal(15, 2) DEFAULT NULL COMMENT '结束首重',
+  price decimal(15, 2) DEFAULT NULL,
+  Created timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
+  Modified timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
+  CreatedBy bigint(20) NOT NULL,
+  ModifiedBy bigint(20) NOT NULL,
+  PRIMARY KEY (TenantID, ID)
+)
+ENGINE = INNODB
+AVG_ROW_LENGTH = 248
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+DROP TABLE logistics_quotation_partition_price;
+
+CREATE TABLE logistics_quotation_partition_price (
+  TenantID bigint(20) NOT NULL,
+  ID bigint(20) NOT NULL,
+  firstHeavyPrice decimal(15, 2) DEFAULT NULL COMMENT '首重价格',
+  continuedHeavyPrice decimal(15, 2) DEFAULT NULL COMMENT '续重价格',
+  channelID bigint(20) NOT NULL DEFAULT 0 COMMENT '渠道ID',
+  partitionID bigint(20) NOT NULL DEFAULT 0 COMMENT '分区ID',
+  beginHeavy decimal(15, 2) DEFAULT 0.00 COMMENT '开始重量',
+  endHeavy decimal(15, 2) DEFAULT 0.00 COMMENT '结束重量',
+  price decimal(15, 2) DEFAULT NULL COMMENT '价格',
+  Created timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3),
+  Modified timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP (3) ON UPDATE CURRENT_TIMESTAMP (3),
+  CreatedBy bigint(20) NOT NULL,
+  ModifiedBy bigint(20) NOT NULL,
+  PRIMARY KEY (TenantID, ID)
+)
+ENGINE = INNODB
+AVG_ROW_LENGTH = 214
 CHARACTER SET utf8
 COLLATE utf8_general_ci;

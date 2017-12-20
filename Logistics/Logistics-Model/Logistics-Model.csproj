@@ -64,7 +64,6 @@
     <Compile Include="DB\Product.cs" />
     <Compile Include="DB\Quotation\Quotation.cs" />
     <Compile Include="DB\Quotation\QuotationVM.cs" />
-    <Compile Include="DB\RestAPIContext.cs" />
     <Compile Include="DB\Role\Role.cs" />
     <Compile Include="DB\User\UserInfo.cs" />
     <Compile Include="Enum\SystemTypeEnum.cs" />
