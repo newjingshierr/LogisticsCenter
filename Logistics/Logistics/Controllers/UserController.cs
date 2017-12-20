@@ -185,7 +185,7 @@ namespace Logistics.Controllers
             var result = false;
             try
             {
-                if (UserManger.ValidateUser(userValidateRequest))
+                if (UserManger.ExistUser(userValidateRequest))
                 {
                     result = UserManger.InsertUser(request);
                 }
@@ -271,10 +271,6 @@ namespace Logistics.Controllers
             if (string.IsNullOrEmpty(request.pwd))
             {
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidPwdRequest);
-            }
-            if (string.IsNullOrEmpty(request.tel))
-            {
-                return GetErrorResult<bool>(SystemStatusEnum.InvalidUserNameRequest);
             }
             if (HashHelper.IsSafeSqlString(request.pwd))
             {

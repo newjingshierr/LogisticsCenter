@@ -84,6 +84,11 @@ namespace Logistics_Busniess
         public static bool ValidateCode(ValidateRequest item)
         {
             var smsValidate = ValidateDal.GetItem(item.TenantID, item.tel, item.mail);
+            if (smsValidate ==  null)
+            {
+                throw new LogisticsException(SystemStatusEnum.InvalidRequest, $"Invalid Request");
+            }
+
             var result = false;
             result = ValidateDal.ChekcItem(item.TenantID, item.tel, item.mail, item.code, smsValidate.startTime, smsValidate.endTime) == null ? false : true;
 
@@ -109,6 +114,16 @@ namespace Logistics_Busniess
             return result;
         }
 
+        public static bool ExistUser(UserValidateRequest item)
+        {
+            var result = false;
+            result = UserDAL.ValidateUser(item.TenantID, item.user) == null ? true : false;
+            if (result == false)
+            {
+                throw new LogisticsException(SystemStatusEnum.InvalidUserExistRequest, $"User Exist Request");
+            }
+            return result;
+        }
         public static bool ValidateUser(UserValidateRequest item)
         {
             var result = false;
@@ -140,16 +155,16 @@ namespace Logistics_Busniess
 
             if (request.type == SendTypeEnum.Tel)
             {
-                if (string.IsNullOrEmpty(request.tel))
+                if (string.IsNullOrEmpty(request.tel) || !SMSHelper.IsTelephone(request.tel))
                 {
                     throw new LogisticsException(SystemStatusEnum.InvalidTelOrMailRequest, $"InvalidTelOrMailRequest");
                 }
 
                 sendResult = SMSHelper.Send(radmon, SMSTypeEnum.Register, request.tel);
             }
-            else if (request.type == SendTypeEnum.Mail)
+            else if (request.type == SendTypeEnum.Mail )
             {
-                if (string.IsNullOrEmpty(request.mail))
+                if (string.IsNullOrEmpty(request.mail) || !SMSHelper.IsEmail(request.mail))
                 {
                     throw new LogisticsException(SystemStatusEnum.InvalidTelOrMailRequest, $"InvalidTelOrMailRequest");
                 }

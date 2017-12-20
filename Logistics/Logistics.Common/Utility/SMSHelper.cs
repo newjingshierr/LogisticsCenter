@@ -9,6 +9,7 @@ using System.Web.Security;
 using Logistics_Model;
 using System.Configuration;
 using Akmii;
+using System.Text.RegularExpressions;
 
 namespace Logistics.Common
 {
@@ -100,6 +101,17 @@ namespace Logistics.Common
         {
             LogHelper log = LogHelper.GetLogger(typeof(SMSHelper));
             log.ErrorFormat("HolidayBalanceInsert is error!");
+        }
+
+
+        public static bool IsTelephone(string tel)
+        {
+            return System.Text.RegularExpressions.Regex.IsMatch(tel, @"^(\d{3,4}-)?\d{6,8}$");
+        }
+        public static bool IsEmail(string mail)
+        {
+            Regex r = new Regex("^\\s*([A-Za-z0-9_-]+(\\.\\w+)*@(\\w+\\.)+\\w{2,5})\\s*$");
+            return r.IsMatch(mail);
         }
     }
 
