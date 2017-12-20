@@ -81,10 +81,16 @@ namespace Logistics_Model
         InvalidUserExistRequest = 12,
 
         /// <summary>
-        /// code参数不合法
+        /// 操作太频繁
         /// </summary>
         [Description("操作太频繁")]
         OperateRateRequest = 13,
+
+        /// <summary>
+        /// 不能设定相同的密码
+        /// </summary>
+        [Description("不能设定相同的密码")]
+        BadPwdRequest = 14,
 
         /// <summary>
         /// 商户不存在

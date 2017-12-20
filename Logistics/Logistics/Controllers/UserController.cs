@@ -65,6 +65,12 @@ namespace Logistics.Controllers
             {
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidTelOrMailRequest);
             }
+
+            if ((!string.IsNullOrEmpty(request.tel) && !string.IsNullOrEmpty(request.mail)))
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidTelOrMailRequest);
+            }
+
             if (string.IsNullOrEmpty(request.code))
             {
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidCodeRequest);
@@ -106,7 +112,10 @@ namespace Logistics.Controllers
             {
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
             }
-
+            if (!string.IsNullOrEmpty(request.tel) && !string.IsNullOrEmpty(request.mail))
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+            }
             var result = false;
             try
             {
@@ -157,6 +166,12 @@ namespace Logistics.Controllers
             {
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidPwdRequest);
             }
+
+            if ((!string.IsNullOrEmpty(request.tel) && !string.IsNullOrEmpty(request.mail)))
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidTelOrMailRequest);
+            }
+
 
             UserValidateRequest userValidateRequest = new UserValidateRequest();
             userValidateRequest.user = request.mail == "" ? request.tel : request.mail;
@@ -233,6 +248,40 @@ namespace Logistics.Controllers
             {
                 return GetErrorResult(encryptTicket, ex.Status.ToString(), (int)ex.Status);
             }
+
+        }
+
+        [HttpPost]
+        [Route("Forget")]
+        public ResponseMessage<bool> UpdatePwd([FromUri] UpdateUserPwdRequest request)
+        {
+            var result = false;
+            if (string.IsNullOrEmpty(request.pwd))
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidPwdRequest);
+            }
+            if (string.IsNullOrEmpty(request.tel))
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidUserNameRequest);
+            }
+            if (HashHelper.IsSafeSqlString(request.pwd))
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidPwdRequest);
+            }
+            if ((!string.IsNullOrEmpty(request.tel) && !string.IsNullOrEmpty(request.mail)))
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidTelOrMailRequest);
+            }
+
+            try
+            {
+                result = UserManger.UpdateUserPass(request);
+            }
+            catch (LogisticsException ex)
+            {
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+            }
+            return GetResult(result);
 
         }
 

@@ -65,6 +65,7 @@ namespace Logistics_DAL
             public const string Logistics_UserInfo_Insert = "logistics_base_userinfo_insert";
             public const string Logistics_UserInfo_Select = "logistics_base_userinfo_select";
             public const string logistics_userInfo_validate = "logistics_base_userInfo_validate";
+            public const string logistics_userinfo_update_pwd = "logistics_base_userinfo_update_pwd";
         }
 
         public class Role

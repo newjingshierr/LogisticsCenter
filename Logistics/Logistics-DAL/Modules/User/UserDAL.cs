@@ -30,6 +30,7 @@ namespace Logistics_DAL
 
             return result;
         }
+       
 
         public static UserInfo ValidateUser(long TenantID, string user, byte[] Pwd)
         {
@@ -82,6 +83,27 @@ namespace Logistics_DAL
             }
             return result == 1;
 
+        }
+
+        public static bool UpdateUser(UserInfo model, AkmiiMySqlTransaction trans = null)
+        {
+            MySqlParameter[] parameters = {
+                       new MySqlParameter("@_TenantID", model.TenantID),
+                        new MySqlParameter("@_Userid", model.Userid),
+                        new MySqlParameter("@_Pwd", model.Pwd),
+                        new MySqlParameter("@_ModifiedBy",model.ModifiedBy),
+            };
+
+            int result = 0;
+            if (trans == null)
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.User.logistics_userinfo_update_pwd, parameters);
+            }
+            else
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.User.logistics_userinfo_update_pwd, parameters);
+            }
+            return result == 1;
         }
 
 

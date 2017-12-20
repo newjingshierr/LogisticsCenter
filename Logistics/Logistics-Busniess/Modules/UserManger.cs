@@ -189,5 +189,35 @@ namespace Logistics_Busniess
             return result;
         }
 
+        public static bool UpdateUserPass(UpdateUserPwdRequest item)
+        {
+            var result = false;
+            ValidateRequest validateCodeRequest = new ValidateRequest();
+            validateCodeRequest.code = item.code;
+            validateCodeRequest.mail = item.mail;
+            validateCodeRequest.tel = item.tel;
+            var userInfo = new UserInfo();
+            var userInfo1 = new UserInfo();
+
+            if (ValidateCode(validateCodeRequest))
+            {
+                var user = item.mail == "" ? item.tel : item.tel;
+                userInfo = UserDAL.ValidateUser(item.TenantID, user);
+                if (userInfo == null)
+                {
+                    throw new LogisticsException(SystemStatusEnum.InvalidUserExistRequest, $"Invalid User Exist Request");
+                }
+                userInfo1 = UserDAL.ValidateUser(item.TenantID, user, HashHelper.ComputeHash(item.pwd));
+                if (userInfo1 != null)
+                {
+                    throw new LogisticsException(SystemStatusEnum.BadPwdRequest, $"Bad Pwd Request");
+                }
+
+            }
+            userInfo.Pwd = HashHelper.ComputeHash(item.pwd);
+            result = UserDAL.UpdateUser(userInfo);
+            return result;
+        }
+
     }
 }
