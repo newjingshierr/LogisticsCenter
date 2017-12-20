@@ -73,7 +73,7 @@ namespace Logistics.Controllers
             var result = false;
             try
             {
-                result = UserManger.CodeValidate(request);
+                result = UserManger.ValidateCode(request);
 
                 return GetResult(result);
             }

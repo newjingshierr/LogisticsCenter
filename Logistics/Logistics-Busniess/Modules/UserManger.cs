@@ -37,7 +37,7 @@ namespace Logistics_Busniess
             request.code = item.code;
             request.mail = item.mail;
             request.tel = item.tel;
-            if (!CodeValidate(request))
+            if (!ValidateCode(request))
             {
                 throw new LogisticsException(SystemStatusEnum.InvalidCodeRequest, $"code is not valid:{ item.code}");
             }
@@ -80,7 +80,20 @@ namespace Logistics_Busniess
             return ValidateDal.Insert(smsValidate);
         }
 
-        public static bool CodeValidate(ValidateRequest item)
+        public static bool ValidateCode(ValidateRequest item)
+        {
+            var smsValidate = ValidateDal.GetItem(item.TenantID, item.tel, item.mail);
+            var result = false;
+            result = ValidateDal.ChekcItem(item.TenantID, item.tel, item.mail, item.code, smsValidate.startTime, smsValidate.endTime) == null ? false : true;
+
+            if (result == false)
+            {
+                throw new LogisticsException(SystemStatusEnum.InvalidCodeRequest, $"code is not valid:{ item.code}");
+            }
+            return result;
+        }
+
+        public static bool ValidateCodeRate(ValidateRequest item)
         {
             var smsValidate = ValidateDal.GetItem(item.TenantID, item.tel, item.mail);
             var result = false;
