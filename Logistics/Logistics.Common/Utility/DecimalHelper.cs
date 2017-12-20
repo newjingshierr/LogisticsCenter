@@ -8,10 +8,6 @@ namespace Logistics.Common
 {
     public class DecimalHelper
     {
-        public static decimal formate(decimal value)
-        {
-            return Convert.ToDecimal(value.ToString("0.00"));
-        }
 
         /// <summary>
         ///    //(长度>2.7米或者两个短边相加和乘以2+最长边 >330cm或者单件实重超过68KG),这是针对于单个的货物；

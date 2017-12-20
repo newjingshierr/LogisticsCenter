@@ -5,6 +5,7 @@ using System.Web.Security;
 using Logistics.Common;
 using Logistics_Model;
 using Logistics_Busniess;
+using Akmii;
 
 
 namespace Logistics.Controllers
@@ -13,6 +14,8 @@ namespace Logistics.Controllers
     [RoutePrefix(ApiConstants.PrefixApi + "User")]
     public class UserController : BaseController
     {
+        LogHelper log = LogHelper.GetLogger(typeof(UserController));
+
         /// <summary>
         /// 用户名验证；
         /// </summary>
@@ -41,6 +44,7 @@ namespace Logistics.Controllers
             }
             catch (LogisticsException ex)
             {
+                log.Error(ex.Message);
                 return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
             }
 
@@ -85,6 +89,7 @@ namespace Logistics.Controllers
             }
             catch (LogisticsException ex)
             {
+                log.Error(ex.Message);
                 return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
             }
 
@@ -125,6 +130,7 @@ namespace Logistics.Controllers
             }
             catch (LogisticsException ex)
             {
+                log.Error(ex.Message);
                 return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
 
             }
@@ -188,8 +194,8 @@ namespace Logistics.Controllers
             }
             catch (LogisticsException ex)
             {
+                log.Error(ex.Message);
                 return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
-
             }
 
         }
@@ -246,11 +252,17 @@ namespace Logistics.Controllers
             }
             catch (LogisticsException ex)
             {
+                log.Error(ex.Message);
                 return GetErrorResult(encryptTicket, ex.Status.ToString(), (int)ex.Status);
             }
 
         }
 
+        /// <summary>
+        /// 忘记密码
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Forget")]
         public ResponseMessage<bool> UpdatePwd([FromUri] UpdateUserPwdRequest request)
@@ -279,6 +291,7 @@ namespace Logistics.Controllers
             }
             catch (LogisticsException ex)
             {
+                log.Error(ex.Message);
                 return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
             }
             return GetResult(result);
