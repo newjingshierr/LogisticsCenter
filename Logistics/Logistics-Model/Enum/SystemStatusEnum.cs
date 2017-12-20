@@ -81,6 +81,12 @@ namespace Logistics_Model
         InvalidUserExistRequest = 12,
 
         /// <summary>
+        /// code参数不合法
+        /// </summary>
+        [Description("操作太频繁")]
+        OperateRateRequest = 13,
+
+        /// <summary>
         /// 商户不存在
         /// </summary>
         [Description("商户不存在")]

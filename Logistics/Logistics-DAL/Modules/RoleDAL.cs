@@ -17,7 +17,7 @@ namespace Logistics_DAL
                        new MySqlParameter("@_TenantID", model.TenantID),
                         new MySqlParameter("@_ID", model.ID),
                         new MySqlParameter("@_RoleID",model.RoleID),
-                         new MySqlParameter("@_UserID",model.RoleID),
+                         new MySqlParameter("@_UserID",model.Userid),
                         new MySqlParameter("@_CreatedBy",model.CreatedBy),
                         new MySqlParameter("@_ModifiedBy",model.ModifiedBy),
             };

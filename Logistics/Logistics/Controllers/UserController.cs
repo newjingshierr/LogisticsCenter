@@ -41,7 +41,7 @@ namespace Logistics.Controllers
             }
             catch (LogisticsException ex)
             {
-              return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
             }
 
         }
@@ -98,10 +98,15 @@ namespace Logistics.Controllers
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
             }
 
-            if (string.IsNullOrEmpty(request.tel)|| string.IsNullOrEmpty(request.type.ToString()))
+            if (string.IsNullOrEmpty(request.type.ToString()))
             {
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
             }
+            if (string.IsNullOrEmpty(request.tel) && string.IsNullOrEmpty(request.mail))
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+            }
+
             var result = false;
             try
             {
@@ -111,7 +116,7 @@ namespace Logistics.Controllers
             }
             catch (LogisticsException ex)
             {
-            return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
 
             }
 
@@ -148,21 +153,27 @@ namespace Logistics.Controllers
             {
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidCodeRequest);
             }
-            if(HashHelper.IsSafeSqlString(request.pwd)|| HashHelper.IsSafeSqlString(request.rePwd) || HashHelper.ProcessSqlStr(request.rePwd)|| HashHelper.IsSafeSqlString(request.rePwd))
+            if (HashHelper.IsSafeSqlString(request.pwd) || HashHelper.IsSafeSqlString(request.rePwd) || HashHelper.ProcessSqlStr(request.rePwd) || HashHelper.IsSafeSqlString(request.rePwd))
             {
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidPwdRequest);
             }
 
+            UserValidateRequest userValidateRequest = new UserValidateRequest();
+            userValidateRequest.user = request.mail == "" ? request.tel : request.mail;
+
             var result = false;
             try
             {
-                result = UserManger.InsertUser(request);
+                if (UserManger.ValidateUser(userValidateRequest))
+                {
+                    result = UserManger.InsertUser(request);
+                }
 
                 return GetResult(result);
             }
-            catch (LogisticsException  ex)
+            catch (LogisticsException ex)
             {
-                return GetErrorResult(result,ex.Status.ToString(), (int)ex.Status);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
 
             }
 
@@ -215,7 +226,7 @@ namespace Logistics.Controllers
                 allUserInfo.userInfo = userInfo;
                 allUserInfo.role = null;
 
-             //   UserManger.GetAllUserInfoCahced(request.TenantID, request.user, false);
+                //   UserManger.GetAllUserInfoCahced(request.TenantID, request.user, false);
                 return GetResult(encryptTicket);
             }
             catch (LogisticsException ex)

@@ -2,6 +2,7 @@
 using Logistics.Core;
 using Logistics_DAL;
 using Logistics.Common;
+using System;
 
 namespace Logistics_Busniess
 {
@@ -30,8 +31,8 @@ namespace Logistics_Busniess
             roleUser.ID = IdWorker.GetID();
             roleUser.RoleID = BusinessConstants.Role.member;
             roleUser.Userid = userInfo.Userid;
-            userInfo.CreatedBy = BusinessConstants.Admin.TenantID;
-            userInfo.ModifiedBy = BusinessConstants.Admin.TenantID;
+            roleUser.CreatedBy = BusinessConstants.Admin.TenantID;
+            roleUser.ModifiedBy = BusinessConstants.Admin.TenantID;
 
             ValidateRequest request = new ValidateRequest();
             request.code = item.code;
@@ -74,7 +75,7 @@ namespace Logistics_Busniess
             smsValidate.mail = item.mail;
             smsValidate.TenantID = item.TenantID;
             smsValidate.startTime = System.DateTime.Now;
-            smsValidate.endTime = smsValidate.startTime.AddMinutes(15);
+            smsValidate.endTime = smsValidate.startTime.AddMinutes(15);//15分钟有效期
             smsValidate.CreatedBy = BusinessConstants.Admin.TenantID;
             smsValidate.ModifiedBy = BusinessConstants.Admin.TenantID;
             return ValidateDal.Insert(smsValidate);
@@ -97,18 +98,26 @@ namespace Logistics_Busniess
         {
             var smsValidate = ValidateDal.GetItem(item.TenantID, item.tel, item.mail);
             var result = false;
-            result = ValidateDal.ChekcItem(item.TenantID, item.tel, item.mail, item.code, smsValidate.startTime, smsValidate.endTime) == null ? false : true;
+            TimeSpan timeSpan = DateTime.Now - smsValidate.Created;
 
-            if (result == false)
+            result = timeSpan.TotalMinutes < 1 ? true : false;
+
+            if (result == true)
             {
-                throw new LogisticsException(SystemStatusEnum.InvalidCodeRequest, $"code is not valid:{ item.code}");
+                throw new LogisticsException(SystemStatusEnum.OperateRateRequest, $"operate exceed limit");
             }
             return result;
         }
 
         public static bool ValidateUser(UserValidateRequest item)
         {
-            return UserDAL.ValidateUser(item.TenantID, item.user) == null ? false : true;
+            var result = false;
+            result = UserDAL.ValidateUser(item.TenantID, item.user) == null ? true : false;
+            if (result == false)
+            {
+                throw new LogisticsException(SystemStatusEnum.InvalidUserExistRequest, $"User Exist Request");
+            }
+            return result;
         }
 
         public static bool SendSMS(SendSMSRequest request)
@@ -116,6 +125,18 @@ namespace Logistics_Busniess
             var radmon = SMSHelper.GetRandom();
             var result = false;
             var sendResult = false;
+
+            ///检查操作是否过于频繁；检查的逻辑，根据手机号或者邮箱去检查之前的最近的一条的创建时间和现在的时间间隔是否有超过1分钟；
+            var smsValidate = ValidateDal.GetItem(request.TenantID, request.tel, request.mail);
+            if (smsValidate != null)
+            {
+                TimeSpan timeSpan = DateTime.Now - smsValidate.Created;
+                var CodeRateResult = timeSpan.TotalMinutes < 1 ? true : false;
+                if (CodeRateResult == true)
+                {
+                    throw new LogisticsException(SystemStatusEnum.OperateRateRequest, $"operate exceed limit");
+                }
+            }
 
             if (request.type == SendTypeEnum.Tel)
             {
@@ -141,6 +162,8 @@ namespace Logistics_Busniess
                 InsertRequest.code = radmon;
                 InsertRequest.tel = request.tel;
                 InsertRequest.TenantID = request.TenantID;
+                InsertRequest.mail = request.mail;
+
                 result = InsertSMSValidate(InsertRequest);
             }
 
