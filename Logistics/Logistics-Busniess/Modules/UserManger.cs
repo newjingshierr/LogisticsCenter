@@ -84,7 +84,7 @@ namespace Logistics_Busniess
         public static bool ValidateCode(ValidateRequest item)
         {
             var smsValidate = ValidateDal.GetItem(item.TenantID, item.tel, item.mail);
-            if (smsValidate ==  null)
+            if (smsValidate == null)
             {
                 throw new LogisticsException(SystemStatusEnum.InvalidRequest, $"Invalid Request");
             }
@@ -162,7 +162,7 @@ namespace Logistics_Busniess
 
                 sendResult = SMSHelper.Send(radmon, SMSTypeEnum.Register, request.tel);
             }
-            else if (request.type == SendTypeEnum.Mail )
+            else if (request.type == SendTypeEnum.Mail)
             {
                 if (string.IsNullOrEmpty(request.mail) || !SMSHelper.IsEmail(request.mail))
                 {
@@ -185,25 +185,22 @@ namespace Logistics_Busniess
             return result;
         }
 
-        public static AllUserInfo GetAllUserInfoCahced(long TenantID, string usr, bool isCache = true, bool isWrite = false, AllUserInfo allInfo = null)
+        public static string GetTokenCahced(long TenantID, string usr, bool isCache = true, string token = null)
         {
-            var key = CacheConstants.GetAllInfo(usr, TenantID);
+            var key = CacheConstants.GetToken(usr, TenantID);
 
             if (!isCache)
             {
                 MemcachedHelper.Instance().Remove(key);
             }
-
             var result = MemcachedHelper.Instance().GetOrSet(key, () =>
             {
-                var model = allInfo;
-
+                var model = token;
                 return model;
 
-            }, CacheConstants.GetGetAllInfoTime()).Result;
+            }, CacheConstants.GetTokenTime()).Result;
             return result;
         }
-
         public static bool UpdateUserPass(UpdateUserPwdRequest item)
         {
             var result = false;

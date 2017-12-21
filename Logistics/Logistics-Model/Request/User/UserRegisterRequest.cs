@@ -1,6 +1,12 @@
 ﻿
 namespace Logistics_Model
 {
+    public class TokenRequest : BaseReqeust
+    {
+        public string token { get; set; } = "";
+
+    }
+
     public class UpdateUserPwdRequest : BaseReqeust
     {
         public string mail { get; set; } = "";

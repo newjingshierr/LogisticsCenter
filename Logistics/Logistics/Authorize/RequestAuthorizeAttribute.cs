@@ -53,14 +53,8 @@ namespace Logistics
             string strPwd = strTicket.Substring(index + 1);
             string strTenantID = strTicket.Substring(index + 2);
 
-            //LoginRequest request = new LoginRequest();
-            //request.user = strUser;
-            //request.pwd = strPwd;
-            ////数据库验证
-            //var userInfo = UserManger.ValidateUser(request);
-
-            //缓存中后续会换成缓存中；
-           var cachedToken =   UserManger.GetAllUserInfoCahced(long.Parse(strTenantID), strUser).ticket;
+            //缓存中读取，进行验证token;
+            var cachedToken = UserManger.GetTokenCahced(long.Parse(strTenantID), strUser);
             if (encryptTicket == cachedToken)
             {
                 return true;

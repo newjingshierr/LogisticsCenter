@@ -32,16 +32,17 @@ namespace Logistics_Model
             return DateTime.Now.AddMinutes(10);
         }
 
-        public static DateTime GetGetAllInfoTime()
+        public static DateTime GetTokenTime()
         {
 
-            return DateTime.Now.AddDays(1);
+            return DateTime.Now.AddHours(1);
         }
 
 
-        public static string GetAllInfo(string user, long TenantID)
+        public static string GetToken(string user, long TenantID)
         {
-            return $"AllInfo{TenantID}_{user}";
+            return $"Token_{TenantID}_{user}";
         }
+
     }
 }

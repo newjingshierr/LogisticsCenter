@@ -235,19 +235,13 @@ namespace Logistics.Controllers
                     return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
                 }
                 FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, request.user, DateTime.Now,
-                            DateTime.Now.AddHours(1), true, string.Format("{0}&{1}&{2}", request.user, request.pwd, request.TenantID.ToString()),
+                            DateTime.Now.AddMinutes(15), true, string.Format("{0}&{1}&{2}", request.user, request.pwd, request.TenantID.ToString()),
                             FormsAuthentication.FormsCookiePath);
                 //token进行加密
                 encryptTicket = FormsAuthentication.Encrypt(ticket);
                 // 用户新增是会员角色；
 
-                //将身份信息保存在session中
-                allUserInfo = new AllUserInfo();
-                allUserInfo.ticket = encryptTicket;
-                allUserInfo.userInfo = userInfo;
-                allUserInfo.role = null;
-
-                //   UserManger.GetAllUserInfoCahced(request.TenantID, request.user, false);
+                UserManger.GetTokenCahced(request.TenantID, request.user, false, encryptTicket);
                 return GetResult(encryptTicket);
             }
             catch (LogisticsException ex)
@@ -281,9 +275,17 @@ namespace Logistics.Controllers
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidTelOrMailRequest);
             }
 
+            var user = request.tel == "" ? request.mail : request.tel;
             try
             {
                 result = UserManger.UpdateUserPass(request);
+                if (result)
+                {
+                    FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, user, DateTime.Now,
+                         DateTime.Now.AddMinutes(15), true, string.Format("{0}&{1}&{2}", user, request.pwd, request.TenantID.ToString()),
+                         FormsAuthentication.FormsCookiePath);
+                    UserManger.GetTokenCahced(request.TenantID, user, false, FormsAuthentication.Encrypt(ticket));
+                }
             }
             catch (LogisticsException ex)
             {
