@@ -46,7 +46,7 @@ namespace Logistics.Controllers
         {
             if (request == null)
             {
-                return GetErrorResult<List<logistics_base_country>>(SystemStatusEnum.InvalidRequest);
+                request = new GetAllCountryByNameRequest();
             }
 
             var result = new List<logistics_base_country>();

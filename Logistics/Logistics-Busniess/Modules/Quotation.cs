@@ -27,15 +27,19 @@ namespace Logistics_Busniess
 
             foreach (var o in AllChannels)
             {
-                QuotationChannelPriceVM = new QuotationChannelPriceVM();
-                QuotationChannelPriceVM.Amount = GetPriceByChannelID(request, o.ID);
-                QuotationChannelPriceVM.channelID = o.ID;
-                QuotationChannelPriceVM.channelName = o.Name;
-                QuotationChannelPriceVM.Prescription = o.Prescription;
-                QuotationChannelPriceVM.Remark = o.Remark;
-                QuotationChannelPriceVM.ServiceAmount = 0;
-                QuotationChannelPriceVM.weight = request.weight;
-                QuotationChannelPriceList.Add(QuotationChannelPriceVM);
+                if (o.ID != BusinessConstants.Channel.EMSEconomicID)
+                {
+                    QuotationChannelPriceVM = new QuotationChannelPriceVM();
+                    QuotationChannelPriceVM.Amount = GetPriceByChannelID(request, o.ID);
+                    QuotationChannelPriceVM.channelID = o.ID;
+                    QuotationChannelPriceVM.channelName = o.Name;
+                    QuotationChannelPriceVM.Prescription = o.Prescription;
+                    QuotationChannelPriceVM.Remark = o.Remark;
+                    QuotationChannelPriceVM.ServiceAmount = 0;
+                    QuotationChannelPriceVM.weight = request.weight;
+                    QuotationChannelPriceVM.Clause = o.Clause;
+                    QuotationChannelPriceList.Add(QuotationChannelPriceVM);
+                }
 
             }
 
@@ -92,7 +96,7 @@ namespace Logistics_Busniess
 
 
             }
-            else if (channelID == BusinessConstants.Channel.FedxEconomicID)
+            else if (channelID == BusinessConstants.Channel.FEDEXIE|| channelID == BusinessConstants.Channel.FEDEXIP)
             {
                 volumeWeight = Math.Round(volume / 5000, 2);
                 if (weight > volumeWeight)
@@ -109,7 +113,9 @@ namespace Logistics_Busniess
                     //根据国家和渠道ID 获取分区
                     var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
                     //根据分区获取分区价格
-                    var QuotationPrice = QuotationDal.SelectIPFPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
+                    //IPF价格还没有上20171223
+                    // var QuotationPrice = QuotationDal.SelectIPFPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
+                    var QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
                     amount = Math.Round(Convert.ToDecimal((Convert.ToDouble(QuotationPrice.price) * 1.125)));
                 }
                 else
@@ -121,7 +127,7 @@ namespace Logistics_Busniess
                     amount = Math.Round(Convert.ToDecimal((Convert.ToDouble(QuotationPrice.price) * 1.125)));
                 }
             }
-            else if (channelID == BusinessConstants.Channel.UPSEconomicID)
+            else if (channelID == BusinessConstants.Channel.UPSFSR)
             {
                 volumeWeight = Math.Round(volume / 5000, 2);
                 if (weight > volumeWeight)

@@ -13,7 +13,16 @@ namespace Logistics
         {
 
             //跨域配置
-            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
+            // Web API configuration and services
+            var appsettings = System.Configuration.ConfigurationManager.AppSettings;
+
+            //CORS config
+            var corsAttr = new EnableCorsAttribute(
+                appsettings["Access-Control-Allow-Origin"],
+                appsettings["Access-Control-Allow-Headers"],
+                appsettings["Access-Control-Allow-Methods"]);
+            config.EnableCors(corsAttr);
+
             // Web API 路由
             config.MapHttpAttributeRoutes();
 

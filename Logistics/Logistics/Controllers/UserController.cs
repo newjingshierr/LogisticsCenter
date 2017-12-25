@@ -102,7 +102,7 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Send")]
-        public ResponseMessage<bool> SendSMS([FromUri] SendSMSRequest request)
+        public ResponseMessage<bool> SendSMS( SendSMSRequest request)
         {
             if (request == null)
             {
@@ -145,7 +145,7 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Register")]
-        public ResponseMessage<bool> Register([FromUri] UserRegisterRequest request)
+        public ResponseMessage<bool> Register(UserRegisterRequest request)
         {
             if (request == null)
             {
@@ -208,7 +208,7 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Login")]
-        public ResponseMessage<string> Login([FromUri] LoginRequest request)
+        public ResponseMessage<string> Login( LoginRequest request)
         {
             if (request == null)
             {
@@ -259,7 +259,7 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Forget")]
-        public ResponseMessage<bool> UpdatePwd([FromUri] UpdateUserPwdRequest request)
+        public ResponseMessage<bool> UpdatePwd(UpdateUserPwdRequest request)
         {
             var result = false;
             if (string.IsNullOrEmpty(request.pwd))
