@@ -172,7 +172,7 @@ namespace Logistics_Busniess
 
             if (request.type == SendTypeEnum.Tel)
             {
-                if (string.IsNullOrEmpty(request.tel) || !SMSHelper.IsTelephone(request.tel))
+                if (string.IsNullOrEmpty(request.tel))
                 {
                     throw new LogisticsException(SystemStatusEnum.InvalidTelOrMailRequest, $"InvalidTelOrMailRequest");
                 }
@@ -181,7 +181,7 @@ namespace Logistics_Busniess
             }
             else if (request.type == SendTypeEnum.Mail)
             {
-                if (string.IsNullOrEmpty(request.mail) || !SMSHelper.IsEmail(request.mail))
+                if (string.IsNullOrEmpty(request.mail))
                 {
                     throw new LogisticsException(SystemStatusEnum.InvalidTelOrMailRequest, $"InvalidTelOrMailRequest");
                 }
