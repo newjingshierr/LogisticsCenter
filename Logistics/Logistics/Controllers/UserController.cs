@@ -102,7 +102,7 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Send")]
-        public ResponseMessage<bool> SendSMS( SendSMSRequest request)
+        public ResponseMessage<bool> SendSMS(SendSMSRequest request)
         {
             if (request == null)
             {
@@ -208,7 +208,7 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Login")]
-        public ResponseMessage<string> Login( LoginRequest request)
+        public ResponseMessage<string> Login(LoginRequest request)
         {
             if (request == null)
             {
@@ -226,11 +226,11 @@ namespace Logistics.Controllers
             }
 
             var encryptTicket = "";
-            AllUserInfo allUserInfo = null;
+            var result = false;
             try
             {
-                var userInfo = UserManger.ValidateUser(request);
-                if (userInfo == null)
+                result = UserManger.ValidateUser(request);
+                if (result == false)
                 {
                     return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
                 }
@@ -240,7 +240,6 @@ namespace Logistics.Controllers
                 //token进行加密
                 encryptTicket = FormsAuthentication.Encrypt(ticket);
                 // 用户新增是会员角色；
-
                 UserManger.GetTokenCahced(request.TenantID, request.user, false, encryptTicket);
                 return GetResult(encryptTicket);
             }
@@ -252,6 +251,36 @@ namespace Logistics.Controllers
 
         }
 
+        [RequestAuthorize]
+        [HttpPost]
+        [Route("Logout")]
+        public ResponseMessage<string> Logout(LogoutRequest request)
+        {
+            if (request == null)
+            {
+                return GetErrorResult<string>(SystemStatusEnum.InvalidRequest);
+            }
+
+            if (string.IsNullOrEmpty(request.user))
+            {
+                return GetErrorResult<string>(SystemStatusEnum.InvalidUserNameRequest);
+            }
+
+
+            var result = false;
+            try
+            {
+                result = UserManger.RemoveTokenCached(BusinessConstants.Admin.TenantID, request.user);
+
+                return GetResult(result.ToString());
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result.ToString(), ex.Status.ToString(), (int)ex.Status);
+            }
+
+        }
         /// <summary>
         /// 忘记密码
         /// </summary>

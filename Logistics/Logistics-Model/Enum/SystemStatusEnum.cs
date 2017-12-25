@@ -93,6 +93,12 @@ namespace Logistics_Model
         BadPwdRequest = 14,
 
         /// <summary>
+        /// 注销失败
+        /// </summary>
+        [Description("注销失败")]
+       SigoutErrorRequest = 15,
+
+        /// <summary>
         /// 商户不存在
         /// </summary>
         [Description("商户不存在")]

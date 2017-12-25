@@ -61,6 +61,7 @@
     <Compile Include="Utility\HashHelper.cs" />
     <Compile Include="Utility\MailHelper.cs" />
     <Compile Include="Utility\SMSHelper.cs" />
+    <Compile Include="Utility\SystemHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Logistics-Model\Logistics-Model.csproj">

@@ -21,6 +21,11 @@ namespace Logistics_Model
         public string pwd { get; set; } = "";
 
     }
+    public class LogoutRequest : BaseReqeust
+    {
+        public string user { get; set; } = "";
+
+    }
 
     public class SendSMSRequest : BaseReqeust
     {

@@ -43,7 +43,6 @@ namespace Logistics_Busniess
                 throw new LogisticsException(SystemStatusEnum.InvalidCodeRequest, $"code is not valid:{ item.code}");
             }
 
-
             var dbResult = false;
 
             using (var conn = ConnectionManager.GetWriteConn())
@@ -60,9 +59,27 @@ namespace Logistics_Busniess
             return dbResult;
         }
 
-        public static UserInfo ValidateUser(LoginRequest request)
+        public static bool ValidateUser(LoginRequest request)
         {
-            return UserDAL.ValidateUser(request.TenantID, request.user, HashHelper.ComputeHash(request.pwd));
+            var dbResult = false;
+
+
+            var userInfo = UserDAL.ValidateUser(request.TenantID, request.user, HashHelper.ComputeHash(request.pwd));
+            dbResult = userInfo == null ? false : true;
+            if (dbResult)
+            {
+                logistics_base_userinfo_log userinfoLog = new logistics_base_userinfo_log();
+                userinfoLog.TenantID = BusinessConstants.Admin.TenantID;
+                userinfoLog.ID = IdWorker.GetID();
+                userinfoLog.Userid = userInfo.Userid;
+                userinfoLog.userIP = SystemHelper.GetHostAddress();
+                userinfoLog.type = (int)UserInfoLogEnum.LognIn;
+                userinfoLog.CreatedBy = BusinessConstants.Admin.TenantID;
+                userinfoLog.ModifiedBy = BusinessConstants.Admin.TenantID;
+                dbResult = dbResult && UserDAL.InsertUserInfoLog(userinfoLog);
+            }
+            return dbResult;
+
         }
 
 
@@ -199,6 +216,21 @@ namespace Logistics_Busniess
                 return model;
 
             }, CacheConstants.GetTokenTime()).Result;
+            return result;
+        }
+        public static bool RemoveTokenCached(long TenantID, string user)
+        {
+            var key = CacheConstants.GetToken(user, TenantID);
+            var result = false;
+            if (!string.IsNullOrEmpty(user))
+            {
+                result = MemcachedHelper.Instance().Remove(key);
+            }
+            if (result)
+            {
+                throw new LogisticsException(SystemStatusEnum.SigoutErrorRequest, $"Sigout Error Request");
+            }
+
             return result;
         }
         public static bool UpdateUserPass(UpdateUserPwdRequest item)

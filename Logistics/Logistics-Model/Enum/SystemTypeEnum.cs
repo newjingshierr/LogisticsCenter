@@ -30,4 +30,9 @@ namespace Logistics_Model
     {
         Register = 0,
     }
+    public enum UserInfoLogEnum
+    {
+        LognIn = 0,
+        LognOut = 1
+    }
 }
