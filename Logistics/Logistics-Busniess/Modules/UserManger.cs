@@ -105,6 +105,10 @@ namespace Logistics_Busniess
             {
                 throw new LogisticsException(SystemStatusEnum.InvalidRequest, $"Invalid Request");
             }
+            if (smsValidate.code != item.code)
+            {
+                throw new LogisticsException(SystemStatusEnum.InvalidCodeRequest, $"Invalid Code Request");
+            }
 
             var result = false;
             result = ValidateDal.ChekcItem(item.TenantID, item.tel, item.mail, item.code, smsValidate.startTime, smsValidate.endTime) == null ? false : true;
