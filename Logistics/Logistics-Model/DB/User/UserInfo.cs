@@ -151,4 +151,11 @@ namespace Logistics_Model
 
     }
 
+    public class CurrentInfo
+    {
+        public UserInfo userInfo { get; set; }
+        public logistics_base_role role { get; set; }
+        public List<logistics_base_navigation> navigations { get; set; }
+    }
+
 }

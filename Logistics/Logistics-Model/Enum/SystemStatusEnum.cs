@@ -96,7 +96,15 @@ namespace Logistics_Model
         /// 注销失败
         /// </summary>
         [Description("注销失败")]
-       SigoutErrorRequest = 15,
+        SigoutErrorRequest = 15,
+        /// <summary>
+        ///
+        /// </summary>
+        [Description("非法角色")]
+        InvalidRoleRequest = 16,
+
+        [Description("非法导航")]
+        InvalidNavigationRequest = 17,
 
         /// <summary>
         /// 商户不存在

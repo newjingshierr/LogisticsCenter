@@ -3,6 +3,8 @@ using Logistics.Core;
 using Logistics_DAL;
 using Logistics.Common;
 using System;
+using System.Data;
+using System.Collections.Generic;
 
 namespace Logistics_Busniess
 {
@@ -267,5 +269,55 @@ namespace Logistics_Busniess
             return result;
         }
 
+        public static CurrentInfo GetCurrentInfo(long TenantID, string user)
+        {
+            CurrentInfo currentInfo = new CurrentInfo();
+            var userInfo = new UserInfo();
+
+            userInfo = UserDAL.ValidateUser(TenantID, user);
+            var role = new logistics_base_role();
+            if (userInfo != null)
+            {
+                role = RoleDAL.SelectRoleItem(TenantID, userInfo.Userid);
+            }
+            else
+            {
+                throw new LogisticsException(SystemStatusEnum.InvalidUserNameRequest, $"Invalid UserName Request:{ user}");
+            }
+
+            if (role == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.InvalidRoleRequest, $"Invalid Role Request:{ user}");
+            }
+
+            var navigations = new List<logistics_base_navigation>();
+            navigations = NavigationDal.SelectNavigationItems(TenantID, role.RoleID);
+            //if (navigations == null)
+            //{
+            //    throw new LogisticsException(SystemStatusEnum.InvalidNavigationRequest, $"Invalid Navigation:{ user}");
+            //}
+            currentInfo.userInfo = userInfo;
+            currentInfo.role = role;
+            currentInfo.navigations = navigations;
+
+            return currentInfo;
+        }
+
+        public static CurrentInfo GetCurrentInfoCahced(long TenantID, string usr, bool isCache = true, CurrentInfo currentInfo = null)
+        {
+            var key = CacheConstants.GetCurrentInfo(usr, TenantID);
+
+            if (!isCache)
+            {
+                MemcachedHelper.Instance().Remove(key);
+            }
+            var result = MemcachedHelper.Instance().GetOrSet(key, () =>
+            {
+                var model = currentInfo;
+                return model;
+
+            }, CacheConstants.GetCurrentInfoTime()).Result;
+            return result;
+        }
     }
 }

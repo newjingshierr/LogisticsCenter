@@ -61,6 +61,7 @@
     <Compile Include="Constants\CacheConstants.cs" />
     <Compile Include="DB\Base\logistics_base_sms_validate.cs" />
     <Compile Include="DB\Base\Navigation.cs" />
+    <Compile Include="DB\Navigation\Navigation.cs" />
     <Compile Include="DB\Product.cs" />
     <Compile Include="DB\Quotation\Quotation.cs" />
     <Compile Include="DB\Quotation\QuotationVM.cs" />

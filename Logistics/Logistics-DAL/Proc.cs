@@ -72,9 +72,14 @@ namespace Logistics_DAL
 
         public class Role
         {
+            public const string logistics_base_role_select_by_userid = "logistics_base_role_select_by_userid";
             public const string logistics_base_role_user_binding_Insert = "logistics_base_role_user_binding_Insert";
-        }
 
+        }
+        public class Navigation
+        {
+            public const string logistics_base_navigation_select_by_roleid = "logistics_base_navigation_select_by_roleid";
+        }
         public class Base
         {
             public const string logistics_base_sms_validate_insert = "logistics_base_sms_validate_insert";

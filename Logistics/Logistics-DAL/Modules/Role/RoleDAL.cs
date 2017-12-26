@@ -34,5 +34,28 @@ namespace Logistics_DAL
             return result == 1;
 
         }
+
+
+        public static logistics_base_role SelectRoleItem(long TenantID, long userid)
+        {
+            var result = new logistics_base_role();
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID",TenantID),
+                new MySqlParameter("@_userid", userid),
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Role.logistics_base_role_select_by_userid, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<logistics_base_role>.DtToModel(dbResult.Tables[0]);
+            }
+            else
+            {
+                result = null;
+            }
+
+
+            return result;
+        }
     }
 }

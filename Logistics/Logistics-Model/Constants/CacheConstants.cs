@@ -37,11 +37,21 @@ namespace Logistics_Model
 
             return DateTime.Now.AddHours(1);
         }
+        public static DateTime GetCurrentInfoTime()
+        {
+
+            return DateTime.Now.AddDays(1);
+        }
 
 
         public static string GetToken(string user, long TenantID)
         {
             return $"Token_{TenantID}_{user}";
+        }
+
+        public static string GetCurrentInfo(string user, long TenantID)
+        {
+            return $"CurrentInfo_{TenantID}_{user}";
         }
 
     }
