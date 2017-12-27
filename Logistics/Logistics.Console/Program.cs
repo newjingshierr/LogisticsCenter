@@ -42,41 +42,49 @@ namespace Logistics.Console
 
         static void Main(string[] args)
         {
-           // sendMail("fds718@163.com", "famliytree", "enzo.shi@famliytree.cn", "enzo.shi@famliytree.cn", "Infosys333", "您好！", "这是一封测试邮件!");
+            // sendMail("fds718@163.com", "famliytree", "enzo.shi@famliytree.cn", "enzo.shi@famliytree.cn", "Infosys333", "您好！", "这是一封测试邮件!");
 
             Program p = new Program();
 
-            p.ImportPartion(BusinessConstants.Channel.FEDEXIP, "fedex优先服务IP 分区");
-            p.ImportCounty(BusinessConstants.Channel.FEDEXIP, "fedex优先服务IP 国家");
-            p.ImportQuotation(BusinessConstants.Channel.FEDEXIP, "fedex优先服务IP 价格");
+            //p.ImportPartion(BusinessConstants.Channel.FEDEXIP, "fedex优先服务IP 分区");
+            //p.ImportCounty(BusinessConstants.Channel.FEDEXIP, "fedex优先服务IP 国家");
+            //p.ImportQuotation(BusinessConstants.Channel.FEDEXIP, "fedex优先服务IP 价格");
 
 
-            p.ImportPartion(BusinessConstants.Channel.FEDEXIE, "fedex经济服务IE 分区");
-            p.ImportCounty(BusinessConstants.Channel.FEDEXIE, "fedex经济服务IE 国家");
-            p.ImportQuotation(BusinessConstants.Channel.FEDEXIE, "fedex经济服务IE 价格");
+            //p.ImportPartion(BusinessConstants.Channel.FEDEXIE, "fedex经济服务IE 分区");
+            //p.ImportCounty(BusinessConstants.Channel.FEDEXIE, "fedex经济服务IE 国家");
+            //p.ImportQuotation(BusinessConstants.Channel.FEDEXIE, "fedex经济服务IE 价格");
 
 
-            p.ImportPartion(BusinessConstants.Channel.UPSFSR, "UPS优先服务红单  分区");
-            p.ImportCounty(BusinessConstants.Channel.UPSFSR, "UPS优先服务红单 国家");
-            p.ImportQuotation(BusinessConstants.Channel.UPSFSR, "UPS优先服务红单  价格");
+            //p.ImportPartion(BusinessConstants.Channel.UPSFSR, "UPS优先服务红单  分区");
+            //p.ImportCounty(BusinessConstants.Channel.UPSFSR, "UPS优先服务红单 国家");
+            //p.ImportQuotation(BusinessConstants.Channel.UPSFSR, "UPS优先服务红单  价格");
 
 
 
-            p.ImportPartion(BusinessConstants.Channel.TNT48N, "TNT48N经济快递 分区");
-            p.ImportCounty(BusinessConstants.Channel.TNT48N, "TNT48N经济快递 国家");
-            p.ImportQuotation(BusinessConstants.Channel.TNT48N, "TNT48N经济快递  价格");
+            //p.ImportPartion(BusinessConstants.Channel.TNT48N, "TNT48N经济快递 分区");
+            //p.ImportCounty(BusinessConstants.Channel.TNT48N, "TNT48N经济快递 国家");
+            //p.ImportQuotation(BusinessConstants.Channel.TNT48N, "TNT48N经济快递  价格");
 
 
-            p.ImportPartion(BusinessConstants.Channel.TNT15N, "TNT15N优先快递  分区");
-            p.ImportCounty(BusinessConstants.Channel.TNT15N, "TNT15N优先快递  国家");
-            p.ImportQuotation(BusinessConstants.Channel.TNT15N, "TNT15N优先快递   价格");
+            //p.ImportPartion(BusinessConstants.Channel.TNT15N, "TNT15N优先快递  分区");
+            //p.ImportCounty(BusinessConstants.Channel.TNT15N, "TNT15N优先快递  国家");
+            //p.ImportQuotation(BusinessConstants.Channel.TNT15N, "TNT15N优先快递   价格");
 
 
             //  p.ImportAllCountries("所有国家");
 
-            p.ImportPartion(BusinessConstants.Channel.DHLEconomicID, "DHL经济型分区");
-            p.ImportCounty(BusinessConstants.Channel.DHLEconomicID, "DHL经济型国家");
-            p.ImportQuotation(BusinessConstants.Channel.DHLEconomicID, "DHL经济型价格");
+       //     p.ImportPartion(BusinessConstants.Channel.EMSEconomicID, "EMS分区");
+         //   p.ImportCounty(BusinessConstants.Channel.EMSEconomicID, "EMS国家");
+            p.ImportEMSQuotaion(BusinessConstants.Channel.EMSEconomicID, "EMS价格");
+
+          //  p.ImportPartion(BusinessConstants.Channel.EUB, "EUB分区");
+         //   p.ImportCounty(BusinessConstants.Channel.EUB, "EUB国家");
+            p.ImportEMSQuotaion(BusinessConstants.Channel.EUB, "EUB价格");
+
+        //    p.ImportPartion(BusinessConstants.Channel.InternationalESuperFast, "国际e特快分区");
+        //    p.ImportCounty(BusinessConstants.Channel.InternationalESuperFast, "国际e特快国家");
+            p.ImportEMSQuotaion(BusinessConstants.Channel.InternationalESuperFast, "国际e特快价格");
 
             System.Console.ReadLine();
         }
@@ -103,7 +111,7 @@ namespace Logistics.Console
             SmtpClient client = new SmtpClient();
             client.Host = "smtp.exmail.qq.com";//设置发送者邮箱对应的smtpserver
             client.UseDefaultCredentials = false;
-          //  client.Port = 465;
+            //  client.Port = 465;
             client.Credentials = new NetworkCredential(SendUserName, UserPassword);
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             try
@@ -114,7 +122,7 @@ namespace Logistics.Console
             {
                 //Console.Write(ex.Message);
             }
-           // Console.ReadKey();
+            // Console.ReadKey();
         }
 
         /// <summary>
@@ -205,7 +213,7 @@ namespace Logistics.Console
                 var columns = firstRow.Cells.Count();
 
                 logistics_quotation_partition_price partitionPrice = null;
-                for (int i = 1; i < rlast; i++)
+                for (int i = 1; i <=rlast; i++)
                 {
                     for (int j = 2; j < columns; j++)
                     {
@@ -275,6 +283,45 @@ namespace Logistics.Console
             }
         }
 
+        public void ImportEMSQuotaion(long channelID, String quotationSheetName)
+        {
+            using (FileStream fs = new FileStream(path, FileMode.Open))
+            {
+                IWorkbook workbook = new HSSFWorkbook(fs);
+                sheet = workbook.GetSheet(quotationSheetName);
+                rfirst = sheet.FirstRowNum;
+                rlast = sheet.LastRowNum;
+                firstRow = sheet.GetRow(rfirst);
+                var columns = firstRow.Cells.Count();
+
+                logistics_quotation_partition_price partitionPrice = null;
+                for (int i = 1; i <=rlast; i++)
+                {
+                    for (int j = 2; j < columns; j++)
+                    {
+                        row = sheet.GetRow(i);
+                        var result = QuotationDal.GetPartitionIDByCodeChannelID(Convert.ToString(firstRow.Cells[j]).Trim(), channelID, 890501594632818690);
+                        partitionPrice = new logistics_quotation_partition_price();
+                        partitionPrice.TenantID = 890501594632818690;
+                        partitionPrice.ID = IdWorker.GetID();
+                        partitionPrice.firstHeavyPrice = Convert.ToDecimal(row.Cells[0].ToString());
+                        partitionPrice.continuedHeavyPrice = Convert.ToDecimal(row.Cells[1].ToString());
+                        partitionPrice.channelID = channelID;
+                        partitionPrice.partitionID = result.ID;
+                       // partitionPrice.beginHeavy = Convert.ToDecimal(row.Cells[0].ToString());
+                        //partitionPrice.endHeavy = Convert.ToDecimal(row.Cells[1].ToString());
+                        partitionPrice.price = row.Cells[j] == null ? 0 : Convert.ToDecimal(row.Cells[j].ToString());
+                        partitionPrice.CreatedBy = 890501594632818690;
+                        partitionPrice.ModifiedBy = 890501594632818690;
+                        QuotationDal.InsertPartitionPrice(partitionPrice);
+                        System.Console.WriteLine("channel id:" + channelID + quotationSheetName + ":" + row.Cells[j]);
+                    }
+
+
+                }
+            }
+        }
+
 
         public void ImportAllCountries(string allCountriesName)
         {
@@ -290,17 +337,17 @@ namespace Logistics.Console
                 logistics_base_country partitionPrice = null;
                 for (int i = 0; i < rlast; i++)
                 {
-                        row = sheet.GetRow(i);
-                        partitionPrice = new logistics_base_country();
-                        partitionPrice.TenantID = 890501594632818690;
-                        partitionPrice.ID = IdWorker.GetID();
-                        partitionPrice.englishName = row.Cells[0].ToString();
-                        partitionPrice.code = row.Cells[1].ToString();
-                        partitionPrice.chineseName = row.Cells[2].ToString();
-                        partitionPrice.CreatedBy = 890501594632818690;
-                        partitionPrice.ModifiedBy = 890501594632818690;
-                        QuotationDal.InsertCountry(partitionPrice);
-                        System.Console.WriteLine(partitionPrice.chineseName);
+                    row = sheet.GetRow(i);
+                    partitionPrice = new logistics_base_country();
+                    partitionPrice.TenantID = 890501594632818690;
+                    partitionPrice.ID = IdWorker.GetID();
+                    partitionPrice.englishName = row.Cells[0].ToString();
+                    partitionPrice.code = row.Cells[1].ToString();
+                    partitionPrice.chineseName = row.Cells[2].ToString();
+                    partitionPrice.CreatedBy = 890501594632818690;
+                    partitionPrice.ModifiedBy = 890501594632818690;
+                    QuotationDal.InsertCountry(partitionPrice);
+                    System.Console.WriteLine(partitionPrice.chineseName);
 
                 }
             }

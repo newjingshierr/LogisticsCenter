@@ -16,7 +16,7 @@ namespace Logistics_Busniess
     {
         public static List<logistics_base_country> GetAllCountryByName(GetAllCountryByNameRequest request)
         {
-            return QuotationDal.GetAllCountryByName( request);
+            return QuotationDal.GetAllCountryByName(request);
 
         }
         public static List<QuotationChannelPriceVM> GetChannelPrice(GetQuotationPriceByCountryRequest request)
@@ -27,19 +27,18 @@ namespace Logistics_Busniess
 
             foreach (var o in AllChannels)
             {
-                if (o.ID != BusinessConstants.Channel.EMSEconomicID)
-                {
-                    QuotationChannelPriceVM = new QuotationChannelPriceVM();
-                    QuotationChannelPriceVM.Amount = GetPriceByChannelID(request, o.ID);
-                    QuotationChannelPriceVM.channelID = o.ID;
-                    QuotationChannelPriceVM.channelName = o.Name;
-                    QuotationChannelPriceVM.Prescription = o.Prescription;
-                    QuotationChannelPriceVM.Remark = o.Remark;
-                    QuotationChannelPriceVM.ServiceAmount = 0;
-                    QuotationChannelPriceVM.weight = request.weight;
-                    QuotationChannelPriceVM.Clause = o.Clause;
-                    QuotationChannelPriceList.Add(QuotationChannelPriceVM);
-                }
+
+                QuotationChannelPriceVM = new QuotationChannelPriceVM();
+                QuotationChannelPriceVM.Amount = GetPriceByChannelID(request, o.ID);
+                QuotationChannelPriceVM.channelID = o.ID;
+                QuotationChannelPriceVM.channelName = o.Name;
+                QuotationChannelPriceVM.Prescription = o.Prescription;
+                QuotationChannelPriceVM.Remark = o.Remark;
+                QuotationChannelPriceVM.ServiceAmount = 0;
+                QuotationChannelPriceVM.weight = request.weight;
+                QuotationChannelPriceVM.Clause = o.Clause;
+                QuotationChannelPriceList.Add(QuotationChannelPriceVM);
+
 
             }
 
@@ -61,7 +60,7 @@ namespace Logistics_Busniess
             var continuedHeavy = (decimal)0.00;
             var amount = (decimal)0.00;
 
-            if (channelID == BusinessConstants.Channel.EMSEconomicID)
+            if (channelID == BusinessConstants.Channel.EMSEconomicID || channelID == BusinessConstants.Channel.EUB || channelID == BusinessConstants.Channel.InternationalESuperFast)
             {
                 volumeWeight = Math.Round(volume / 6000, 2);
                 if (height < 60 && width < 60 && length < 60)
@@ -96,7 +95,7 @@ namespace Logistics_Busniess
 
 
             }
-            else if (channelID == BusinessConstants.Channel.FEDEXIE|| channelID == BusinessConstants.Channel.FEDEXIP)
+            else if (channelID == BusinessConstants.Channel.FEDEXIE || channelID == BusinessConstants.Channel.FEDEXIP)
             {
                 volumeWeight = Math.Round(volume / 5000, 2);
                 if (weight > volumeWeight)

@@ -23,6 +23,9 @@ namespace Logistics_Model
         public class Channel
         {
             public const long EMSEconomicID = 890501594632328690;
+            public const long EUB = 890501594632324490;
+            public const long InternationalESuperFast = 890501594632395590;
+
             public const long FedxEconomicID = 890501594622318690;
             public const long UPSEconomicID = 890501594622338690;
             public const long DHLEconomicID = 890501594632398690;
