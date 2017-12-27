@@ -38,9 +38,9 @@ namespace Logistics_Busniess
                 QuotationChannelPriceVM.weight = request.weight;
                 QuotationChannelPriceVM.Clause = o.Clause;
                 QuotationChannelPriceList.Add(QuotationChannelPriceVM);
-
-
             }
+
+            QuotationChannelPriceList.RemoveAll(item => item.Amount == 0);
 
             return QuotationChannelPriceList;
         }
@@ -121,9 +121,17 @@ namespace Logistics_Busniess
                 {
                     //根据国家和渠道ID 获取分区
                     var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
-                    //根据分区获取分区价格
-                    var QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
-                    amount = Math.Round(Convert.ToDecimal((Convert.ToDouble(QuotationPrice.price) * 1.125)));
+                    //根据分区获取分区价格\
+                    var QuotationPrice = new QuotationPriceVM();
+                    if (partitionCountry != null)
+                    {
+                        QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
+                    }
+                    if (QuotationPrice != null)
+                    {
+                        amount = Math.Round(Convert.ToDecimal((Convert.ToDouble(QuotationPrice.price) * 1.125)));
+                    }
+                    if (QuotationPrice == null) amount = 0;
                 }
             }
             else if (channelID == BusinessConstants.Channel.UPSFSR)
@@ -139,8 +147,21 @@ namespace Logistics_Busniess
                 }
 
                 var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
-                var QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
-                amount = QuotationPrice.price;
+                var QuotationPrice = new QuotationPriceVM();
+                if (partitionCountry != null)
+                {
+                    QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
+                }
+
+                if (QuotationPrice != null)
+                {
+                    amount = QuotationPrice.price;
+                }
+                else
+                {
+                    amount = 0;
+                }
+
 
             }
             else if (channelID == BusinessConstants.Channel.DHLEconomicID)
@@ -156,12 +177,28 @@ namespace Logistics_Busniess
                 }
 
                 var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
-                var QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
-                amount = Math.Round(Convert.ToDecimal((Convert.ToDouble(QuotationPrice.price) * 1.15)), 2);
-                if (length > 120 || actualWeight > 68)
+                var QuotationPrice = new QuotationPriceVM();
+                if (partitionCountry != null)
                 {
-                    amount = Math.Round(Convert.ToDecimal(Convert.ToDouble(amount) + 270 * 1.15), 2);
+                    QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
                 }
+
+                if (QuotationPrice != null)
+                {
+                    amount = Math.Round(Convert.ToDecimal((Convert.ToDouble(QuotationPrice.price) * 1.15)), 2);
+                }
+                else
+                {
+                    amount = 0;
+                }
+                if (amount != 0)
+                {
+                    if (length > 120 || actualWeight > 68)
+                    {
+                        amount = Math.Round(Convert.ToDecimal(Convert.ToDouble(amount) + 270 * 1.15), 2);
+                    }
+                }
+
             }
             return amount;
         }
