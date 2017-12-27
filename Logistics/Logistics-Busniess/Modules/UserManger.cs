@@ -109,7 +109,7 @@ namespace Logistics_Busniess
             }
             if (smsValidate.code != item.code)
             {
-                throw new LogisticsException(SystemStatusEnum.InvalidCodeRequest, $"Invalid Code Request");
+                throw new LogisticsException(SystemStatusEnum.ExpiredCodeRequest, $"Expired Code Request");
             }
 
             var result = false;

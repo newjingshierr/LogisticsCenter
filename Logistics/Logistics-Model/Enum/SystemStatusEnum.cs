@@ -106,6 +106,8 @@ namespace Logistics_Model
         [Description("非法导航")]
         InvalidNavigationRequest = 17,
 
+        [Description("此验证码已过期，请重新获取")]
+        ExpiredCodeRequest = 18,
         /// <summary>
         /// 商户不存在
         /// </summary>
