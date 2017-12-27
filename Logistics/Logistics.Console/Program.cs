@@ -48,28 +48,28 @@ namespace Logistics.Console
 
             //p.ImportPartion(BusinessConstants.Channel.FEDEXIP, "fedex优先服务IP 分区");
             //p.ImportCounty(BusinessConstants.Channel.FEDEXIP, "fedex优先服务IP 国家");
-            //p.ImportQuotation(BusinessConstants.Channel.FEDEXIP, "fedex优先服务IP 价格");
+            p.ImportQuotation(BusinessConstants.Channel.FEDEXIP, "fedex优先服务IP 价格");
 
 
             //p.ImportPartion(BusinessConstants.Channel.FEDEXIE, "fedex经济服务IE 分区");
             //p.ImportCounty(BusinessConstants.Channel.FEDEXIE, "fedex经济服务IE 国家");
-            //p.ImportQuotation(BusinessConstants.Channel.FEDEXIE, "fedex经济服务IE 价格");
+            p.ImportQuotation(BusinessConstants.Channel.FEDEXIE, "fedex经济服务IE 价格");
 
 
             //p.ImportPartion(BusinessConstants.Channel.UPSFSR, "UPS优先服务红单  分区");
             //p.ImportCounty(BusinessConstants.Channel.UPSFSR, "UPS优先服务红单 国家");
-            //p.ImportQuotation(BusinessConstants.Channel.UPSFSR, "UPS优先服务红单  价格");
+            p.ImportQuotation(BusinessConstants.Channel.UPSFSR, "UPS优先服务红单  价格");
 
 
 
             //p.ImportPartion(BusinessConstants.Channel.TNT48N, "TNT48N经济快递 分区");
             //p.ImportCounty(BusinessConstants.Channel.TNT48N, "TNT48N经济快递 国家");
-            //p.ImportQuotation(BusinessConstants.Channel.TNT48N, "TNT48N经济快递  价格");
+            p.ImportQuotation(BusinessConstants.Channel.TNT48N, "TNT48N经济快递  价格");
 
 
             //p.ImportPartion(BusinessConstants.Channel.TNT15N, "TNT15N优先快递  分区");
             //p.ImportCounty(BusinessConstants.Channel.TNT15N, "TNT15N优先快递  国家");
-            //p.ImportQuotation(BusinessConstants.Channel.TNT15N, "TNT15N优先快递   价格");
+            p.ImportQuotation(BusinessConstants.Channel.TNT15N, "TNT15N优先快递   价格");
 
 
             //  p.ImportAllCountries("所有国家");
@@ -86,6 +86,9 @@ namespace Logistics.Console
         //    p.ImportCounty(BusinessConstants.Channel.InternationalESuperFast, "国际e特快国家");
             p.ImportEMSQuotaion(BusinessConstants.Channel.InternationalESuperFast, "国际e特快价格");
 
+            //p.ImportPartion(BusinessConstants.Channel.DHLEconomicID, "DHL经济型分区");
+            //p.ImportCounty(BusinessConstants.Channel.DHLEconomicID, "DHL经济型国家");
+            p.ImportEMSQuotaion(BusinessConstants.Channel.DHLEconomicID, "DHL经济型价格");
             System.Console.ReadLine();
         }
 
@@ -213,7 +216,7 @@ namespace Logistics.Console
                 var columns = firstRow.Cells.Count();
 
                 logistics_quotation_partition_price partitionPrice = null;
-                for (int i = 1; i <=rlast; i++)
+                for (int i = 1; i <rlast; i++)
                 {
                     for (int j = 2; j < columns; j++)
                     {
@@ -295,7 +298,7 @@ namespace Logistics.Console
                 var columns = firstRow.Cells.Count();
 
                 logistics_quotation_partition_price partitionPrice = null;
-                for (int i = 1; i <=rlast; i++)
+                for (int i = 1; i <rlast; i++)
                 {
                     for (int j = 2; j < columns; j++)
                     {
