@@ -164,6 +164,16 @@ namespace Logistics_Model
         /// 条款
         /// </summary>
         public string Clause { get; set; }
+
+        /// <summary>
+        /// 重量限制
+        /// </summary>
+        public string WeightLimit { get; set; }
+
+        /// <summary>
+        /// 尺寸限制
+        /// </summary>
+        public string SizeLimit { get; set; }
     }
 
     public class QuotationIPFPriceVM

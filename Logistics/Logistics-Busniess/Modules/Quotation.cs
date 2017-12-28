@@ -27,7 +27,6 @@ namespace Logistics_Busniess
 
             foreach (var o in AllChannels)
             {
-
                 QuotationChannelPriceVM = new QuotationChannelPriceVM();
                 QuotationChannelPriceVM.Amount = GetPriceByChannelID(request, o.ID);
                 QuotationChannelPriceVM.channelID = o.ID;
@@ -37,12 +36,13 @@ namespace Logistics_Busniess
                 QuotationChannelPriceVM.ServiceAmount = 0;
                 QuotationChannelPriceVM.weight = request.weight;
                 QuotationChannelPriceVM.Clause = o.Clause;
+                QuotationChannelPriceVM.WeightLimit = o.WeightLimit;
+                QuotationChannelPriceVM.SizeLimit = o.SizeLimit;
                 QuotationChannelPriceList.Add(QuotationChannelPriceVM);
             }
-
-            QuotationChannelPriceList.RemoveAll(item => item.Amount == 0);
-
-            return QuotationChannelPriceList;
+            var result = QuotationChannelPriceList.OrderByDescending(item => item.Amount).ToList();
+            result.RemoveAll(item => item.Amount == 0);
+            return result;
         }
 
 
@@ -60,7 +60,7 @@ namespace Logistics_Busniess
             var continuedHeavy = (decimal)0.00;
             var amount = (decimal)0.00;
 
-            if (channelID == BusinessConstants.Channel.EMSEconomicID || channelID == BusinessConstants.Channel.EUB || channelID == BusinessConstants.Channel.InternationalESuperFast)
+            if (channelID == BusinessConstants.Channel.EMSStandard || channelID == BusinessConstants.Channel.EUB || channelID == BusinessConstants.Channel.EMSPreferential)
             {
                 volumeWeight = Math.Round(volume / 6000, 2);
                 if (height < 60 && width < 60 && length < 60)
@@ -95,7 +95,7 @@ namespace Logistics_Busniess
 
 
             }
-            else if (channelID == BusinessConstants.Channel.FEDEXIE || channelID == BusinessConstants.Channel.FEDEXIP)
+            else if (channelID == BusinessConstants.Channel.FEDEXEconomic || channelID == BusinessConstants.Channel.FEDEXPrior)
             {
                 volumeWeight = Math.Round(volume / 5000, 2);
                 if (weight > volumeWeight)
@@ -134,7 +134,7 @@ namespace Logistics_Busniess
                     if (QuotationPrice == null) amount = 0;
                 }
             }
-            else if (channelID == BusinessConstants.Channel.UPSFSR)
+            else if (channelID == BusinessConstants.Channel.UPSPrior)
             {
                 volumeWeight = Math.Round(volume / 5000, 2);
                 if (weight > volumeWeight)
@@ -164,7 +164,7 @@ namespace Logistics_Busniess
 
 
             }
-            else if (channelID == BusinessConstants.Channel.DHLEconomicID)
+            else if (channelID == BusinessConstants.Channel.DHLStandard)
             {
                 volumeWeight = Math.Round(volume / 5000, 2);
                 if (weight > volumeWeight)

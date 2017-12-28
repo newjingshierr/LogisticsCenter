@@ -22,19 +22,15 @@ namespace Logistics_Model
         }
         public class Channel
         {
-            public const long EMSEconomicID = 890501594632328690;
+            public const long EMSStandard = 890501594632328690;
             public const long EUB = 890501594632324490;
-            public const long InternationalESuperFast = 890501594632395590;
-
-            public const long FedxEconomicID = 890501594622318690;
-            public const long UPSEconomicID = 890501594622338690;
-            public const long DHLEconomicID = 890501594632398690;
-            public const long TNTEconomicID = 890501594622358690;
-            public const long FEDEXIP = 890501594622738690;
-            public const long FEDEXIE = 890501594622848690;
-            public const long UPSFSR = 890501594622958690;
-            public const long TNT48N = 890501594632028690;
-            public const long TNT15N = 890501594632128690;
+            public const long EMSPreferential = 890501594632395590;
+            public const long DHLStandard = 890501594632398690;
+            public const long FEDEXPrior = 890501594622738690;
+            public const long FEDEXEconomic = 890501594622848690;
+            public const long UPSPrior = 890501594622958690;
+            public const long TNTEconomic = 890501594632028690;
+            public const long TNTPrior = 890501594632128690;
 
         }
         public class Module

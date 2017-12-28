@@ -195,6 +195,8 @@ namespace Logistics_Model
             set { _modifiedby = value; }
         }
 
+        public string WeightLimit { get; set; }
+        public string SizeLimit { get; set; }
     }
 
     public class logistics_quotation_partition_ipf_price
