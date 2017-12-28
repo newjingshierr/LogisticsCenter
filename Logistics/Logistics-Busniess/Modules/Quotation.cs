@@ -134,6 +134,32 @@ namespace Logistics_Busniess
                     if (QuotationPrice == null) amount = 0;
                 }
             }
+            else if (channelID == BusinessConstants.Channel.TNTEconomic || channelID == BusinessConstants.Channel.TNTPrior)
+            {
+                volumeWeight = Math.Round(volume / 5000, 2);
+                if (weight > volumeWeight)
+                {
+                    actualWeight = weight;
+                }
+                else
+                {
+                    actualWeight = volumeWeight;
+                }
+                //根据国家和渠道ID 获取分区
+                var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
+                //根据分区获取分区价格\
+                var QuotationPrice = new QuotationPriceVM();
+                if (partitionCountry != null)
+                {
+                    QuotationPrice = QuotationDal.SelectPriceByPartitionIDWeight(request.TenantID, partitionCountry.partitionID, actualWeight);
+                }
+                if (QuotationPrice != null)
+                {
+                    amount = Math.Round(Convert.ToDecimal((Convert.ToDouble(QuotationPrice.price) * 1.125)));
+                }
+                if (QuotationPrice == null) amount = 0;
+
+            }
             else if (channelID == BusinessConstants.Channel.UPSPrior)
             {
                 volumeWeight = Math.Round(volume / 5000, 2);

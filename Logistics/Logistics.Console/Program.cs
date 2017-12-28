@@ -46,48 +46,48 @@ namespace Logistics.Console
 
             Program p = new Program();
 
-            //p.ImportPartion(BusinessConstants.Channel.FEDEXIP, "FedEX优先快递 分区");
-            //p.ImportCounty(BusinessConstants.Channel.FEDEXIP, "FedEX优先快递 国家");
+            p.ImportPartion(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递 分区");
+            p.ImportCounty(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递 国家");
             p.ImportQuotation(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递 价格");
 
 
-            //p.ImportPartion(BusinessConstants.Channel.FEDEXIE, "FedEX经济快递 分区");
-            //p.ImportCounty(BusinessConstants.Channel.FEDEXIE, "FedEX经济快递 国家");
+            p.ImportPartion(BusinessConstants.Channel.FEDEXEconomic, "FedEX经济快递 分区");
+            p.ImportCounty(BusinessConstants.Channel.FEDEXEconomic, "FedEX经济快递 国家");
             p.ImportQuotation(BusinessConstants.Channel.FEDEXEconomic, "FedEX经济快递 价格");
 
 
-            //p.ImportPartion(BusinessConstants.Channel.UPSFSR, "UPS优先快递  分区");
-            //p.ImportCounty(BusinessConstants.Channel.UPSFSR, "UPS优先快递 国家");
+            p.ImportPartion(BusinessConstants.Channel.UPSPrior, "UPS优先快递  分区");
+            p.ImportCounty(BusinessConstants.Channel.UPSPrior, "UPS优先快递 国家");
             p.ImportQuotation(BusinessConstants.Channel.UPSPrior, "UPS优先快递  价格");
 
 
 
-            //p.ImportPartion(BusinessConstants.Channel.TNT48N, "TNT优先快递 分区");
-            //p.ImportCounty(BusinessConstants.Channel.TNT48N, "TNT优先快递 国家");
+            p.ImportPartion(BusinessConstants.Channel.TNTEconomic, "TNT优先快递 分区");
+            p.ImportCounty(BusinessConstants.Channel.TNTEconomic, "TNT优先快递 国家");
             p.ImportQuotation(BusinessConstants.Channel.TNTEconomic, "TNT经济快递  价格");
 
 
-            //p.ImportPartion(BusinessConstants.Channel.TNT15N, "TNT优先快递  分区");
-            //p.ImportCounty(BusinessConstants.Channel.TNT15N, "TNT优先快递  国家");
+            p.ImportPartion(BusinessConstants.Channel.TNTPrior, "TNT优先快递  分区");
+            p.ImportCounty(BusinessConstants.Channel.TNTPrior, "TNT优先快递  国家");
             p.ImportQuotation(BusinessConstants.Channel.TNTPrior, "TNT优先快递   价格");
 
 
             //  p.ImportAllCountries("所有国家");
 
-            //     p.ImportPartion(BusinessConstants.Channel.EMSEconomicID, "EMS标准快递分区");
-            //   p.ImportCounty(BusinessConstants.Channel.EMSEconomicID, "EMS标准快递国家");
+            p.ImportPartion(BusinessConstants.Channel.EMSStandard, "EMS标准快递分区");
+            p.ImportCounty(BusinessConstants.Channel.EMSStandard, "EMS标准快递国家");
             p.ImportEMSQuotaion(BusinessConstants.Channel.EMSStandard, "EMS标准快递价格");
 
-            //  p.ImportPartion(BusinessConstants.Channel.EUB, "E邮宝分区");
-            //   p.ImportCounty(BusinessConstants.Channel.EUB, "E邮宝国家");
+            p.ImportPartion(BusinessConstants.Channel.EUB, "E邮宝分区");
+            p.ImportCounty(BusinessConstants.Channel.EUB, "E邮宝国家");
             p.ImportEMSQuotaion(BusinessConstants.Channel.EUB, "E邮宝价格");
 
-            //    p.ImportPartion(BusinessConstants.Channel.InternationalESuperFast, "EMS特惠分区");
-            //    p.ImportCounty(BusinessConstants.Channel.InternationalESuperFast, "EMS特惠国家");
+            p.ImportPartion(BusinessConstants.Channel.EMSPreferential, "EMS特惠分区");
+            p.ImportCounty(BusinessConstants.Channel.EMSPreferential, "EMS特惠国家");
             p.ImportEMSQuotaion(BusinessConstants.Channel.EMSPreferential, "EMS特惠价格");
 
-            //p.ImportPartion(BusinessConstants.Channel.DHLEconomicID, "DHL标准快递分区");
-            //p.ImportCounty(BusinessConstants.Channel.DHLEconomicID, "DHL标准快递国家");
+            p.ImportPartion(BusinessConstants.Channel.DHLStandard, "DHL标准快递分区");
+            p.ImportCounty(BusinessConstants.Channel.DHLStandard, "DHL标准快递国家");
             p.ImportEMSQuotaion(BusinessConstants.Channel.DHLStandard, "DHL标准快递价格");
             System.Console.ReadLine();
         }
