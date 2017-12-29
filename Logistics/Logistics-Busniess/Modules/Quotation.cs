@@ -41,7 +41,7 @@ namespace Logistics_Busniess
                 QuotationChannelPriceList.Add(QuotationChannelPriceVM);
             }
             var result = QuotationChannelPriceList.OrderBy(item => item.Amount).ToList();
-           result.RemoveAll(item => item.Amount == 0);
+           // result.RemoveAll(item => item.Amount == 0);
             return result;
         }
 
@@ -67,7 +67,7 @@ namespace Logistics_Busniess
                 //EMS特惠价格 首重	0.05kg 续重 每0.05kg
 
 
-                               volumeWeight = Math.Round(volume / 6000, 2);
+                volumeWeight = Math.Round(volume / 6000, 2);
                 if (height < 60 && width < 60 && length < 60)
                     actualWeight = weight;
                 else
@@ -81,11 +81,24 @@ namespace Logistics_Busniess
                         actualWeight = weight;
                     }
                 }
-                var count = Convert.ToDouble(actualWeight) % 0.5 > 0 ? (int)(Convert.ToDouble(actualWeight) / 0.5) + 1 : (int)(Convert.ToDouble(actualWeight) / 0.5);
+                var count = 0;
                 //根据国家和渠道ID 获取分区
                 var partitionCountry = QuotationDal.selectPartitionByCountry(request.TenantID, request.country, channelID);
                 if (partitionCountry != null)
                 {
+                    if (channelID == BusinessConstants.Channel.EMSStandard)
+                    {
+                        count = Convert.ToDouble(actualWeight) % 0.5 > 0 ? (int)(Convert.ToDouble(actualWeight) / 0.5) + 1 : (int)(Convert.ToDouble(actualWeight) / 0.5);
+                    }
+                    else if (channelID == BusinessConstants.Channel.EUB)
+                    {
+                        count = Convert.ToDouble(actualWeight) % 0.001 > 0 ? (int)(Convert.ToDouble(actualWeight) / 0.001) + 1 : (int)(Convert.ToDouble(actualWeight) / 0.001);
+                    }
+                    else if (channelID == BusinessConstants.Channel.EMSPreferential)
+                    {
+                        count = Convert.ToDouble(actualWeight) % 0.05 > 0 ? (int)(Convert.ToDouble(actualWeight) / 0.05) + 1 : (int)(Convert.ToDouble(actualWeight) / 0.05);
+                    }
+
                     //根据分区获取分区首重价格续重价格
                     var QuotationPrice = QuotationDal.SelectPartitionPrice(request.TenantID, partitionCountry.partitionID);
                     firstHeavy = QuotationPrice.firstHeavyPrice;

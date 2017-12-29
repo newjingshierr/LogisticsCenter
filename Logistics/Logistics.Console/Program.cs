@@ -76,19 +76,19 @@ namespace Logistics.Console
 
             //p.ImportPartion(BusinessConstants.Channel.EMSStandard, "EMS标准快递分区");
             //p.ImportCounty(BusinessConstants.Channel.EMSStandard, "EMS标准快递国家");
-            p.ImportEMSQuotaion(BusinessConstants.Channel.EMSStandard, "EMS标准快递价格");
+           // p.ImportEMSQuotaion(BusinessConstants.Channel.EMSStandard, "EMS标准快递价格");
 
             //p.ImportPartion(BusinessConstants.Channel.EUB, "E邮宝分区");
             //p.ImportCounty(BusinessConstants.Channel.EUB, "E邮宝国家");
-            p.ImportEMSQuotaion(BusinessConstants.Channel.EUB, "E邮宝价格");
+          //  p.ImportEMSQuotaion(BusinessConstants.Channel.EUB, "E邮宝价格");
 
             //p.ImportPartion(BusinessConstants.Channel.EMSPreferential, "EMS特惠分区");
             //p.ImportCounty(BusinessConstants.Channel.EMSPreferential, "EMS特惠国家");
-            p.ImportEMSQuotaion(BusinessConstants.Channel.EMSPreferential, "EMS特惠价格");
+          //  p.ImportEMSQuotaion(BusinessConstants.Channel.EMSPreferential, "EMS特惠价格");
 
             //p.ImportPartion(BusinessConstants.Channel.DHLStandard, "DHL标准快递分区");
             //p.ImportCounty(BusinessConstants.Channel.DHLStandard, "DHL标准快递国家");
-          //  p.ImportEMSQuotaion(BusinessConstants.Channel.DHLStandard, "DHL标准快递价格");
+            p.ImportQuotation(BusinessConstants.Channel.DHLStandard, "DHL标准快递价格");
             System.Console.ReadLine();
         }
 
