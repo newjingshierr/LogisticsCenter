@@ -105,7 +105,7 @@ namespace Logistics_Busniess
             var smsValidate = ValidateDal.GetItem(item.TenantID, item.tel, item.mail);
             if (smsValidate == null)
             {
-                throw new LogisticsException(SystemStatusEnum.InvalidRequest, $"Invalid Request");
+                throw new LogisticsException(SystemStatusEnum.InvalidTelOrMailRequest, $"Invalid Tel Or Mail Request");
             }
             if (smsValidate.code != item.code)
             {

@@ -41,7 +41,7 @@ namespace Logistics_Busniess
                 QuotationChannelPriceList.Add(QuotationChannelPriceVM);
             }
             var result = QuotationChannelPriceList.OrderByDescending(item => item.Amount).ToList();
-            result.RemoveAll(item => item.Amount == 0);
+           // result.RemoveAll(item => item.Amount == 0);
             return result;
         }
 
