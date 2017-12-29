@@ -46,49 +46,49 @@ namespace Logistics.Console
 
             Program p = new Program();
 
-            p.ImportPartion(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递分区");
-            p.ImportCounty(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递国家");
-            p.ImportQuotation(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递价格");
+            //p.ImportPartion(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递分区");
+            //p.ImportCounty(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递国家");
+            //p.ImportQuotation(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递价格");
 
 
-            p.ImportPartion(BusinessConstants.Channel.FEDEXEconomic, "FedEX经济快递分区");
-            p.ImportCounty(BusinessConstants.Channel.FEDEXEconomic, "FedEX经济快递国家");
-            p.ImportQuotation(BusinessConstants.Channel.FEDEXEconomic, "FedEX经济快递价格");
+            //p.ImportPartion(BusinessConstants.Channel.FEDEXEconomic, "FedEX经济快递分区");
+            //p.ImportCounty(BusinessConstants.Channel.FEDEXEconomic, "FedEX经济快递国家");
+            //p.ImportQuotation(BusinessConstants.Channel.FEDEXEconomic, "FedEX经济快递价格");
 
 
-            p.ImportPartion(BusinessConstants.Channel.UPSPrior, "UPS优先快递分区");
-            p.ImportCounty(BusinessConstants.Channel.UPSPrior, "UPS优先快递国家");
-            p.ImportQuotation(BusinessConstants.Channel.UPSPrior, "UPS优先快递价格");
+            //p.ImportPartion(BusinessConstants.Channel.UPSPrior, "UPS优先快递分区");
+            //p.ImportCounty(BusinessConstants.Channel.UPSPrior, "UPS优先快递国家");
+            //p.ImportQuotation(BusinessConstants.Channel.UPSPrior, "UPS优先快递价格");
 
 
 
-            p.ImportPartion(BusinessConstants.Channel.TNTEconomic, "TNT经济快递分区");
-            p.ImportCounty(BusinessConstants.Channel.TNTEconomic, "TNT优先快递国家");
-            p.ImportQuotation(BusinessConstants.Channel.TNTEconomic, "TNT经济快递价格");
+            //p.ImportPartion(BusinessConstants.Channel.TNTEconomic, "TNT经济快递分区");
+            //p.ImportCounty(BusinessConstants.Channel.TNTEconomic, "TNT优先快递国家");
+            //p.ImportQuotation(BusinessConstants.Channel.TNTEconomic, "TNT经济快递价格");
 
 
-            p.ImportPartion(BusinessConstants.Channel.TNTPrior, "TNT优先快递分区");
-            p.ImportCounty(BusinessConstants.Channel.TNTPrior, "TNT优先快递国家");
-            p.ImportQuotation(BusinessConstants.Channel.TNTPrior, "TNT优先快递价格");
+            //p.ImportPartion(BusinessConstants.Channel.TNTPrior, "TNT优先快递分区");
+            //p.ImportCounty(BusinessConstants.Channel.TNTPrior, "TNT优先快递国家");
+            //p.ImportQuotation(BusinessConstants.Channel.TNTPrior, "TNT优先快递价格");
 
 
             //  p.ImportAllCountries("所有国家");
 
-            p.ImportPartion(BusinessConstants.Channel.EMSStandard, "EMS标准快递分区");
-            p.ImportCounty(BusinessConstants.Channel.EMSStandard, "EMS标准快递国家");
+            //p.ImportPartion(BusinessConstants.Channel.EMSStandard, "EMS标准快递分区");
+            //p.ImportCounty(BusinessConstants.Channel.EMSStandard, "EMS标准快递国家");
             p.ImportEMSQuotaion(BusinessConstants.Channel.EMSStandard, "EMS标准快递价格");
 
-            p.ImportPartion(BusinessConstants.Channel.EUB, "E邮宝分区");
-            p.ImportCounty(BusinessConstants.Channel.EUB, "E邮宝国家");
+            //p.ImportPartion(BusinessConstants.Channel.EUB, "E邮宝分区");
+            //p.ImportCounty(BusinessConstants.Channel.EUB, "E邮宝国家");
             p.ImportEMSQuotaion(BusinessConstants.Channel.EUB, "E邮宝价格");
 
-            p.ImportPartion(BusinessConstants.Channel.EMSPreferential, "EMS特惠分区");
-            p.ImportCounty(BusinessConstants.Channel.EMSPreferential, "EMS特惠国家");
+            //p.ImportPartion(BusinessConstants.Channel.EMSPreferential, "EMS特惠分区");
+            //p.ImportCounty(BusinessConstants.Channel.EMSPreferential, "EMS特惠国家");
             p.ImportEMSQuotaion(BusinessConstants.Channel.EMSPreferential, "EMS特惠价格");
 
-            p.ImportPartion(BusinessConstants.Channel.DHLStandard, "DHL标准快递分区");
-            p.ImportCounty(BusinessConstants.Channel.DHLStandard, "DHL标准快递国家");
-            p.ImportEMSQuotaion(BusinessConstants.Channel.DHLStandard, "DHL标准快递价格");
+            //p.ImportPartion(BusinessConstants.Channel.DHLStandard, "DHL标准快递分区");
+            //p.ImportCounty(BusinessConstants.Channel.DHLStandard, "DHL标准快递国家");
+          //  p.ImportEMSQuotaion(BusinessConstants.Channel.DHLStandard, "DHL标准快递价格");
             System.Console.ReadLine();
         }
 
@@ -310,25 +310,28 @@ namespace Logistics.Console
                     for (int j = 2; j < columns; j++)
                     {
                         row = sheet.GetRow(i);
+                        var nextRow = sheet.GetRow(i + 1);
                         if (row.Cells[0].ToString() != "")
                         {
                             var result = QuotationDal.GetPartitionIDByCodeChannelID(Convert.ToString(firstRow.Cells[j]).Trim(), channelID, 890501594632818690);
                             partitionPrice = new logistics_quotation_partition_price();
                             partitionPrice.TenantID = 890501594632818690;
                             partitionPrice.ID = IdWorker.GetID();
-                            partitionPrice.firstHeavyPrice = Convert.ToDecimal(row.Cells[0].ToString());
-                            partitionPrice.continuedHeavyPrice = Convert.ToDecimal(row.Cells[1].ToString());
+                            partitionPrice.firstHeavyPrice = Convert.ToDecimal(row.Cells[j].ToString());
+                            partitionPrice.continuedHeavyPrice = Convert.ToDecimal(nextRow.Cells[j].ToString());
                             partitionPrice.channelID = channelID;
                             partitionPrice.partitionID = result.ID;
                             // partitionPrice.beginHeavy = Convert.ToDecimal(row.Cells[0].ToString());
                             //partitionPrice.endHeavy = Convert.ToDecimal(row.Cells[1].ToString());
-                            partitionPrice.price = row.Cells[j] == null ? 0 : Convert.ToDecimal(row.Cells[j].ToString());
+                           // partitionPrice.price = row.Cells[j] == null ? 0 : Convert.ToDecimal(row.Cells[j].ToString());
                             partitionPrice.CreatedBy = 890501594632818690;
                             partitionPrice.ModifiedBy = 890501594632818690;
                             QuotationDal.InsertPartitionPrice(partitionPrice);
                             System.Console.WriteLine("channel id:" + channelID + quotationSheetName + ":" + row.Cells[j]);
                         }
+
                     }
+                    break;
 
 
                 }

@@ -40,8 +40,8 @@ namespace Logistics_Busniess
                 QuotationChannelPriceVM.SizeLimit = o.SizeLimit;
                 QuotationChannelPriceList.Add(QuotationChannelPriceVM);
             }
-            var result = QuotationChannelPriceList.OrderByDescending(item => item.Amount).ToList();
-           // result.RemoveAll(item => item.Amount == 0);
+            var result = QuotationChannelPriceList.OrderBy(item => item.Amount).ToList();
+           result.RemoveAll(item => item.Amount == 0);
             return result;
         }
 
@@ -62,7 +62,12 @@ namespace Logistics_Busniess
 
             if (channelID == BusinessConstants.Channel.EMSStandard || channelID == BusinessConstants.Channel.EUB || channelID == BusinessConstants.Channel.EMSPreferential)
             {
-                volumeWeight = Math.Round(volume / 6000, 2);
+                //EMS标准快递价格规则：首重	0.5kg  续重 每0.5kg
+                //E邮宝价格 首重	0.001kg 续重 每0.001kg
+                //EMS特惠价格 首重	0.05kg 续重 每0.05kg
+
+
+                               volumeWeight = Math.Round(volume / 6000, 2);
                 if (height < 60 && width < 60 && length < 60)
                     actualWeight = weight;
                 else
