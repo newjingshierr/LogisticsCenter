@@ -46,30 +46,30 @@ namespace Logistics.Console
 
             Program p = new Program();
 
-            p.ImportPartion(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递 分区");
-            p.ImportCounty(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递 国家");
-            p.ImportQuotation(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递 价格");
+            p.ImportPartion(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递分区");
+            p.ImportCounty(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递国家");
+            p.ImportQuotation(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递价格");
 
 
-            p.ImportPartion(BusinessConstants.Channel.FEDEXEconomic, "FedEX经济快递 分区");
-            p.ImportCounty(BusinessConstants.Channel.FEDEXEconomic, "FedEX经济快递 国家");
-            p.ImportQuotation(BusinessConstants.Channel.FEDEXEconomic, "FedEX经济快递 价格");
+            p.ImportPartion(BusinessConstants.Channel.FEDEXEconomic, "FedEX经济快递分区");
+            p.ImportCounty(BusinessConstants.Channel.FEDEXEconomic, "FedEX经济快递国家");
+            p.ImportQuotation(BusinessConstants.Channel.FEDEXEconomic, "FedEX经济快递价格");
 
 
-            p.ImportPartion(BusinessConstants.Channel.UPSPrior, "UPS优先快递  分区");
-            p.ImportCounty(BusinessConstants.Channel.UPSPrior, "UPS优先快递 国家");
-            p.ImportQuotation(BusinessConstants.Channel.UPSPrior, "UPS优先快递  价格");
+            p.ImportPartion(BusinessConstants.Channel.UPSPrior, "UPS优先快递分区");
+            p.ImportCounty(BusinessConstants.Channel.UPSPrior, "UPS优先快递国家");
+            p.ImportQuotation(BusinessConstants.Channel.UPSPrior, "UPS优先快递价格");
 
 
 
-            p.ImportPartion(BusinessConstants.Channel.TNTEconomic, "TNT优先快递 分区");
-            p.ImportCounty(BusinessConstants.Channel.TNTEconomic, "TNT优先快递 国家");
-            p.ImportQuotation(BusinessConstants.Channel.TNTEconomic, "TNT经济快递  价格");
+            p.ImportPartion(BusinessConstants.Channel.TNTEconomic, "TNT经济快递分区");
+            p.ImportCounty(BusinessConstants.Channel.TNTEconomic, "TNT优先快递国家");
+            p.ImportQuotation(BusinessConstants.Channel.TNTEconomic, "TNT经济快递价格");
 
 
-            p.ImportPartion(BusinessConstants.Channel.TNTPrior, "TNT优先快递  分区");
-            p.ImportCounty(BusinessConstants.Channel.TNTPrior, "TNT优先快递  国家");
-            p.ImportQuotation(BusinessConstants.Channel.TNTPrior, "TNT优先快递   价格");
+            p.ImportPartion(BusinessConstants.Channel.TNTPrior, "TNT优先快递分区");
+            p.ImportCounty(BusinessConstants.Channel.TNTPrior, "TNT优先快递国家");
+            p.ImportQuotation(BusinessConstants.Channel.TNTPrior, "TNT优先快递价格");
 
 
             //  p.ImportAllCountries("所有国家");
@@ -177,23 +177,26 @@ namespace Logistics.Console
                 rlast = sheet.LastRowNum;
                 IRow row = null;
 
-                for (int i = 1; i < rlast; i++)
+                for (int i = 1; i <= rlast; i++)
                 {
                     row = sheet.GetRow(i);
-                    logistics_quotation_partition_country partitionCountry = new logistics_quotation_partition_country();
-                    partitionCountry.TenantID = 890501594632818690;
-                    partitionCountry.ChannelID = channelID;
-                    partitionCountry.ID = IdWorker.GetID();
-                    partitionCountry.countryEnglishName = row.Cells[0].ToString();
-                    partitionCountry.countryChineseName = row.Cells[1].ToString();
-                    partitionCountry.countryCode = row.Cells[2].ToString();
-                    var partionCode = row.Cells[3].ToString();
-                    var partionID = QuotationDal.GetPartitionIDByCodeChannelID(row.Cells[3].ToString(), channelID, 890501594632818690).ID;
-                    partitionCountry.partitionID = partionID;
-                    partitionCountry.CreatedBy = 890501594632818690;
-                    partitionCountry.ModifiedBy = 890501594632818690;
-                    QuotationDal.QuotaionCountryInsert(partitionCountry);
-                    System.Console.WriteLine("channel id:" + channelID + countrySheetName + ":" + row.Cells[2].ToString());
+                    if (row.Cells[0].ToString() != "")
+                    {
+                        logistics_quotation_partition_country partitionCountry = new logistics_quotation_partition_country();
+                        partitionCountry.TenantID = 890501594632818690;
+                        partitionCountry.ChannelID = channelID;
+                        partitionCountry.ID = IdWorker.GetID();
+                        partitionCountry.countryEnglishName = row.Cells[0].ToString();
+                        partitionCountry.countryChineseName = row.Cells[1].ToString();
+                        partitionCountry.countryCode = row.Cells[2].ToString();
+                        var partionCode = row.Cells[3].ToString();
+                        var partionID = QuotationDal.GetPartitionIDByCodeChannelID(row.Cells[3].ToString(), channelID, 890501594632818690).ID;
+                        partitionCountry.partitionID = partionID;
+                        partitionCountry.CreatedBy = 890501594632818690;
+                        partitionCountry.ModifiedBy = 890501594632818690;
+                        QuotationDal.QuotaionCountryInsert(partitionCountry);
+                        System.Console.WriteLine("channel id:" + channelID + countrySheetName + ":" + row.Cells[2].ToString());
+                    }
                 }
 
             }
@@ -216,26 +219,30 @@ namespace Logistics.Console
                 var columns = firstRow.Cells.Count();
 
                 logistics_quotation_partition_price partitionPrice = null;
-                for (int i = 1; i <rlast; i++)
+                for (int i = 1; i <= rlast; i++)
                 {
                     for (int j = 2; j < columns; j++)
                     {
                         row = sheet.GetRow(i);
-                        var result = QuotationDal.GetPartitionIDByCodeChannelID(Convert.ToString(firstRow.Cells[j]).Trim(), channelID, 890501594632818690);
-                        partitionPrice = new logistics_quotation_partition_price();
-                        partitionPrice.TenantID = 890501594632818690;
-                        partitionPrice.ID = IdWorker.GetID();
-                        partitionPrice.firstHeavyPrice = 0;
-                        partitionPrice.continuedHeavyPrice = 0;
-                        partitionPrice.channelID = channelID;
-                        partitionPrice.partitionID = result.ID;
-                        partitionPrice.beginHeavy = Convert.ToDecimal(row.Cells[0].ToString());
-                        partitionPrice.endHeavy = Convert.ToDecimal(row.Cells[1].ToString());
-                        partitionPrice.price = row.Cells[j] == null ? 0 : Convert.ToDecimal(row.Cells[j].ToString());
-                        partitionPrice.CreatedBy = 890501594632818690;
-                        partitionPrice.ModifiedBy = 890501594632818690;
-                        QuotationDal.InsertPartitionPrice(partitionPrice);
-                        System.Console.WriteLine("channel id:" + channelID + quotationSheetName + ":" + row.Cells[j]);
+                        if (row.Cells[0].ToString() != "")
+                        {
+                            var result = QuotationDal.GetPartitionIDByCodeChannelID(Convert.ToString(firstRow.Cells[j]).Trim(), channelID, 890501594632818690);
+                            partitionPrice = new logistics_quotation_partition_price();
+                            partitionPrice.TenantID = 890501594632818690;
+                            partitionPrice.ID = IdWorker.GetID();
+                            partitionPrice.firstHeavyPrice = 0;
+                            partitionPrice.continuedHeavyPrice = 0;
+                            partitionPrice.channelID = channelID;
+                            partitionPrice.partitionID = result.ID;
+                            partitionPrice.beginHeavy = Convert.ToDecimal(row.Cells[0].ToString());
+                            partitionPrice.endHeavy = Convert.ToDecimal(row.Cells[1].ToString());
+                            partitionPrice.price = row.Cells[j] == null ? 0 : Convert.ToDecimal(row.Cells[j].ToString());
+                            partitionPrice.CreatedBy = 890501594632818690;
+                            partitionPrice.ModifiedBy = 890501594632818690;
+                            QuotationDal.InsertPartitionPrice(partitionPrice);
+                            System.Console.WriteLine("channel id:" + channelID + quotationSheetName + ":" + row.Cells[j]);
+                        }
+
                     }
 
 
@@ -283,7 +290,7 @@ namespace Logistics.Console
 
 
             //   }
-           // }
+            // }
         }
 
         public void ImportEMSQuotaion(long channelID, String quotationSheetName)
@@ -298,26 +305,29 @@ namespace Logistics.Console
                 var columns = firstRow.Cells.Count();
 
                 logistics_quotation_partition_price partitionPrice = null;
-                for (int i = 1; i <rlast; i++)
+                for (int i = 1; i <= rlast; i++)
                 {
                     for (int j = 2; j < columns; j++)
                     {
                         row = sheet.GetRow(i);
-                        var result = QuotationDal.GetPartitionIDByCodeChannelID(Convert.ToString(firstRow.Cells[j]).Trim(), channelID, 890501594632818690);
-                        partitionPrice = new logistics_quotation_partition_price();
-                        partitionPrice.TenantID = 890501594632818690;
-                        partitionPrice.ID = IdWorker.GetID();
-                        partitionPrice.firstHeavyPrice = Convert.ToDecimal(row.Cells[0].ToString());
-                        partitionPrice.continuedHeavyPrice = Convert.ToDecimal(row.Cells[1].ToString());
-                        partitionPrice.channelID = channelID;
-                        partitionPrice.partitionID = result.ID;
-                       // partitionPrice.beginHeavy = Convert.ToDecimal(row.Cells[0].ToString());
-                        //partitionPrice.endHeavy = Convert.ToDecimal(row.Cells[1].ToString());
-                        partitionPrice.price = row.Cells[j] == null ? 0 : Convert.ToDecimal(row.Cells[j].ToString());
-                        partitionPrice.CreatedBy = 890501594632818690;
-                        partitionPrice.ModifiedBy = 890501594632818690;
-                        QuotationDal.InsertPartitionPrice(partitionPrice);
-                        System.Console.WriteLine("channel id:" + channelID + quotationSheetName + ":" + row.Cells[j]);
+                        if (row.Cells[0].ToString() != "")
+                        {
+                            var result = QuotationDal.GetPartitionIDByCodeChannelID(Convert.ToString(firstRow.Cells[j]).Trim(), channelID, 890501594632818690);
+                            partitionPrice = new logistics_quotation_partition_price();
+                            partitionPrice.TenantID = 890501594632818690;
+                            partitionPrice.ID = IdWorker.GetID();
+                            partitionPrice.firstHeavyPrice = Convert.ToDecimal(row.Cells[0].ToString());
+                            partitionPrice.continuedHeavyPrice = Convert.ToDecimal(row.Cells[1].ToString());
+                            partitionPrice.channelID = channelID;
+                            partitionPrice.partitionID = result.ID;
+                            // partitionPrice.beginHeavy = Convert.ToDecimal(row.Cells[0].ToString());
+                            //partitionPrice.endHeavy = Convert.ToDecimal(row.Cells[1].ToString());
+                            partitionPrice.price = row.Cells[j] == null ? 0 : Convert.ToDecimal(row.Cells[j].ToString());
+                            partitionPrice.CreatedBy = 890501594632818690;
+                            partitionPrice.ModifiedBy = 890501594632818690;
+                            QuotationDal.InsertPartitionPrice(partitionPrice);
+                            System.Console.WriteLine("channel id:" + channelID + quotationSheetName + ":" + row.Cells[j]);
+                        }
                     }
 
 
@@ -338,19 +348,22 @@ namespace Logistics.Console
                 var columns = firstRow.Cells.Count();
 
                 logistics_base_country partitionPrice = null;
-                for (int i = 0; i < rlast; i++)
+                for (int i = 0; i <= rlast; i++)
                 {
                     row = sheet.GetRow(i);
-                    partitionPrice = new logistics_base_country();
-                    partitionPrice.TenantID = 890501594632818690;
-                    partitionPrice.ID = IdWorker.GetID();
-                    partitionPrice.englishName = row.Cells[0].ToString();
-                    partitionPrice.code = row.Cells[1].ToString();
-                    partitionPrice.chineseName = row.Cells[2].ToString();
-                    partitionPrice.CreatedBy = 890501594632818690;
-                    partitionPrice.ModifiedBy = 890501594632818690;
-                    QuotationDal.InsertCountry(partitionPrice);
-                    System.Console.WriteLine(partitionPrice.chineseName);
+                    if (row.Cells[0].ToString() != "")
+                    {
+                        partitionPrice = new logistics_base_country();
+                        partitionPrice.TenantID = 890501594632818690;
+                        partitionPrice.ID = IdWorker.GetID();
+                        partitionPrice.englishName = row.Cells[0].ToString();
+                        partitionPrice.code = row.Cells[1].ToString();
+                        partitionPrice.chineseName = row.Cells[2].ToString();
+                        partitionPrice.CreatedBy = 890501594632818690;
+                        partitionPrice.ModifiedBy = 890501594632818690;
+                        QuotationDal.InsertCountry(partitionPrice);
+                        System.Console.WriteLine(partitionPrice.chineseName);
+                    }
 
                 }
             }
