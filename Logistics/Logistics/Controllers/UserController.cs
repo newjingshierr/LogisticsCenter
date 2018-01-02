@@ -248,7 +248,7 @@ namespace Logistics.Controllers
                 //用户信息写入缓存；
                 if (currentInfo == null)
                     return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
-                UserManger.GetCurrentInfoCahced(request.TenantID, request.user, false, currentInfo);
+             //   UserManger.GetCurrentInfoCahced(request.TenantID, request.user, false, currentInfo);
 
                 return GetResult(encryptTicket);
             }
@@ -322,7 +322,7 @@ namespace Logistics.Controllers
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, user, DateTime.Now,
                          DateTime.Now.AddMinutes(15), true, string.Format("{0}&{1}&{2}", user, request.pwd, request.TenantID.ToString()),
                          FormsAuthentication.FormsCookiePath);
-                    UserManger.GetTokenCahced(request.TenantID, user, false, FormsAuthentication.Encrypt(ticket));
+                   // UserManger.GetTokenCahced(request.TenantID, user, false, FormsAuthentication.Encrypt(ticket));
                 }
             }
             catch (LogisticsException ex)
