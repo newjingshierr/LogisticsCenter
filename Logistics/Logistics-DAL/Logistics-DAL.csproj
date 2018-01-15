@@ -70,8 +70,15 @@
   <ItemGroup>
     <Compile Include="ConnectionManager.cs" />
     <Compile Include="Demo.cs" />
+    <Compile Include="Modules\Base\AgentDAL.cs" />
+    <Compile Include="Modules\Base\ChannelDAL.cs" />
     <Compile Include="Modules\Base\MessageDal.cs" />
+    <Compile Include="Modules\Base\RecipientsAddressDAL.cs" />
     <Compile Include="Modules\Base\SmsValidateDal.cs" />
+    <Compile Include="Modules\Base\WareHouseDAL.cs" />
+    <Compile Include="Modules\CustomerOrderMerge\CustomerOrderMergeDAL.cs" />
+    <Compile Include="Modules\CustomerOrder\CustomerOrderDAL.cs" />
+    <Compile Include="Modules\ExpressType\ExpressTypeDAL.cs" />
     <Compile Include="Modules\Navigation\NavigationDal.cs" />
     <Compile Include="Modules\Quotation\QuotationDal.cs" />
     <Compile Include="Modules\Role\RoleDAL.cs" />

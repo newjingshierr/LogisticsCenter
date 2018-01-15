@@ -10,4 +10,12 @@ namespace Logistics_Model
     {
         public long TenantID { get; set; } = 890501594632818690;
     }
+
+    public class GetItemListByUserIDRequest : BaseReqeust
+    {
+        public long userID { get; set; }
+    }
+
+
+
 }

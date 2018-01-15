@@ -10,6 +10,9 @@ namespace Logistics_Model
     {
         public List<demo> demos { get; set; }
     }
+
+
+
     public class DemoGetByNameRequest
     {
         public string name { get; set; } = "";

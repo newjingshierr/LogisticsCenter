@@ -11,6 +11,84 @@ namespace Logistics_DAL
     /// </summary>
     public class Proc
     {
+        public class ExpressType
+        {
+            public const string logistics_base_express_type_insert = "logistics_base_express_type_insert";
+            public const string logistics_base_express_type_select_all = "logistics_base_express_type_select_all";
+        }
+        public class Channel
+        {
+            public const string logistics_base_channel_insert = "logistics_base_channel_insert";
+            public const string logistics_base_channel_select_by_page = "logistics_base_channel_select_by_page";
+            public const string logistics_base_channel_select_by_id = "logistics_base_channel_select_by_id";
+            public const string logistics_base_channel_delete_by_id = "logistics_base_channel_delete_by_id";
+            public const string logistics_base_channel_update_by_id = "logistics_base_channel_update_by_id";
+
+        }
+
+
+        public class Warehouse
+        {
+            public const string logistics_base_warehouse_address_insert = "logistics_base_warehouse_address_insert";
+            public const string logistics_base_warehouse_select_by_page = "logistics_base_warehouse_select_by_page";
+            public const string logistics_base_warehouse_select_by_id = "logistics_base_warehouse_select_by_id";
+            public const string logistics_base_warehouse_delete_by_id = "logistics_base_warehouse_delete_by_id";
+            public const string logistics_base_warehouse_update_by_id = "logistics_base_warehouse_update_by_id";
+
+        }
+
+        public class RecipientsAddress
+        {
+            public const string logistics_base_recipients_address_insert = "logistics_base_recipients_address_insert";
+            public const string logistics_base_recipients_select_by_page = "logistics_base_recipients_select_by_page";
+            public const string logistics_base_recipients_select_by_id = "logistics_base_recipients_select_by_id";
+            public const string logistics_base_recipients_delete_by_id = "logistics_base_recipients_delete_by_id";
+            public const string logistics_base_recipients_update_by_id = "logistics_base_recipients_update_by_id";
+
+        }
+        public class Attachment
+        {
+            public const string logistics_base_attachment_insert = "logistics_base_attachment_insert";
+            public const string logistics_base_attachment_get_by_order_id = "logistics_base_attachment_get_by_customer_order_id";
+        }
+
+
+        public class CustomerOrderMerge
+        {
+            public const string logistics_customer_order_merge_insert = "logistics_customer_order_merge_insert";
+            public const string logistics_customer_order_merge_update = "logistics_customer_order_merge_update";
+            public const string logistics_customer_order_merge_select_by_where = "logistics_customer_order_merge_select_by_where";
+            public const string logistics_customer_order_merge_detail_insert = "logistics_customer_order_merge_detail_insert";
+            public const string logistics_customer_order_merge_detail_update = "logistics_customer_order_merge_detail_update";
+            public const string logistics_customer_order_merge_detail_select_by_order_merge_id = "logistics_customer_order_merge_detail_select_by_order_merge_id";
+            public const string logistics_customer_order_merge_relation_insert = "logistics_customer_order_merge_relation_insert";
+            public const string logistics_customer_order_merge_relation_select_by_merge_order_id = "logistics_customer_order_merge_relation_select_by_merge_order_id";
+            public const string logistics_customer_order_merge_relation_delete_by_merge_order_id = "logistics_customer_order_merge_relation_delete_by_merge_order_id";
+            public const string logistics_customer_order_merge_status_insert = "logistics_customer_order_merge_status_insert";
+            public const string logistics_customer_order_merge_status_update = "logistics_customer_order_merge_status_update";
+            public const string logistics_customer_order_merge_status_select_merge_id = "logistics_customer_order_merge_status_select_merge_id";
+
+
+        }
+
+
+        public class Agent
+        {
+            public const string logistics_base_agent_insert = "logistics_base_agent_insert";
+            public const string logistics_base_agent_select_where = "logistics_base_agent_select_where";
+            public const string logistics_base_agent_select_by_page = "logistics_base_agent_select_by_page";
+            public const string logistics_base_agent_select_by_id = "logistics_base_agent_select_by_id";
+            public const string logistics_base_agent_delete_by_id = "logistics_base_agent_select_all";
+            public const string logistics_base_agent_update_by_id = "logistics_base_agent_update_by_id";
+        }
+
+        public class CustomerOrder
+        {
+            public const string logistics_customer_order_update_by_id = "logistics_customer_order_update_by_id";
+            public const string logistics_customer_order_insert = "logistics_customer_order_insert";
+            public const string logistics_customer_order_select_by_where = "logistics_customer_order_select_by_where";
+        }
+
         public class Quotation
         {
             public const string logistics_base_country_insert = "logistics_base_country_insert";
@@ -50,7 +128,9 @@ namespace Logistics_DAL
 
             public const string Demo_Delete_By_ID = "logistics_Demo_Delete_By_ID";
 
-            public const string Demo_Modify_By_ID = "logistics_Demo_Modify_By_ID";
+            public const string logistics_base_agent_update_by_id = "logistics_Demo_Modify_By_ID";
+
+            public const string Demo_Modify_By_ID = " Demo_Modify_By_ID";
 
         }
 
@@ -85,6 +165,8 @@ namespace Logistics_DAL
             public const string logistics_base_sms_validate_insert = "logistics_base_sms_validate_insert";
             public const string logistics_base_sms_validate_select = "logistics_base_sms_validate_select";
             public const string logistics_base_sms_validate_check = "logistics_base_sms_validate_check";
+            public const string logistics_base_message_select_by_userid = "logistics_base_message_select_by_userid";
+            public const string logistics_base_message_insert = "logistics_base_message_insert";
         }
     }
 }
