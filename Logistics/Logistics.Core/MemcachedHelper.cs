@@ -8,9 +8,38 @@ using System.Threading.Tasks;
 
 namespace Logistics.Core
 {
+    public class MemCached
+    {
+        private static MemcachedClient mclient;
+        static readonly object padlock = new object();
+        public static MemcachedClient getInstance()
+        {
+            if (mclient == null)
+            {
+                lock (padlock)
+                {
+                    if (mclient == null)
+                    {
+                        MemClientInit();
+                    }
+                }
+            }
+            return mclient;
+        }
+        static void MemClientInit()
+        {
+            //初始化缓存  
+            var config = new MemcachedClientConfiguration();
+            IPAddress ipAddress = IPAddress.Parse("120.26.164.165");
+            config.Servers.Add(new IPEndPoint(ipAddress, 11211));
+            config.Protocol = MemcachedProtocol.Binary;
+            mclient = new MemcachedClient(config);
+        }
+    }
+
+
     public class MemcachedHelper
     {
-
 
         /// <summary>  
         /// 定义一个静态MemcachedClient客户端,它随类一起加载，所有对象共用  
@@ -19,22 +48,12 @@ namespace Logistics.Core
         /// <summary>  
         /// 静态构造函数，初始化Memcached客户端  
         /// </summary>  
-        public MemcachedHelper()
+         static MemcachedHelper()
         {
-            var config = new MemcachedClientConfiguration();
-            IPAddress ipAddress = IPAddress.Parse("120.26.164.165");
-            config.Servers.Add(new IPEndPoint(ipAddress, 11211));
-            config.Protocol = MemcachedProtocol.Binary;
-            mclient = new MemcachedClient(config);
+            mclient = MemCached.getInstance();
         }
-        public static MemcachedHelper Instance()
-        {
-            return new MemcachedHelper();
-        }
-
-
-
-        public bool SetValue<T>(string groupName, string key, T value, DateTime expiry)
+     
+        public static bool SetValue<T>(string groupName, string key, T value, DateTime expiry)
         {
 
             if (value.GetType() == typeof(String))
@@ -54,7 +73,7 @@ namespace Logistics.Core
         /// <param name="value">值</param>  
         /// <param name="expiry">过期时间</param>  
         /// <returns>返回是否添加成功</returns>  
-        public bool Set(string groupName, string key, object value, DateTime expiry)
+        public static bool Set(string groupName, string key, object value, DateTime expiry)
         {
             key = groupName + "-" + key;
 
@@ -78,7 +97,7 @@ namespace Logistics.Core
         /// <param name="groupName">组名，用来区分不同的服务或应用场景</param>  
         /// <param name="key">键</param>  
         /// <returns>对象</returns>  
-        public object Get(string groupName, string key)
+        public static object Get(string groupName, string key)
         {
             key = groupName + "-" + key;
             return mclient.Get(key);
@@ -93,7 +112,7 @@ namespace Logistics.Core
         /// <param name="groupName">组名，用来区分不同的服务或应用场景</param>  
         /// <param name="key">键</param>  
         /// <returns></returns>  
-        public T GetValue<T>(string groupName, string key)
+        public static T  GetValue<T>(string groupName, string key)
         {
             var o = Get(groupName, key);
             if (o == null)
@@ -109,31 +128,31 @@ namespace Logistics.Core
         /// <param name="groupName">组名，用来区分不同的服务或应用场景</param>  
         /// <param name="key">键</param>  
         /// <returns></returns>  
-        public bool Remove(string groupName, string key)
+        public static bool Remove(string groupName, string key)
         {
             key = groupName + "-" + key;
             return mclient.Remove(key);
         }
 
-        public bool Remove(string key)
+        public static bool Remove(string key)
         {
             return mclient.Remove(key);
         }
         /// <summary>  
         /// 清除所有cache  
         /// </summary>  
-        public void RemoveAll()
+        public static void RemoveAll()
         {
             mclient.FlushAll();
         }
-        public Task<T> GetAsync<T>(String key)
+        public static Task<T> GetAsync<T>(String key)
         {
             var tcs = new TaskCompletionSource<T>();
             Task.Factory.StartNew(() => tcs.TrySetResult(Get<T>(key)));
             return tcs.Task;
         }
 
-        public T Get<T>(string key)
+        public static T Get<T>(string key)
         {
             var value = mclient.Get(key) + "";
             if (string.IsNullOrWhiteSpace(value))
@@ -147,7 +166,7 @@ namespace Logistics.Core
         }
 
 
-        public Task<T> GetOrSet<T>(string key, Func<T> func, DateTime expiresAt)
+        public static Task<T> GetOrSet<T>(string key, Func<T> func, DateTime expiresAt)
         {
             return GetAsync<T>(key).ContinueWith<T>(d =>
             {
@@ -158,7 +177,7 @@ namespace Logistics.Core
                     {
                         Task.Factory.StartNew(() =>
                         {
-                           Store<T>(StoreMode.Set, key, rs, expiresAt);
+                            Store<T>(StoreMode.Set, key, rs, expiresAt);
                         });
                     }
                     return rs;
@@ -170,7 +189,7 @@ namespace Logistics.Core
             });
         }
 
-        public bool Store<T>(StoreMode mode, string key, T value, DateTime expiresAt)
+        public static bool Store<T>(StoreMode mode, string key, T value, DateTime expiresAt)
         {
             if (value.GetType() == typeof(String))
             {

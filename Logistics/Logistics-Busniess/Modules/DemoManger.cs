@@ -42,14 +42,14 @@ namespace Logistics_Busniess
         public static demo GetDemoByID(DemoGetRequest item)
         {
             var result = new demo();
-            var model = MemcachedHelper.Instance().GetValue<demo>(AppModeEnum.Demo.ToString(), CacheConstants.GetDemoByID(item.ID, item.TenantID));
+            var model = MemcachedHelper.GetValue<demo>(AppModeEnum.Demo.ToString(), CacheConstants.GetDemoByID(item.ID, item.TenantID));
             if (model == null)
             {
                 result = DemoDAL.GetItem(item);
                 if (result != null)
                 {
 
-                    MemcachedHelper.Instance().SetValue<demo>(AppModeEnum.Demo.ToString(),
+                    MemcachedHelper.SetValue<demo>(AppModeEnum.Demo.ToString(),
                         CacheConstants.GetDemoByID(item.ID, item.TenantID),
                         result, CacheConstants.GetDemoByIDTime());
                 }
@@ -71,10 +71,10 @@ namespace Logistics_Busniess
             var key = CacheConstants.GetDemoByID(ID, TenantID);
             if (!isCache)
             {
-                MemcachedHelper.Instance().Remove(key);
+                MemcachedHelper.Remove(key);
             }
 
-            var result = MemcachedHelper.Instance().GetOrSet(key, () =>
+            var result = MemcachedHelper.GetOrSet(key, () =>
             {
                 var model = DemoDAL.GetItem(ID, TenantID);
 

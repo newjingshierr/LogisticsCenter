@@ -13,6 +13,8 @@ using Logistics.Common;
 using Logistics_Model;
 using Akmii;
 
+using Logistics_Busniess;
+
 namespace Logistics
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
@@ -70,7 +72,10 @@ namespace Logistics
     {
         public BaseAuthController()
         {
+            //RequestContext.ClientCertificate
+            //currentInfo =  UserManger.GetCurrentInfoCahced(request.TenantID, request.user,);
         }
+        public static CurrentInfo currentInfo { get; set; }
 
     }
 }

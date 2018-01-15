@@ -215,9 +215,9 @@ namespace Logistics_Busniess
 
             if (!isCache)
             {
-                MemcachedHelper.Instance().Remove(key);
+                MemcachedHelper.Remove(key);
             }
-            var result = MemcachedHelper.Instance().GetOrSet(key, () =>
+            var result = MemcachedHelper.GetOrSet(key, () =>
             {
                 var model = token;
                 return model;
@@ -231,7 +231,7 @@ namespace Logistics_Busniess
             var result = false;
             if (!string.IsNullOrEmpty(user))
             {
-                result = MemcachedHelper.Instance().Remove(key);
+                result = MemcachedHelper.Remove(key);
             }
             if (result)
             {
@@ -279,7 +279,7 @@ namespace Logistics_Busniess
             var role = new logistics_base_role();
             if (userInfo != null)
             {
-                role = RoleDAL.SelectRoleItem(TenantID, userInfo.Userid);
+                role = RoleDAL.SelectRoleItem(userInfo.Userid);
             }
             else
             {
@@ -306,9 +306,9 @@ namespace Logistics_Busniess
 
             if (!isCache)
             {
-                MemcachedHelper.Instance().Remove(key);
+                MemcachedHelper.Remove(key);
             }
-            var result = MemcachedHelper.Instance().GetOrSet(key, () =>
+            var result = MemcachedHelper.GetOrSet(key, () =>
             {
                 var model = currentInfo;
                 return model;

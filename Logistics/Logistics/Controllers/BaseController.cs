@@ -10,8 +10,8 @@ using System.Collections.Generic;
 
 namespace Logistics.Controllers
 {
-    [RoutePrefix(ApiConstants.PrefixApi + "Base")]
-    public class BaseController : BaseAuthController
+    [RoutePrefix(ApiConstants.PrefixApi + "SystemBase")]
+    public class SystemBaseController : BaseAuthController
     {
         LogHelper log = LogHelper.GetLogger(typeof(UserController));
 
