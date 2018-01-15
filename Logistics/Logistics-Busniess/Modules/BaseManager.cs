@@ -11,7 +11,7 @@ using Logistics.Common;
 
 namespace Logistics_Busniess
 {
-    public class MessagerManager
+    public class BaseManager
     {
         public static List<logistics_base_message> GetItemListByUserID(GetItemListByUserIDRequest request)
         {

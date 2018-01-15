@@ -81,4 +81,13 @@ namespace Logistics_Model
     }
 
 
+    public class GetMemberRequest : BaseReqeust
+    {
+        /// <summary>
+        /// 手機號或者郵箱
+        /// </summary>
+        public string userName { get; set; }
+    }
+
+
 }

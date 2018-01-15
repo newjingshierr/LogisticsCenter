@@ -242,13 +242,13 @@ namespace Logistics.Controllers
                 encryptTicket = FormsAuthentication.Encrypt(ticket);
                 // 用户新增是会员角色；
                 //用户token写入缓存；
-                UserManger.GetTokenCahced(request.TenantID, request.user, false, encryptTicket);
+                //  UserManger.GetTokenCahced(request.TenantID, request.user, false, encryptTicket);
                 var currentInfo = new CurrentInfo();
                 currentInfo = UserManger.GetCurrentInfo(request.TenantID, request.user);
                 //用户信息写入缓存；
-                if (currentInfo == null)
-                    return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
-             //   UserManger.GetCurrentInfoCahced(request.TenantID, request.user, false, currentInfo);
+                //if (currentInfo == null)
+                // return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
+                //   UserManger.GetCurrentInfoCahced(request.TenantID, request.user, false, currentInfo);
 
                 return GetResult(encryptTicket);
             }
@@ -322,7 +322,7 @@ namespace Logistics.Controllers
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, user, DateTime.Now,
                          DateTime.Now.AddMinutes(15), true, string.Format("{0}&{1}&{2}", user, request.pwd, request.TenantID.ToString()),
                          FormsAuthentication.FormsCookiePath);
-                   // UserManger.GetTokenCahced(request.TenantID, user, false, FormsAuthentication.Encrypt(ticket));
+                    // UserManger.GetTokenCahced(request.TenantID, user, false, FormsAuthentication.Encrypt(ticket));
                 }
             }
             catch (LogisticsException ex)
@@ -334,5 +334,30 @@ namespace Logistics.Controllers
 
         }
 
+    }
+
+    [RoutePrefix(ApiConstants.PrefixApi + "Member")]
+    public class MemberController : BaseAuthController
+    {
+        LogHelper log = LogHelper.GetLogger(typeof(UserController));
+
+        [HttpGet]
+        [Route("CurrentInfo")]
+        public ResponseMessage<CurrentInfo> GetCurrentInfo([FromUri] GetMemberRequest request)
+        {
+            var result = new CurrentInfo();
+
+            try
+            {
+                result = UserManger.GetCurrentInfo(request.TenantID, request.userName);
+                return GetResult(result);
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+
+        }
     }
 }

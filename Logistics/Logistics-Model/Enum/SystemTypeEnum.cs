@@ -35,4 +35,23 @@ namespace Logistics_Model
         LognIn = 0,
         LognOut = 1
     }
+
+    public enum orderMergeStep
+    {
+        //待打包中
+        WaitForPackage = 0,
+        //客服確認中
+        CustomerConfirm = 1,
+        //倉庫打包中
+        WarehousePackege = 2,
+        //待付款
+        WaitForPay = 3,
+        //待發貨中
+        WaitForDelivery = 4
+    }
+
+    public enum WaitForPackageStatus
+    {
+
+    }
 }

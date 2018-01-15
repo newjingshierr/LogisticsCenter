@@ -64,8 +64,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Modules\BaseManager.cs" />
     <Compile Include="Modules\DemoManger.cs" />
-    <Compile Include="Modules\MessagerManager.cs" />
     <Compile Include="Modules\NavigationManager.cs" />
     <Compile Include="Modules\Quotation.cs" />
     <Compile Include="Modules\RoleManager.cs" />

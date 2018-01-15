@@ -16,28 +16,23 @@ namespace Logistics.Controllers
         LogHelper log = LogHelper.GetLogger(typeof(UserController));
 
         /// <summary>
-        /// 或用獲取的消息
+        /// 獲取用戶的消息
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("message/items")]
-        public ResponseMessage<bool> GetItemListByUserID([FromUri]UserValidateRequest request)
+        public ResponseMessage<List<logistics_base_message>> GetItemListByUserID([FromUri]GetItemListByUserIDRequest request)
         {
             if (request == null)
             {
-                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+                return GetErrorResult<List<logistics_base_message>>(SystemStatusEnum.InvalidRequest);
             }
 
-            if (string.IsNullOrEmpty(request.user))
-            {
-                return GetErrorResult<bool>(SystemStatusEnum.InvalidUserExistRequest);
-            }
-
-            var result = false;
+            var result = new List<logistics_base_message>();
             try
             {
-                result = UserManger.ValidateUser(request);
+                result = BaseManager.GetItemListByUserID(request);
 
                 return GetResult(result);
             }
@@ -48,6 +43,7 @@ namespace Logistics.Controllers
             }
 
         }
+
 
     }
 }

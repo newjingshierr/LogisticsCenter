@@ -68,11 +68,9 @@ namespace Logistics
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class BaseAuthController : BaseController
     {
-
         public BaseAuthController()
         {
         }
-
 
     }
 }
