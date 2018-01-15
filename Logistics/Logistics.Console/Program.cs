@@ -18,9 +18,28 @@ using NPOI.HSSF.Util;
 using Logistics_Model;
 using Logistics_DAL;
 using System.Net.Mail;
+using System.Data;
+
 
 namespace Logistics.Console
 {
+
+
+    public class NpoiMemoryStream : MemoryStream
+    {
+        public NpoiMemoryStream()
+        {
+            AllowClose = true;
+        }
+
+        public bool AllowClose { get; set; }
+        public override void Close()
+        {
+            if (AllowClose)
+                base.Close();
+        }
+    }
+
     [Serializable]
     public class AA
     {
@@ -31,6 +50,7 @@ namespace Logistics.Console
     public class Program
     {
         public string path = "Quotation.xls";
+        public string tell = "Tel.xlsx";
         public ISheet sheet = null;
         public IWorkbook workbook = null;
         public IRow firstRow = null;
@@ -45,6 +65,7 @@ namespace Logistics.Console
             // sendMail("fds718@163.com", "famliytree", "enzo.shi@famliytree.cn", "enzo.shi@famliytree.cn", "Infosys333", "您好！", "这是一封测试邮件!");
 
             Program p = new Program();
+            p.ImportCode("Tel.xls", "ss");
 
             //p.ImportPartion(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递分区");
             //p.ImportCounty(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递国家");
@@ -76,21 +97,204 @@ namespace Logistics.Console
 
             //p.ImportPartion(BusinessConstants.Channel.EMSStandard, "EMS标准快递分区");
             //p.ImportCounty(BusinessConstants.Channel.EMSStandard, "EMS标准快递国家");
-           // p.ImportEMSQuotaion(BusinessConstants.Channel.EMSStandard, "EMS标准快递价格");
+            // p.ImportEMSQuotaion(BusinessConstants.Channel.EMSStandard, "EMS标准快递价格");
 
             //p.ImportPartion(BusinessConstants.Channel.EUB, "E邮宝分区");
             //p.ImportCounty(BusinessConstants.Channel.EUB, "E邮宝国家");
-          //  p.ImportEMSQuotaion(BusinessConstants.Channel.EUB, "E邮宝价格");
+            //  p.ImportEMSQuotaion(BusinessConstants.Channel.EUB, "E邮宝价格");
 
             //p.ImportPartion(BusinessConstants.Channel.EMSPreferential, "EMS特惠分区");
             //p.ImportCounty(BusinessConstants.Channel.EMSPreferential, "EMS特惠国家");
-          //  p.ImportEMSQuotaion(BusinessConstants.Channel.EMSPreferential, "EMS特惠价格");
+            //  p.ImportEMSQuotaion(BusinessConstants.Channel.EMSPreferential, "EMS特惠价格");
 
             //p.ImportPartion(BusinessConstants.Channel.DHLStandard, "DHL标准快递分区");
             //p.ImportCounty(BusinessConstants.Channel.DHLStandard, "DHL标准快递国家");
-            p.ImportQuotation(BusinessConstants.Channel.DHLStandard, "DHL标准快递价格");
+            // p.ImportQuotation(BusinessConstants.Channel.DHLStandard, "DHL标准快递价格");
             System.Console.ReadLine();
         }
+
+        public void ImportCode(string path, string partitionSheetName)
+        {
+            using (FileStream fs = new FileStream(path, FileMode.Open))
+            {
+                workbook = new HSSFWorkbook(fs);
+
+                sheet = workbook.GetSheet(partitionSheetName);
+                firstRow = sheet.GetRow(0);
+                var lastRow = sheet.LastRowNum;
+                var data = new DataTable();
+                data.Columns.Add("aa");
+
+                for (int i = 0; i < lastRow; i++)
+                {
+                    var code = sheet.GetRow(i).Cells[0].ToString();
+                    for (int j = 0; j <= 9; j++)
+                    {
+                        for (int k = 0; k <= 9; k++)
+                        {
+                            var result = code + j.ToString() + k.ToString() + "86";
+                            DataRow row = data.NewRow();
+                            row[0] = result;
+                            data.Rows.Add(row);
+                        }
+                    }
+
+
+
+                }
+                ImportTel(data);
+            }
+        }
+
+
+        public void ImportTel(DataTable dt, string importPath = "import.xls")
+        {
+            //using (FileStream fs = new FileStream(importPath, FileMode.Open, FileAccess.ReadWrite))
+            //{
+            //    workbook = new HSSFWorkbook(fs);
+            //    sheet = workbook.GetSheet("导入模板");
+
+            //    for (int i = 0; i < dt.Rows.Count; i++)
+            //    {
+            //        IRow row = sheet.CreateRow(dt.Rows.Count);
+            //        row.CreateCell(0).SetCellValue("11");
+            //        row.CreateCell(4).SetCellValue(dt.Rows[i][0].ToString());
+            //    }
+            //    workbook.Write(fs);
+            //}
+            HSSFWorkbook wk =new HSSFWorkbook();
+            ISheet tb = wk.CreateSheet("33");
+
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                IRow row = tb.CreateRow(i);
+                row.CreateCell(0).SetCellValue("11");
+                row.CreateCell(1).SetCellValue(dt.Rows[i][0].ToString());
+            
+            }
+
+
+            using (FileStream fs = File.OpenWrite(importPath))
+            {
+                wk.Write(fs);   //向打开的这个xls文件中写入mySheet表并保存。
+
+            }
+
+
+        }
+
+        public static bool DataTableToExcel(DataTable dt)
+        {
+            bool result = false;
+            IWorkbook workbook = null;
+            FileStream fs = null;
+            IRow row = null;
+            ISheet sheet = null;
+            ICell cell = null;
+            try
+            {
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    workbook = new HSSFWorkbook();
+                    sheet = workbook.CreateSheet("Sheet0");//创建一个名称为Sheet0的表
+                    int rowCount = dt.Rows.Count;//行数
+                    int columnCount = dt.Columns.Count;//列数
+
+                    //设置列头
+                    row = sheet.CreateRow(0);//excel第一行设为列头
+                    for (int c = 0; c < columnCount; c++)
+                    {
+                        cell = row.CreateCell(c);
+                        cell.SetCellValue(dt.Columns[c].ColumnName);
+                    }
+
+                    //设置每行每列的单元格,
+                    for (int i = 0; i < rowCount; i++)
+                    {
+                        row = sheet.CreateRow(i + 1);
+                        for (int j = 0; j < columnCount; j++)
+                        {
+                            cell = row.CreateCell(j);//excel第二行开始写入数据
+                            cell.SetCellValue(dt.Rows[i][j].ToString());
+                        }
+                    }
+                    using (fs = File.OpenWrite(@"D:/import.xls"))
+                    {
+                        workbook.Write(fs);//向打开的这个xls文件中写入数据
+                        result = true;
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                if (fs != null)
+                {
+                    fs.Close();
+                }
+                return false;
+            }
+        }
+
+
+
+        //public int DataTableToExcel(DataTable data, string sheetName, bool isColumnWritten)
+        //{
+        //    int i = 0;
+        //    int j = 0;
+        //    int count = 0;
+        //    ISheet sheet = null;
+
+        //    fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+        //    if (fileName.IndexOf(".xlsx") > 0) // 2007版本
+        //        workbook = new XSSFWorkbook();
+        //    else if (fileName.IndexOf(".xls") > 0) // 2003版本
+        //        workbook = new HSSFWorkbook();
+
+        //    try
+        //    {
+        //        if (workbook != null)
+        //        {
+        //            sheet = workbook.CreateSheet(sheetName);
+        //        }
+        //        else
+        //        {
+        //            return -1;
+        //        }
+
+        //        if (isColumnWritten == true) //写入DataTable的列名
+        //        {
+        //            IRow row = sheet.CreateRow(0);
+        //            for (j = 0; j < data.Columns.Count; ++j)
+        //            {
+        //                row.CreateCell(j).SetCellValue(data.Columns[j].ColumnName);
+        //            }
+        //            count = 1;
+        //        }
+        //        else
+        //        {
+        //            count = 0;
+        //        }
+
+        //        for (i = 0; i < data.Rows.Count; ++i)
+        //        {
+        //            IRow row = sheet.CreateRow(count);
+        //            for (j = 0; j < data.Columns.Count; ++j)
+        //            {
+        //                row.CreateCell(j).SetCellValue(data.Rows[i][j].ToString());
+        //            }
+        //            ++count;
+        //        }
+        //        workbook.Write(fs); //写入到excel
+        //        return count;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Exception: " + ex.Message);
+        //        return -1;
+        //    }
+        //}
 
 
         /// <summary>
@@ -323,7 +527,7 @@ namespace Logistics.Console
                             partitionPrice.partitionID = result.ID;
                             // partitionPrice.beginHeavy = Convert.ToDecimal(row.Cells[0].ToString());
                             //partitionPrice.endHeavy = Convert.ToDecimal(row.Cells[1].ToString());
-                           // partitionPrice.price = row.Cells[j] == null ? 0 : Convert.ToDecimal(row.Cells[j].ToString());
+                            // partitionPrice.price = row.Cells[j] == null ? 0 : Convert.ToDecimal(row.Cells[j].ToString());
                             partitionPrice.CreatedBy = 890501594632818690;
                             partitionPrice.ModifiedBy = 890501594632818690;
                             QuotationDal.InsertPartitionPrice(partitionPrice);

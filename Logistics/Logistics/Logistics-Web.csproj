@@ -183,7 +183,9 @@
     <Compile Include="Base\EnableCorsAttribute.cs" />
     <Compile Include="Authorize\RequestAuthorizeAttribute.cs" />
     <Compile Include="Authorize\SessionRouteHandler.cs" />
+    <Compile Include="Controllers\CustomerOrderController.cs" />
     <Compile Include="Controllers\DemoController.cs" />
+    <Compile Include="Controllers\NavigationController.cs" />
     <Compile Include="Controllers\QuotationController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="Controllers\UserController.cs" />

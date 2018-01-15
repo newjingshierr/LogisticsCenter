@@ -11,7 +11,7 @@ namespace Logistics_DAL
     public class NavigationDal
     {
 
-        public static List<logistics_base_navigation> SelectNavigationItems(long TenantID, long roleID)
+        public static List<logistics_base_navigation> SelectNavigationItems(long roleID, long TenantID = BusinessConstants.Admin.TenantID)
         {
             var result = new List<logistics_base_navigation>();
             MySqlParameter[] parameters = {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Akmii;
 
 namespace Logistics_Model
 {
@@ -297,4 +299,22 @@ namespace Logistics_Model
         }
 
     }
+
+    public class AllUserInfo
+    {
+        public UserInfo userInfo { get; set; }
+        public logistics_base_role role { get; set; }
+
+        public string ticket { get; set; }
+
+    }
+
+
+    public class CurrentInfo
+    {
+        public UserInfo userInfo { get; set; }
+        public logistics_base_role role { get; set; }
+        public List<logistics_base_navigation> navigations { get; set; }
+    }
+
 }

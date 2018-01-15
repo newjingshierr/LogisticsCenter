@@ -10,8 +10,6 @@ namespace Logistics_Busniess.Modules
         public static logistics_base_role ValidateUser(LoginRequest request)
         {
             var dbResult = false;
-
-
             var userInfo = UserDAL.ValidateUser(request.TenantID, request.user, HashHelper.ComputeHash(request.pwd));
             dbResult = userInfo == null ? false : true;
             if (dbResult)
@@ -27,8 +25,16 @@ namespace Logistics_Busniess.Modules
                 dbResult = dbResult && UserDAL.InsertUserInfoLog(userinfoLog);
             }
             return null;
-
         }
 
+        public static logistics_base_role GetRoleByUserID(long userid)
+        {
+            logistics_base_role role = RoleDAL.SelectRoleItem(userid);
+            if (role == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.RoleNotFound, $"Role Not Found");
+            }
+            return role;
+        }
     }
 }

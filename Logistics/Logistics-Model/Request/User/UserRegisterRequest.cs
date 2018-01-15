@@ -68,9 +68,17 @@ namespace Logistics_Model
 
         public string code { get; set; } = "";
     }
+
     public class UserCheckRequest : BaseReqeust
     {
         public long userID { get; set; }
         public string Pwd { get; set; }
     }
+
+    public class GetNavgationListRequest : BaseReqeust
+    {
+        public long userID { get; set; }
+    }
+
+
 }

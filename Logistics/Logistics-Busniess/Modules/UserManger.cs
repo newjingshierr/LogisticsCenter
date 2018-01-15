@@ -293,10 +293,6 @@ namespace Logistics_Busniess
 
             var navigations = new List<logistics_base_navigation>();
             navigations = NavigationDal.SelectNavigationItems(TenantID, role.RoleID);
-            //if (navigations == null)
-            //{
-            //    throw new LogisticsException(SystemStatusEnum.InvalidNavigationRequest, $"Invalid Navigation:{ user}");
-            //}
             currentInfo.userInfo = userInfo;
             currentInfo.role = role;
             currentInfo.navigations = navigations;

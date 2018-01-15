@@ -119,5 +119,22 @@ namespace Logistics_Model
         /// </summary>
         [Description("Access Denied")]
         AccessDenied = 401,
+
+        ///系统 4000-4100
+        #region
+        ///角色没有找到
+        [Description("Role Not Found")]
+        RoleNotFound = 4000,
+
+        /// <summary>
+        /// 导航没有找到
+        /// </summary>
+        [Description("Navigation Not Found")]
+        NavigationNotFound = 4001,
+        #endregion
+        //用户订单 4200-4300
+        #region
+
+        #endregion
     }
 }

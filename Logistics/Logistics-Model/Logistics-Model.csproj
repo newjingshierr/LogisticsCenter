@@ -59,14 +59,9 @@
   <ItemGroup>
     <Compile Include="Constants\BusinessConstants.cs" />
     <Compile Include="Constants\CacheConstants.cs" />
-    <Compile Include="DB\Base\logistics_base_sms_validate.cs" />
-    <Compile Include="DB\Base\Navigation.cs" />
-    <Compile Include="DB\Navigation\Navigation.cs" />
+    <Compile Include="DB\DBModel.cs" />
     <Compile Include="DB\Product.cs" />
-    <Compile Include="DB\Quotation\Quotation.cs" />
-    <Compile Include="DB\Quotation\QuotationVM.cs" />
-    <Compile Include="DB\Role\Role.cs" />
-    <Compile Include="DB\User\UserInfo.cs" />
+    <Compile Include="DB\ViewModel.cs" />
     <Compile Include="Enum\SystemTypeEnum.cs" />
     <Compile Include="Enum\SystemStatusEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

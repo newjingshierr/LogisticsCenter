@@ -36,7 +36,7 @@ namespace Logistics_DAL
         }
 
 
-        public static logistics_base_role SelectRoleItem(long TenantID, long userid)
+        public static logistics_base_role SelectRoleItem(long userid,long TenantID = BusinessConstants.Admin.TenantID)
         {
             var result = new logistics_base_role();
             MySqlParameter[] parameters = {

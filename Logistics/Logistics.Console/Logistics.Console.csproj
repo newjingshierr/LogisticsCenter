@@ -77,8 +77,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="import.xls" />
     <None Include="packages.config" />
     <None Include="Quotation.xlsx" />
+    <None Include="Tel.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Logistics-Busniess\Logistics-Busniess.csproj">
