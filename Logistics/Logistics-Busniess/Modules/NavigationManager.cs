@@ -14,7 +14,7 @@ namespace Logistics_Busniess
         public static List<logistics_base_navigation> GetNavgationListByUserID(GetNavgationListRequest request)
         {
             var role = RoleDAL.SelectRoleItem(request.userID);
-            var navigationList = NavigationDal.SelectNavigationItems(request.userID);
+            var navigationList = NavigationDal.SelectNavigationItemsByRoleID(request.userID);
             if (navigationList == null)
             {
                 throw new LogisticsException(SystemStatusEnum.NavigationNotFound, $"Navigation Not Found");

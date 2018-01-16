@@ -173,6 +173,7 @@ namespace Logistics_DAL
         public class Navigation
         {
             public const string logistics_base_navigation_select_by_roleid = "logistics_base_navigation_select_by_roleid";
+            public const string logistics_base_navigation_select_children_items = "logistics_base_navigation_select_children_items";
         }
         public class Base
         {

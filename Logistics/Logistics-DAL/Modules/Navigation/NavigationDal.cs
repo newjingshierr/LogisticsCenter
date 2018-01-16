@@ -11,7 +11,7 @@ namespace Logistics_DAL
     public class NavigationDal
     {
 
-        public static List<logistics_base_navigation> SelectNavigationItems(long roleID, long TenantID = BusinessConstants.Admin.TenantID)
+        public static List<logistics_base_navigation> SelectNavigationItemsByRoleID(long roleID, long TenantID = BusinessConstants.Admin.TenantID)
         {
             var result = new List<logistics_base_navigation>();
             MySqlParameter[] parameters = {
@@ -20,6 +20,28 @@ namespace Logistics_DAL
             };
 
             var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Navigation.logistics_base_navigation_select_by_roleid, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<logistics_base_navigation>.DtToList(dbResult.Tables[0]);
+            }
+            else
+            {
+                result = null;
+            }
+
+            return result;
+        }
+
+
+        public static List<logistics_base_navigation> SelectNavigationChildrenItems(long ID, long TenantID = BusinessConstants.Admin.TenantID)
+        {
+            var result = new List<logistics_base_navigation>();
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID",TenantID),
+                new MySqlParameter("@_parentID",ID),
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Navigation.logistics_base_navigation_select_children_items, parameters);
             if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
             {
                 result = ConvertHelper<logistics_base_navigation>.DtToList(dbResult.Tables[0]);

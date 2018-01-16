@@ -314,7 +314,13 @@ namespace Logistics_Model
     {
         public UserInfo userInfo { get; set; }
         public logistics_base_role role { get; set; }
-        public List<logistics_base_navigation> navigations { get; set; }
+        public List<NavigationView> navigations { get; set; }
+    }
+
+    public class NavigationView
+    {
+        public logistics_base_navigation parentItem { get; set; }
+        public List<logistics_base_navigation> childItems { get; set; }
     }
 
 }

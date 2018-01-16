@@ -292,10 +292,23 @@ namespace Logistics_Busniess
             }
 
             var navigations = new List<logistics_base_navigation>();
-            navigations = NavigationDal.SelectNavigationItems(TenantID, role.RoleID);
+            navigations = NavigationDal.SelectNavigationItemsByRoleID(role.RoleID);
+            NavigationView navigationView = new NavigationView();
+            List<NavigationView> navigationViewList = new List<NavigationView>();
+            foreach( var o in navigations)
+            {
+                navigationView.parentItem = o;
+                navigationView.childItems = NavigationDal.SelectNavigationChildrenItems(o.ID);
+                navigationViewList.Add(navigationView);
+            }
+            if (navigationViewList == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.NavigationNotFound, $"Navigation Not Found:{ user}");
+            }
+
             currentInfo.userInfo = userInfo;
             currentInfo.role = role;
-            currentInfo.navigations = navigations;
+            currentInfo.navigations = navigationViewList;
 
             return currentInfo;
         }
