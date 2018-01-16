@@ -41,8 +41,11 @@ namespace Logistics.Controllers
 
         //統計已發貨訂單數
         [Route("OrderSummary")]
-        public ResponseMessage<OrderStatusSummaryView> SelectOrderStatusByUserID([FromUri] OrderStatusRequest request)
+        public ResponseMessage<OrderStatusSummaryView> SelectOrderStatusByUserID()
         {
+            OrderStatusRequest request = new OrderStatusRequest();
+            request.userID = base.currentInfo.userInfo.Userid;
+
             if (request == null)
             {
                 return GetErrorResult<OrderStatusSummaryView>(SystemStatusEnum.InvalidRequest);

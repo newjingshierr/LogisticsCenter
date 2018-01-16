@@ -93,7 +93,7 @@ namespace Logistics
 
 
         }
-        public CurrentInfo currentInfo { get; set; }
+        public ContextInfo currentInfo { get; set; }
 
     }
 }

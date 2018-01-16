@@ -310,7 +310,7 @@ namespace Logistics_Model
     }
 
 
-    public class CurrentInfo
+    public class ContextInfo
     {
         public UserInfo userInfo { get; set; }
         public logistics_base_role role { get; set; }

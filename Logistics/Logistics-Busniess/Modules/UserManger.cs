@@ -270,9 +270,9 @@ namespace Logistics_Busniess
             return result;
         }
 
-        public static CurrentInfo GetCurrentInfo(long TenantID, string user)
+        public static ContextInfo GetCurrentInfo(long TenantID, string user)
         {
-            CurrentInfo currentInfo = new CurrentInfo();
+            ContextInfo currentInfo = new ContextInfo();
             var userInfo = new UserInfo();
 
             userInfo = UserDAL.ValidateUser(TenantID, user);
@@ -313,7 +313,7 @@ namespace Logistics_Busniess
             return currentInfo;
         }
 
-        public static CurrentInfo GetCurrentInfoCahced(long TenantID, string usr, bool isCache = true, CurrentInfo currentInfo = null)
+        public static ContextInfo GetCurrentInfoCahced(long TenantID, string usr, bool isCache = true, ContextInfo currentInfo = null)
         {
             var key = CacheConstants.GetCurrentInfo(usr, TenantID);
 

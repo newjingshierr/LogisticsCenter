@@ -248,7 +248,7 @@ namespace Logistics.Controllers
                 // 用户新增是会员角色；
                 //用户token写入缓存；
                 UserManger.GetTokenCahced(request.TenantID, request.user, false, encryptTicket);
-                var currentInfo = new CurrentInfo();
+                var currentInfo = new ContextInfo();
                 currentInfo = UserManger.GetCurrentInfo(request.TenantID, request.user);
                 //用户信息写入缓存；
                 if (currentInfo == null)
@@ -347,10 +347,10 @@ namespace Logistics.Controllers
         LogHelper log = LogHelper.GetLogger(typeof(UserController));
 
         [HttpGet]
-        [Route("CurrentInfo")]
-        public ResponseMessage<CurrentInfo> GetCurrentInfo([FromUri] GetMemberRequest request)
+        [Route("ContextInfo")]
+        public ResponseMessage<ContextInfo> GetCurrentInfo()
         {
-            var result = new CurrentInfo();
+            var result = new ContextInfo();
 
             try
             {
