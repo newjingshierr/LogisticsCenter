@@ -130,15 +130,17 @@ namespace Logistics_Model
         /// 导航没有找到
         /// </summary>
         [Description("Navigation Not Found")]
-        NavigationNotFound = 4001,
+        NavigationNotFound = 40001,
         /// <summary>
         /// 用户信息不存在
         /// </summary>
         [Description("Userinfo Not Found")]
-        UserinfoNotFound = 4002
+        UserinfoNotFound = 40002,
 
         #endregion
-        //用户订单 4200-4300
+        //用户订单 42000-4300
+         OrderException = 42000
+
         #region
 
         #endregion

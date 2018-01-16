@@ -80,6 +80,7 @@
     <Compile Include="Modules\CustomerOrder\CustomerOrderDAL.cs" />
     <Compile Include="Modules\ExpressType\ExpressTypeDAL.cs" />
     <Compile Include="Modules\Navigation\NavigationDal.cs" />
+    <Compile Include="Modules\OrderStatus\OrderStatus.cs" />
     <Compile Include="Modules\Quotation\QuotationDal.cs" />
     <Compile Include="Modules\Role\RoleDAL.cs" />
     <Compile Include="Modules\Rule\RuleDAL.cs" />

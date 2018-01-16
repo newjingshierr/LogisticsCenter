@@ -1,6 +1,11 @@
 ﻿
 namespace Logistics_Model
 {
+    public class OrderStatusRequest : BaseReqeust
+    {
+        public long userID { get; set; }
+    }
+
     public class TokenRequest : BaseReqeust
     {
         public string token { get; set; } = "";

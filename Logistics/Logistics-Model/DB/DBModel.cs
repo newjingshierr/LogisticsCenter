@@ -1389,11 +1389,11 @@ namespace Logistics_Model
         /// <summary>
         /// mergeeOrderNo
         /// </summary>		
-        private string _mergeeorderno;
-        public string mergeeOrderNo
+        private string _mergeorderno;
+        public string mergeOrderNo
         {
-            get { return _mergeeorderno; }
-            set { _mergeeorderno = value; }
+            get { return _mergeorderno; }
+            set { _mergeorderno = value; }
         }
         /// <summary>
         /// currentStep

@@ -376,7 +376,7 @@ namespace Logistics_DAL
                         new MySqlParameter("@_TenantID", model.TenantID),
                         new MySqlParameter("@_ID",model.ID),
                          new MySqlParameter("@_mergeOrderID", model.mergeOrderID),
-                        new MySqlParameter("@_mergeeOrderNo", model.mergeeOrderNo),
+                        new MySqlParameter("@_mergeOrderNo", model.mergeOrderNo),
                         new MySqlParameter("@_currentStep", model.currentStep),
                         new MySqlParameter("@_currentStatus", model.currentStatus),
                          new MySqlParameter("@_CreatedBy",model.CreatedBy)
@@ -402,7 +402,7 @@ namespace Logistics_DAL
                       new MySqlParameter("@_TenantID", model.TenantID),
                         new MySqlParameter("@_ID",model.ID),
                          new MySqlParameter("@_mergeOrderID", model.mergeOrderID),
-                        new MySqlParameter("@_mergeeOrderNo", model.mergeeOrderNo),
+                        new MySqlParameter("@_mergeOrderNo", model.mergeOrderNo),
                          new MySqlParameter("@_currentStep", model.currentStep),
                         new MySqlParameter("@_currentStatus", model.currentStatus),
                         new MySqlParameter("@_ModifiedBy",model.ModifiedBy)

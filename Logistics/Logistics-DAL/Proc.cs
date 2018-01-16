@@ -95,6 +95,10 @@ namespace Logistics_DAL
             public const string logistics_base_agent_delete_by_id = "logistics_base_agent_select_all";
             public const string logistics_base_agent_update_by_id = "logistics_base_agent_update_by_id";
         }
+        public class OrderStatus
+        {
+            public const string logistics_order_select_by_userid_summary = "logistics_order_select_by_userid_summary";
+        }
 
         public class CustomerOrder
         {

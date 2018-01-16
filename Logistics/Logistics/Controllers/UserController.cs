@@ -237,7 +237,7 @@ namespace Logistics.Controllers
                 {
                     return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
                 }
-               
+
 
                 FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, request.user, DateTime.Now,
                             DateTime.Now.AddMinutes(15), true, string.Format("{0}&{1}&{2}", request.user, request.pwd, request.TenantID.ToString()),
@@ -354,7 +354,7 @@ namespace Logistics.Controllers
 
             try
             {
-                result = UserManger.GetCurrentInfo(request.TenantID, request.userName);
+                result = base.currentInfo;
                 return GetResult(result);
             }
             catch (Exception ex)

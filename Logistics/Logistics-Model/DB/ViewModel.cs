@@ -323,4 +323,21 @@ namespace Logistics_Model
         public List<logistics_base_navigation> childItems { get; set; }
     }
 
+
+    public class OrderStatusSummaryView
+    {
+        /// <summary>
+        /// 等待客服打包提交打包
+        /// </summary>
+        public int waitForCustomerPackgeCount { get; set; }
+        /// <summary>
+        ///等待客户付款
+        /// </summary>
+        public int waitForPayCount { get; set; }
+        /// <summary>
+        /// 已发货
+        /// </summary>
+        public int DeliveryDoneCount { get; set; }
+    }
+
 }
