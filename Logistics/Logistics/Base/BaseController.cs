@@ -12,6 +12,7 @@ using Akmii.Core;
 using Logistics.Common;
 using Logistics_Model;
 using Akmii;
+using System.Web.Security;
 
 using Logistics_Busniess;
 
@@ -72,10 +73,18 @@ namespace Logistics
     {
         public BaseAuthController()
         {
-            //RequestContext.ClientCertificate
-            //currentInfo =  UserManger.GetCurrentInfoCahced(request.TenantID, request.user,);
+            string authorization = base.Request.Headers.Authorization.ToString();
+            var strTicket = FormsAuthentication.Decrypt(authorization).UserData;
+            var index = strTicket.IndexOf("&");
+            string strUser = strTicket.Substring(0, index);
+            currentInfo = UserManger.GetCurrentInfoCahced(BusinessConstants.Admin.TenantID, strUser);
+            if (currentInfo == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.UserinfoNotFound, $"Userinfo Not Found");
+            }
+
         }
-        public static CurrentInfo currentInfo { get; set; }
+        public  CurrentInfo currentInfo { get; set; }
 
     }
 }

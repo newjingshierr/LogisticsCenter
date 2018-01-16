@@ -6,6 +6,7 @@ using Logistics.Common;
 using Logistics_Model;
 using Logistics_Busniess;
 using Akmii;
+using System.Web.Security;
 using System.Collections.Generic;
 
 
@@ -236,14 +237,17 @@ namespace Logistics.Controllers
                 {
                     return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
                 }
+               
+
                 FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, request.user, DateTime.Now,
                             DateTime.Now.AddMinutes(15), true, string.Format("{0}&{1}&{2}", request.user, request.pwd, request.TenantID.ToString()),
                             FormsAuthentication.FormsCookiePath);
                 //token进行加密
                 encryptTicket = FormsAuthentication.Encrypt(ticket);
+
                 // 用户新增是会员角色；
                 //用户token写入缓存；
-                  UserManger.GetTokenCahced(request.TenantID, request.user, false, encryptTicket);
+                UserManger.GetTokenCahced(request.TenantID, request.user, false, encryptTicket);
                 var currentInfo = new CurrentInfo();
                 currentInfo = UserManger.GetCurrentInfo(request.TenantID, request.user);
                 //用户信息写入缓存；

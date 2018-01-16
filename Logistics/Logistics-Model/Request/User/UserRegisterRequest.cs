@@ -19,6 +19,7 @@ namespace Logistics_Model
     {
         public string user { get; set; } = "";
         public string pwd { get; set; } = "";
+        public bool remember { get; set; } = true;
 
     }
     public class LogoutRequest : BaseReqeust
