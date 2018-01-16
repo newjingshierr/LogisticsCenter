@@ -34,10 +34,14 @@ namespace Logistics
             //如果取不到身份验证信息，并且不允许匿名访问，则返回未验证401
             else
             {
-                var attributes = actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().OfType<AllowAnonymousAttribute>();
-                bool isAnonymous = attributes.Any(a => a is AllowAnonymousAttribute);
-                if (isAnonymous) base.OnAuthorization(actionContext);
-                else HandleUnauthorizedRequest(actionContext);
+
+            #if !DEBUG
+                            var attributes = actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().OfType<AllowAnonymousAttribute>();
+                            bool isAnonymous = attributes.Any(a => a is AllowAnonymousAttribute);
+                            if (isAnonymous) base.OnAuthorization(actionContext);
+                            else HandleUnauthorizedRequest(actionContext);
+            #endif
+
             }
         }
 
