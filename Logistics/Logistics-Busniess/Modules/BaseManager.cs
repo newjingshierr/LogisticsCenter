@@ -13,9 +13,14 @@ namespace Logistics_Busniess
 {
     public class BaseManager
     {
-        public static List<logistics_base_message> GetItemListByUserID(GetItemListByUserIDRequest request)
+        public static List<logistics_base_message> GetItemListByLatest(long userID)
         {
-            return MessageDal.GetItemListByUserID(request.userID, request.TenantID);
+            return MessageDal.GetItemListByLatest(userID);
+        }
+
+        public static List<logistics_base_message> GetItemListByPage(GetItemListByPageRequest request,long userID,ref int totalCount)
+        {
+            return MessageDal.GetItemListByPage(request.PageIndex,request.PageSize,userID,ref totalCount);
         }
     }
 }

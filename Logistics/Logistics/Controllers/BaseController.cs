@@ -21,18 +21,14 @@ namespace Logistics.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("message/items")]
-        public ResponseMessage<List<logistics_base_message>> GetItemListByUserID([FromUri]GetItemListByUserIDRequest request)
+        [Route("message/latest")]
+        public ResponseMessage<List<logistics_base_message>> GetItemListByLatest()
         {
-            if (request == null)
-            {
-                return GetErrorResult<List<logistics_base_message>>(SystemStatusEnum.InvalidRequest);
-            }
 
             var result = new List<logistics_base_message>();
             try
             {
-                result = BaseManager.GetItemListByUserID(request);
+                result = BaseManager.GetItemListByLatest(base.currentInfo.userInfo.Userid);
 
                 return GetResult(result);
             }
@@ -43,6 +39,33 @@ namespace Logistics.Controllers
             }
 
         }
+
+        /// <summary>
+        /// 獲取用戶的消息分页
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("message/page")]
+        public ResponseMessage<List<logistics_base_message>> GetItemListByPage(GetItemListByPageRequest request)
+        {
+            var result = new List<logistics_base_message>();
+            int totalCount = 0;
+            try
+            {
+                result = BaseManager.GetItemListByPage(request, base.currentInfo.userInfo.Userid, ref totalCount);
+
+                return GetResult(result, totalCount);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+            }
+
+        }
+
+
 
 
     }

@@ -184,7 +184,8 @@ namespace Logistics_DAL
             public const string logistics_base_sms_validate_insert = "logistics_base_sms_validate_insert";
             public const string logistics_base_sms_validate_select = "logistics_base_sms_validate_select";
             public const string logistics_base_sms_validate_check = "logistics_base_sms_validate_check";
-            public const string logistics_base_message_select_by_userid = "logistics_base_message_select_by_userid";
+            public const string logistics_base_message_select_by_latest = "logistics_base_message_select_by_latest";
+            public const string logistics_base_message_select_by_page = "logistics_base_message_select_by_page";
             public const string logistics_base_message_insert = "logistics_base_message_insert";
         }
     }

@@ -1,18 +1,18 @@
 ﻿
 namespace Logistics_Model
 {
-    public class OrderStatusRequest : BaseReqeust
+    public class OrderStatusRequest : BaseRequest
     {
         public long userID { get; set; }
     }
 
-    public class TokenRequest : BaseReqeust
+    public class TokenRequest : BaseRequest
     {
         public string token { get; set; } = "";
 
     }
 
-    public class UpdateUserPwdRequest : BaseReqeust
+    public class UpdateUserPwdRequest : BaseRequest
     {
         public string mail { get; set; } = "";
         public string tel { get; set; } = "";
@@ -20,20 +20,20 @@ namespace Logistics_Model
         public string code { get; set; } = "";
     }
 
-    public class LoginRequest : BaseReqeust
+    public class LoginRequest : BaseRequest
     {
         public string user { get; set; } = "";
         public string pwd { get; set; } = "";
         public bool remember { get; set; } = true;
 
     }
-    public class LogoutRequest : BaseReqeust
+    public class LogoutRequest : BaseRequest
     {
         public string user { get; set; } = "";
 
     }
 
-    public class SendSMSRequest : BaseReqeust
+    public class SendSMSRequest : BaseRequest
     {
         public string tel { get; set; } = "";
         public string mail { get; set; } = "";
@@ -41,7 +41,7 @@ namespace Logistics_Model
 
     }
 
-    public class ValidateRequest : BaseReqeust
+    public class ValidateRequest : BaseRequest
     {
         public string mail { get; set; } = "";
         public string tel { get; set; } = "";
@@ -50,20 +50,20 @@ namespace Logistics_Model
     }
 
 
-    public class UserValidateRequest : BaseReqeust
+    public class UserValidateRequest : BaseRequest
     {
         public string user { get; set; } = "";
 
     }
 
-    public class CheckSmsValidateRequest : BaseReqeust
+    public class CheckSmsValidateRequest : BaseRequest
     {
         public string tel { get; set; } = "";
         public string code { get; set; } = "";
     }
 
 
-    public class UserRegisterRequest : BaseReqeust
+    public class UserRegisterRequest : BaseRequest
     {
         public string mail { get; set; } = "";
         public string tel { get; set; } = "";
@@ -75,19 +75,19 @@ namespace Logistics_Model
         public string code { get; set; } = "";
     }
 
-    public class UserCheckRequest : BaseReqeust
+    public class UserCheckRequest : BaseRequest
     {
         public long userID { get; set; }
         public string Pwd { get; set; }
     }
 
-    public class GetNavgationListRequest : BaseReqeust
+    public class GetNavgationListRequest : BaseRequest
     {
         public long userID { get; set; }
     }
 
 
-    public class GetMemberRequest : BaseReqeust
+    public class GetMemberRequest : BaseRequest
     {
         /// <summary>
         /// 手機號或者郵箱

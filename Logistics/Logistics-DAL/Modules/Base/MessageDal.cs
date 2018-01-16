@@ -10,16 +10,39 @@ namespace Logistics_DAL
 {
     public class MessageDal : DalBase
     {
-
-        public static List< logistics_base_message> GetItemListByUserID(long userid, long TenantID)
+        public static List<logistics_base_message> GetItemListByPage(int pageIndex, int pageSize, long userid, ref int totalCount, long TenantID = BusinessConstants.Admin.TenantID)
         {
-            var result = new List <logistics_base_message>();
+            var result = new List<logistics_base_message>();
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_userID",userid),
+                new MySqlParameter("@_TenantID", TenantID),
+                new MySqlParameter("@_PageIndex", pageIndex),
+                new MySqlParameter("@_PageSize", pageSize),
+                new MySqlParameter("_totalCount", totalCount) { Direction = ParameterDirection.Output }
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Base.logistics_base_message_select_by_page, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<logistics_base_message>.DtToList(dbResult.Tables[0]);
+            }
+            else
+            {
+                result = null;
+            }
+
+            return result;
+        }
+
+        public static List<logistics_base_message> GetItemListByLatest(long userid, long TenantID = BusinessConstants.Admin.TenantID)
+        {
+            var result = new List<logistics_base_message>();
             MySqlParameter[] parameters = {
                 new MySqlParameter("@_ID",userid),
                 new MySqlParameter("@_TenantID", TenantID)
             };
 
-            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Base.logistics_base_message_select_by_userid, parameters);
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Base.logistics_base_message_select_by_latest, parameters);
             if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
             {
                 result = ConvertHelper<logistics_base_message>.DtToList(dbResult.Tables[0]);
