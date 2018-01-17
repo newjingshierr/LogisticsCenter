@@ -240,20 +240,20 @@ namespace Logistics.Controllers
 
 
                 FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, request.user, DateTime.Now,
-                            DateTime.Now.AddMinutes(15), true, string.Format("{0}&{1}&{2}", request.user, request.pwd, request.TenantID.ToString()),
+                            DateTime.Now.AddHours(1), true, string.Format("{0}&{1}&{2}", request.user, request.pwd, request.TenantID.ToString()),
                             FormsAuthentication.FormsCookiePath);
                 //token进行加密
                 encryptTicket = FormsAuthentication.Encrypt(ticket);
 
                 // 用户新增是会员角色；
                 //用户token写入缓存；
-                UserManger.GetTokenCahced(request.TenantID, request.user, false, encryptTicket);
-                var currentInfo = new ContextInfo();
-                currentInfo = UserManger.GetCurrentInfo(request.TenantID, request.user);
+              //  UserManger.GetTokenCahced(request.TenantID, request.user, false, encryptTicket);
+             //   var currentInfo = new ContextInfo();
+                //currentInfo = UserManger.GetCurrentInfo(request.TenantID, request.user);
                 //用户信息写入缓存；
-                if (currentInfo == null)
-                    return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
-                UserManger.GetCurrentInfoCahced(request.TenantID, request.user, false, currentInfo);
+              //  if (currentInfo == null)
+          //          return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
+           //     UserManger.GetCurrentInfoCahced(request.TenantID, request.user, false, currentInfo);
 
                 return GetResult(encryptTicket);
             }
@@ -312,8 +312,8 @@ namespace Logistics.Controllers
 
     }
 
-    [RoutePrefix(ApiConstants.PrefixApi + "Member")]
-    public class MemberController : BaseAuthController
+    [RoutePrefix(ApiConstants.PrefixApi + "Memeber")]
+    public class MemeberController : BaseAuthController
     {
         LogHelper log = LogHelper.GetLogger(typeof(UserController));
 
@@ -337,7 +337,6 @@ namespace Logistics.Controllers
         }
 
 
-        [RequestAuthorize]
         [HttpPost]
         [Route("Logout")]
         public ResponseMessage<string> Logout()
@@ -347,7 +346,6 @@ namespace Logistics.Controllers
             var result = false;
             try
             {
-
                 result = UserManger.RemoveTokenCached(BusinessConstants.Admin.TenantID, user);
 
                 return GetResult(result.ToString());

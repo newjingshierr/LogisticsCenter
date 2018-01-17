@@ -180,7 +180,6 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Base\BaseController.cs" />
-    <Compile Include="Authorize\RequestAuthorizeAttribute.cs" />
     <Compile Include="Authorize\SessionRouteHandler.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CustomerOrderController.cs" />

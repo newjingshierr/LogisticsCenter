@@ -30,7 +30,7 @@ namespace Logistics_DAL
 
             return result;
         }
-       
+
 
         public static UserInfo ValidateUser(long TenantID, string user, byte[] Pwd)
         {
@@ -109,6 +109,32 @@ namespace Logistics_DAL
             }
             return result == 1;
 
+        }
+
+        public static UserInfo SelectUserLogByTime(DateTime startTime, DateTime endTime, long userid, long tenantID = BusinessConstants.Admin.TenantID)
+        {
+            var result = new UserInfo();
+
+            MySqlParameter[] parameters = {
+                       new MySqlParameter("@_TenantID", tenantID),
+                       new MySqlParameter("@_userID",userid),
+                        new MySqlParameter("@_startTime",startTime),
+                        new MySqlParameter("@_endTime",endTime),
+                
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.User.logistics_base_userinfo_log_select_by_time, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<UserInfo>.DtToModel(dbResult.Tables[0]);
+            }
+            else
+            {
+                result = null;
+            }
+
+
+            return result;
         }
 
         public static bool UpdateUser(UserInfo model, AkmiiMySqlTransaction trans = null)

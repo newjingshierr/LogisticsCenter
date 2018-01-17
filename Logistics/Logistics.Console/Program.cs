@@ -69,6 +69,9 @@ namespace Logistics.Console
             var strTenantID = ticketArray[2];
 
             //缓存中读取，进行验证token;
+          var result =  MemcachedHelper.Set("11", "11", System.DateTime.Now.AddHours(10));
+
+            var result1 = MemcachedHelper.Get("11");
             var cachedToken = UserManger.GetTokenCahced(long.Parse(strTenantID), strUser);
 
 

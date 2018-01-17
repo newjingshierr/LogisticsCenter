@@ -10,12 +10,15 @@ using Akmii;
 
 namespace Logistics.Controllers
 {
+    /// <summary>
+    /// 前端每半小时获取一次token；
+    /// </summary>
     public class TokenController : BaseAuthController
     {
         LogHelper log = LogHelper.GetLogger(typeof(UserController));
 
         /// <summary>
-        ///  前端定时获取token，每隔5分钟获取一次；
+        ///  前端定时获取token，每隔30分钟获取一次；
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -34,20 +37,22 @@ namespace Logistics.Controllers
             }
 
             var token = FormsAuthentication.Decrypt(request.token).UserData;
-            var index = token.IndexOf("&");
-            string user = token.Substring(0, index);
-            string pwd = token.Substring(index + 1);
-            string tenantID = token.Substring(index + 2);
+            var ticketArray = token.Split('&');
+            var user = ticketArray[0];
+            var pwd = ticketArray[1];
+            var TenantID = ticketArray[2];
 
             var encryptTicket = "";
             try
             {
                 FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, user, DateTime.Now,
-                            DateTime.Now.AddMinutes(15), true, string.Format("{0}&{1}&{2}", user, pwd, request.TenantID.ToString()),
+                            DateTime.Now.AddHours(1), true, string.Format("{0}&{1}&{2}", user, pwd, TenantID),
                             FormsAuthentication.FormsCookiePath);
                 //token进行加密
                 encryptTicket = FormsAuthentication.Encrypt(ticket);
+                //重新写入token,下次用户登录就用这个token验证
                 UserManger.GetTokenCahced(request.TenantID, user, false, encryptTicket);
+
                 return GetResult(encryptTicket);
             }
             catch (LogisticsException ex)

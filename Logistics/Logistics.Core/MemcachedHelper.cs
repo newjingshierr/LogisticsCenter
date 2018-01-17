@@ -79,6 +79,10 @@ namespace Logistics.Core
 
             return mclient.Store(StoreMode.Set, key, value, expiry);
         }
+        public static bool Set( string key, object value, DateTime expiry)
+        {
+            return mclient.Store(StoreMode.Set, key, value, expiry);
+        }
         /// <summary>  
         /// 向Memcached缓存中添加一条数据 默认超时24小时  
         /// </summary>  

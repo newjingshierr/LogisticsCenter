@@ -16,6 +16,7 @@ using System.Web.Security;
 using System.Configuration;
 
 using Logistics_Busniess;
+using System.Web.Http.Controllers;
 
 namespace Logistics
 {
@@ -68,32 +69,53 @@ namespace Logistics
 
     }
 
-    [RequestAuthorize]
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class BaseAuthController : BaseController
     {
+
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            try
+            {
+                if (controllerContext.Request == null)
+                {
+                    contextInfo = UserManger.GetCurrentInfo(BusinessConstants.Admin.TenantID, ConfigurationManager.AppSettings["CurrentUser"].ToString());
+                }
+                else
+                {
+                    string authorization = controllerContext.Request.Headers.Authorization.ToString();
+                    var strTicket = FormsAuthentication.Decrypt(authorization).UserData;
+
+
+                    var ticketArray = strTicket.Split('&');
+                    var User = ticketArray[0];
+                    var Pwd = ticketArray[1];
+                    var TenantID = ticketArray[2];
+
+                    var index = strTicket.IndexOf("&");
+                    string strUser = strTicket.Substring(0, index);
+
+                    //contextInfo = UserManger.GetCurrentInfoCahced(BusinessConstants.Admin.TenantID, strUser);
+                    // var currentInfo = new ContextInfo();
+                    contextInfo = UserManger.GetCurrentInfo(long.Parse(TenantID), User);
+                    if (contextInfo == null)
+                    {
+                        throw new LogisticsException(SystemStatusEnum.UserinfoNotFound, $"Userinfo Not Found");
+                    }
+                }
+                base.Initialize(controllerContext);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
         public BaseAuthController()
         {
-            if (base.Request == null)
-            {
-                contextInfo  = UserManger.GetCurrentInfo(BusinessConstants.Admin.TenantID, ConfigurationManager.AppSettings["CurrentUser"].ToString()); 
-            }
-            else
-            {
-                string authorization = base.Request.Headers.Authorization.ToString();
-                var strTicket = FormsAuthentication.Decrypt(authorization).UserData;
-                var index = strTicket.IndexOf("&");
-                string strUser = strTicket.Substring(0, index);
-                contextInfo = UserManger.GetCurrentInfoCahced(BusinessConstants.Admin.TenantID, strUser);
-                if (contextInfo == null)
-                {
-                    throw new LogisticsException(SystemStatusEnum.UserinfoNotFound, $"Userinfo Not Found");
-                }
-            }
-
+            HttpRequestContext context = base.RequestContext;
 
         }
-        public ContextInfo contextInfo { get; set; }
+        protected ContextInfo contextInfo { get; set; }
 
     }
 }

@@ -28,7 +28,7 @@ namespace Logistics.Controllers
             var result = new List<logistics_base_message>();
             try
             {
-                result = MessageManager.GetMessageListByLatest(base.contextInfo.userInfo.Userid);
+                result = MessageManager.GetMessageListByLatest(contextInfo.userInfo.Userid);
 
                 return GetResult(result);
             }
