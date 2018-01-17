@@ -164,10 +164,10 @@ namespace Logistics_Busniess
             var result = false;
             var sendResult = false;
 
-       
+
             var smsValidate = ValidateDal.GetItem(request.TenantID, request.tel, request.mail);
             if (smsValidate != null)
-            {    
+            {
                 ///检查操作是否过于频繁；检查的逻辑，根据手机号或者邮箱去检查之前的最近的一条的创建时间和现在的时间间隔是否有超过1分钟；
                 TimeSpan timeSpan = DateTime.Now - smsValidate.Created;
                 var CodeRateResult = timeSpan.TotalMinutes < 1 ? true : false;
@@ -211,12 +211,14 @@ namespace Logistics_Busniess
 
         public static string GetTokenCahced(long TenantID, string usr, bool isCache = true, string token = null)
         {
+
             var key = CacheConstants.GetToken(usr, TenantID);
 
             if (!isCache)
             {
                 MemcachedHelper.Remove(key);
             }
+
             var result = MemcachedHelper.GetOrSet(key, () =>
             {
                 var model = token;
@@ -224,6 +226,11 @@ namespace Logistics_Busniess
 
             }, CacheConstants.GetTokenTime()).Result;
             return result;
+        }
+
+        public static string GetTokenCached(string key)
+        {
+            return MemcachedHelper.Get(key).ToString();
         }
         public static bool RemoveTokenCached(long TenantID, string user)
         {
@@ -298,7 +305,7 @@ namespace Logistics_Busniess
             navigations = NavigationDal.SelectNavigationItemsByRoleID(role.RoleID);
             NavigationView navigationView = new NavigationView();
             List<NavigationView> navigationViewList = new List<NavigationView>();
-            foreach( var o in navigations)
+            foreach (var o in navigations)
             {
                 navigationView.parentItem = o;
                 navigationView.childItems = NavigationDal.SelectNavigationChildrenItems(o.ID);

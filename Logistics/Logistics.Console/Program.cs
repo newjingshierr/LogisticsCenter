@@ -62,10 +62,20 @@ namespace Logistics.Console
 
         static void Main(string[] args)
         {
+            var strTicket = "18721819403&sj456789&890501594632818690";
+            var ticketArray = strTicket.Split('&');
+            var strUser = ticketArray[0];
+            var strPwd = ticketArray[1];
+            var strTenantID = ticketArray[2];
+
+            //缓存中读取，进行验证token;
+            var cachedToken = UserManger.GetTokenCahced(long.Parse(strTenantID), strUser);
+
+
             // sendMail("fds718@163.com", "famliytree", "enzo.shi@famliytree.cn", "enzo.shi@famliytree.cn", "Infosys333", "您好！", "这是一封测试邮件!");
 
-            Program p = new Program();
-            p.ImportCode("Tel.xls", "ss");
+            //  Program p = new Program();
+            ///  p.ImportCode("Tel.xls", "ss");
 
             //p.ImportPartion(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递分区");
             //p.ImportCounty(BusinessConstants.Channel.FEDEXPrior, "FedEX优先快递国家");

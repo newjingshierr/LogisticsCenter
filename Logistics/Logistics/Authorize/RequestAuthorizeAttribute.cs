@@ -58,8 +58,10 @@ namespace Logistics
             var strPwd = ticketArray[1];
             var strTenantID = ticketArray[2];
 
+
+            var key = CacheConstants.GetToken(strUser, long.Parse(strTenantID));
             //缓存中读取，进行验证token;
-            var cachedToken = UserManger.GetTokenCahced(long.Parse(strTenantID), strUser);
+            var cachedToken = UserManger.GetTokenCached(key);
             if (encryptTicket == cachedToken)
             {
                 return true;
