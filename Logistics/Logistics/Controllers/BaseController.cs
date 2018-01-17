@@ -28,7 +28,7 @@ namespace Logistics.Controllers
             var result = new List<logistics_base_message>();
             try
             {
-                result = MessageManager.GetMessageListByLatest(base.currentInfo.userInfo.Userid);
+                result = MessageManager.GetMessageListByLatest(base.contextInfo.userInfo.Userid);
 
                 return GetResult(result);
             }
@@ -53,7 +53,7 @@ namespace Logistics.Controllers
             int totalCount = 0;
             try
             {
-                result = MessageManager.GetMessageListByPage(request, base.currentInfo.userInfo.Userid, ref totalCount);
+                result = MessageManager.GetMessageListByPage(request, base.contextInfo.userInfo.Userid, ref totalCount);
 
                 return GetResult(result, totalCount);
             }

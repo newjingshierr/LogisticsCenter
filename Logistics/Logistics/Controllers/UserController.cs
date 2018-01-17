@@ -265,36 +265,7 @@ namespace Logistics.Controllers
 
         }
 
-        [RequestAuthorize]
-        [HttpPost]
-        [Route("Logout")]
-        public ResponseMessage<string> Logout(LogoutRequest request)
-        {
-            if (request == null)
-            {
-                return GetErrorResult<string>(SystemStatusEnum.InvalidRequest);
-            }
 
-            if (string.IsNullOrEmpty(request.user))
-            {
-                return GetErrorResult<string>(SystemStatusEnum.InvalidUserNameRequest);
-            }
-
-
-            var result = false;
-            try
-            {
-                result = UserManger.RemoveTokenCached(BusinessConstants.Admin.TenantID, request.user);
-
-                return GetResult(result.ToString());
-            }
-            catch (LogisticsException ex)
-            {
-                log.Error(ex.Message);
-                return GetErrorResult(result.ToString(), ex.Status.ToString(), (int)ex.Status);
-            }
-
-        }
         /// <summary>
         /// 忘记密码
         /// </summary>
@@ -354,13 +325,37 @@ namespace Logistics.Controllers
 
             try
             {
-                result = base.currentInfo;
+                result = base.contextInfo;
                 return GetResult(result);
             }
             catch (Exception ex)
             {
                 return GetErrorResult(result, ex.Message);
 
+            }
+
+        }
+
+
+        [RequestAuthorize]
+        [HttpPost]
+        [Route("Logout")]
+        public ResponseMessage<string> Logout()
+        {
+
+            var user = string.IsNullOrEmpty (base.contextInfo.userInfo.Tel) ?base.contextInfo.userInfo.Email: base.contextInfo.userInfo.Tel;
+            var result = false;
+            try
+            {
+
+                result = UserManger.RemoveTokenCached(BusinessConstants.Admin.TenantID, user);
+
+                return GetResult(result.ToString());
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result.ToString(), ex.Status.ToString(), (int)ex.Status);
             }
 
         }

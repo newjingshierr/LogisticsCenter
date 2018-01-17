@@ -44,7 +44,7 @@ namespace Logistics.Controllers
         public ResponseMessage<OrderStatusSummaryView> SelectOrderStatusByUserID()
         {
             OrderStatusRequest request = new OrderStatusRequest();
-            request.userID = base.currentInfo.userInfo.Userid;
+            request.userID = base.contextInfo.userInfo.Userid;
 
             if (request == null)
             {

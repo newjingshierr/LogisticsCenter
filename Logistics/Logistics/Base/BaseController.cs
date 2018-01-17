@@ -76,7 +76,7 @@ namespace Logistics
         {
             if (base.Request == null)
             {
-                currentInfo  = UserManger.GetCurrentInfo(BusinessConstants.Admin.TenantID, ConfigurationManager.AppSettings["CurrentUser"].ToString()); 
+                contextInfo  = UserManger.GetCurrentInfo(BusinessConstants.Admin.TenantID, ConfigurationManager.AppSettings["CurrentUser"].ToString()); 
             }
             else
             {
@@ -84,8 +84,8 @@ namespace Logistics
                 var strTicket = FormsAuthentication.Decrypt(authorization).UserData;
                 var index = strTicket.IndexOf("&");
                 string strUser = strTicket.Substring(0, index);
-                currentInfo = UserManger.GetCurrentInfoCahced(BusinessConstants.Admin.TenantID, strUser);
-                if (currentInfo == null)
+                contextInfo = UserManger.GetCurrentInfoCahced(BusinessConstants.Admin.TenantID, strUser);
+                if (contextInfo == null)
                 {
                     throw new LogisticsException(SystemStatusEnum.UserinfoNotFound, $"Userinfo Not Found");
                 }
@@ -93,7 +93,7 @@ namespace Logistics
 
 
         }
-        public ContextInfo currentInfo { get; set; }
+        public ContextInfo contextInfo { get; set; }
 
     }
 }

@@ -103,7 +103,10 @@ namespace Logistics.Core
             return mclient.Get(key);
         }
 
-
+        public static object Get(string key)
+        {
+            return mclient.Get(key);
+        }
 
         /// <summary>  
         /// 通过key 来得到一个对象(前类型)  

@@ -228,12 +228,15 @@ namespace Logistics_Busniess
         public static bool RemoveTokenCached(long TenantID, string user)
         {
             var key = CacheConstants.GetToken(user, TenantID);
+
+            var resultToken = MemcachedHelper.Get(key);
+
             var result = false;
             if (!string.IsNullOrEmpty(user))
             {
                 result = MemcachedHelper.Remove(key);
             }
-            if (result)
+            if (!result)
             {
                 throw new LogisticsException(SystemStatusEnum.SigoutErrorRequest, $"Sigout Error Request");
             }
