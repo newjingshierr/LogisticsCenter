@@ -18,10 +18,10 @@ namespace Logistics
         {
             //从http请求的头里面获取身份验证信息，验证是否是请求发起方的ticket
             var authorization = actionContext.Request.Headers.Authorization;
-            if ((authorization != null) && (authorization.Parameter != null))
+            if (authorization != null)
             {
                 //解密用户ticket,并校验用户名密码是否匹配
-                var encryptTicket = authorization.Parameter;
+                var encryptTicket = authorization.ToString();
                 if (ValidateTicket(encryptTicket))
                 {
                     base.IsAuthorized(actionContext);
@@ -52,10 +52,11 @@ namespace Logistics
             var strTicket = FormsAuthentication.Decrypt(encryptTicket).UserData;
 
             //从Ticket里面获取用户名和密码
-            var index = strTicket.IndexOf("&");
-            string strUser = strTicket.Substring(0, index);
-            string strPwd = strTicket.Substring(index + 1);
-            string strTenantID = strTicket.Substring(index + 2);
+
+            var ticketArray = strTicket.Split('&');
+            var strUser = ticketArray[0];
+            var strPwd = ticketArray[1];
+            var strTenantID = ticketArray[2];
 
             //缓存中读取，进行验证token;
             var cachedToken = UserManger.GetTokenCahced(long.Parse(strTenantID), strUser);

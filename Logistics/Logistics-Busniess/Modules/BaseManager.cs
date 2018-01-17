@@ -11,16 +11,29 @@ using Logistics.Common;
 
 namespace Logistics_Busniess
 {
-    public class BaseManager
+    public class MessageManager
     {
-        public static List<logistics_base_message> GetItemListByLatest(long userID)
+        public static List<logistics_base_message> GetMessageListByLatest(long userID)
         {
             return MessageDal.GetItemListByLatest(userID);
         }
 
-        public static List<logistics_base_message> GetItemListByPage(GetItemListByPageRequest request,long userID,ref int totalCount)
+        public static List<logistics_base_message> GetMessageListByPage(GetItemListByPageRequest request,long userID,ref int totalCount)
         {
             return MessageDal.GetItemListByPage(request.PageIndex,request.PageSize,userID,ref totalCount);
         }
+
+        public static bool InsertMessage(MessageInsertRequest item)
+        {
+            logistics_base_message message = new logistics_base_message();
+            message.ID = IdWorker.GetID();
+            message.TenantID = BusinessConstants.Admin.TenantID;
+            message.type =(int) item.type;
+            message.message = item.message;
+            message.userid = item.userid;
+
+            return MessageDal.Insert(message);
+        }
+
     }
 }

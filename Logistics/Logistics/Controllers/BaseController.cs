@@ -10,8 +10,8 @@ using System.Collections.Generic;
 
 namespace Logistics.Controllers
 {
-    [RoutePrefix(ApiConstants.PrefixApi + "SystemBase")]
-    public class SystemBaseController : BaseAuthController
+    [RoutePrefix(ApiConstants.PrefixApi + "Message")]
+    public class MessageController : BaseAuthController
     {
         LogHelper log = LogHelper.GetLogger(typeof(UserController));
 
@@ -21,14 +21,14 @@ namespace Logistics.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("message/latest")]
+        [Route("latest")]
         public ResponseMessage<List<logistics_base_message>> GetItemListByLatest()
         {
 
             var result = new List<logistics_base_message>();
             try
             {
-                result = BaseManager.GetItemListByLatest(base.currentInfo.userInfo.Userid);
+                result = MessageManager.GetMessageListByLatest(base.currentInfo.userInfo.Userid);
 
                 return GetResult(result);
             }
@@ -46,14 +46,14 @@ namespace Logistics.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("message/page")]
+        [Route("items/page")]
         public ResponseMessage<List<logistics_base_message>> GetItemListByPage(GetItemListByPageRequest request)
         {
             var result = new List<logistics_base_message>();
             int totalCount = 0;
             try
             {
-                result = BaseManager.GetItemListByPage(request, base.currentInfo.userInfo.Userid, ref totalCount);
+                result = MessageManager.GetMessageListByPage(request, base.currentInfo.userInfo.Userid, ref totalCount);
 
                 return GetResult(result, totalCount);
             }
@@ -64,6 +64,28 @@ namespace Logistics.Controllers
             }
 
         }
+
+        [HttpPost]
+        [Route("item")]
+        public ResponseMessage<string> Insert(MessageInsertRequest request)
+        {
+
+            var result = false;
+            try
+            {
+                result = MessageManager.InsertMessage(request);
+
+                return GetResult(result.ToString());
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result.ToString(), ex.Message);
+            }
+
+        }
+
+
+
 
 
 

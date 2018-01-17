@@ -1621,6 +1621,11 @@ namespace Logistics_Model
             get { return _userid; }
             set { _userid = value; }
         }
+
+        public int type
+        {
+            get; set;
+        }
         /// <summary>
         /// Created
         /// </summary>		

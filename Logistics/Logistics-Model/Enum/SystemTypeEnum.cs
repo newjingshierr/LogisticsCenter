@@ -54,4 +54,13 @@ namespace Logistics_Model
     {
 
     }
+
+    public enum messageType
+    {
+        WarehouseIn =0,
+        CustomerServiceConfirm = 1,
+        WarehousePackge =2,
+        WaitForPay =3,
+        Delivered = 4
+    }
 }

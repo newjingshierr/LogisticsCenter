@@ -38,7 +38,7 @@ namespace Logistics_DAL
         {
             var result = new List<logistics_base_message>();
             MySqlParameter[] parameters = {
-                new MySqlParameter("@_ID",userid),
+                new MySqlParameter("@_userid",userid),
                 new MySqlParameter("@_TenantID", TenantID)
             };
 
@@ -61,7 +61,9 @@ namespace Logistics_DAL
             MySqlParameter[] parameters = {
                         new MySqlParameter("@_TenantID", model.TenantID),
                         new MySqlParameter("@_ID",model.ID),
+                          new MySqlParameter("@_type",model.type),
                         new MySqlParameter("@_message", model.message),
+                          new MySqlParameter("@_userid", model.userid),
                         new MySqlParameter("@_CreatedBy",model.CreatedBy)
             };
 
