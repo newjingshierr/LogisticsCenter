@@ -232,7 +232,7 @@ namespace Logistics.Controllers
             var result = false;
             try
             {
-                result = UserManger.ValidateUser(request, out long userID);
+                result = UserManger.ValidateUser(request, out string userID);
                 if (result == false)
                 {
                     return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
@@ -247,7 +247,7 @@ namespace Logistics.Controllers
                 //写入token log
                 InsertTokenLogRequest insertTokenLogRequest = new InsertTokenLogRequest();
                 insertTokenLogRequest.token = encryptTicket;
-                insertTokenLogRequest.userID = userID;
+                insertTokenLogRequest.userID = long.Parse(userID);
                 TokenManager.InsertTokenLog(insertTokenLogRequest);
 
                 // 用户新增是会员角色；

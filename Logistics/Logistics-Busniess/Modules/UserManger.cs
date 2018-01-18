@@ -61,7 +61,7 @@ namespace Logistics_Busniess
             return dbResult;
         }
 
-        public static bool ValidateUser(LoginRequest request,out long userID)
+        public static bool ValidateUser(LoginRequest request,out string userID)
         {
             var dbResult = false;
 
@@ -80,7 +80,7 @@ namespace Logistics_Busniess
                 userinfoLog.ModifiedBy = BusinessConstants.Admin.TenantID;
                 dbResult = dbResult && UserDAL.InsertUserInfoLog(userinfoLog);
             }
-            userID = userInfo.Userid;
+            userID = userInfo.Userid.ToString();
             return dbResult;
 
         }
