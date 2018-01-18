@@ -9,6 +9,74 @@ using Akmii;
 
 namespace Logistics_Model
 {
+    public class logistics_base_token_log
+    {
+
+        /// <summary>
+        /// ID
+        /// </summary>		
+        private long _id;
+        public long ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        /// <summary>
+        /// token
+        /// </summary>		
+        private string _token;
+        public string token
+        {
+            get { return _token; }
+            set { _token = value; }
+        }
+        /// <summary>
+        /// Userid
+        /// </summary>		
+        private long _userid;
+        public long Userid
+        {
+            get { return _userid; }
+            set { _userid = value; }
+        }
+        /// <summary>
+        /// Created
+        /// </summary>		
+        private DateTime _created;
+        public DateTime Created
+        {
+            get { return _created; }
+            set { _created = value; }
+        }
+        /// <summary>
+        /// on update CURRENT_TIMESTAMP(3)
+        /// </summary>		
+        private DateTime _modified;
+        public DateTime Modified
+        {
+            get { return _modified; }
+            set { _modified = value; }
+        }
+        /// <summary>
+        /// CreatedBy
+        /// </summary>		
+        private long _createdby;
+        public long CreatedBy
+        {
+            get { return _createdby; }
+            set { _createdby = value; }
+        }
+        /// <summary>
+        /// ModifiedBy
+        /// </summary>		
+        private long _modifiedby;
+        public long ModifiedBy
+        {
+            get { return _modifiedby; }
+            set { _modifiedby = value; }
+        }
+
+    }
     public class logistics_base_recipients_address
     {
 

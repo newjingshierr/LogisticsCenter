@@ -75,6 +75,7 @@
     <Compile Include="Modules\Base\MessageDal.cs" />
     <Compile Include="Modules\Base\RecipientsAddressDAL.cs" />
     <Compile Include="Modules\Base\SmsValidateDal.cs" />
+    <Compile Include="Modules\Base\TokenDAL.cs" />
     <Compile Include="Modules\Base\WareHouseDAL.cs" />
     <Compile Include="Modules\CustomerOrderMerge\CustomerOrderMergeDAL.cs" />
     <Compile Include="Modules\CustomerOrder\CustomerOrderDAL.cs" />

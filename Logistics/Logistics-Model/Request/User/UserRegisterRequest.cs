@@ -1,7 +1,7 @@
 ﻿
 namespace Logistics_Model
 {
-    public class MessageInsertRequest:BaseRequest
+    public class MessageInsertRequest : BaseRequest
     {
         public messageType type { get; set; }
         public string message { get; set; }
@@ -9,6 +9,11 @@ namespace Logistics_Model
     }
     public class OrderStatusRequest : BaseRequest
     {
+        public long userID { get; set; }
+    }
+    public class InsertTokenLogRequest : BaseRequest
+    {
+        public string token { get; set; }
         public long userID { get; set; }
     }
 

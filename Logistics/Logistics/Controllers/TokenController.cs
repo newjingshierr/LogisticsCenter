@@ -24,34 +24,27 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Token")]
-        public ResponseMessage<string> GetToken([FromUri] TokenRequest request)
+        public ResponseMessage<string> GetToken()
         {
-            if (request == null)
-            {
-                return GetErrorResult<string>(SystemStatusEnum.InvalidRequest);
-            }
-
-            if (string.IsNullOrEmpty(request.token))
-            {
-                return GetErrorResult<string>(SystemStatusEnum.InvalidRequest);
-            }
-
-            var token = FormsAuthentication.Decrypt(request.token).UserData;
-            var ticketArray = token.Split('&');
-            var user = ticketArray[0];
-            var pwd = ticketArray[1];
-            var TenantID = ticketArray[2];
-
             var encryptTicket = "";
+
             try
             {
-                FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, user, DateTime.Now,
-                            DateTime.Now.AddHours(1), true, string.Format("{0}&{1}&{2}", user, pwd, TenantID),
-                            FormsAuthentication.FormsCookiePath);
-                //token进行加密
-                encryptTicket = FormsAuthentication.Encrypt(ticket);
-                //重新写入token,下次用户登录就用这个token验证
-                UserManger.GetTokenCahced(request.TenantID, user, false, encryptTicket);
+                if (TokenManager.GetTokenByUserID(base.contextInfo.userInfo.Userid))
+                {
+                    FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, _user, DateTime.Now,
+                          DateTime.Now.AddHours(1), true, string.Format("{0}&{1}&{2}", _user, _pwd, _pwd),
+                          FormsAuthentication.FormsCookiePath);
+                    //token进行加密
+                    encryptTicket = FormsAuthentication.Encrypt(ticket);
+
+                    //写入token log
+                    InsertTokenLogRequest insertTokenLogRequest = new InsertTokenLogRequest();
+                    insertTokenLogRequest.token = encryptTicket;
+                    insertTokenLogRequest.userID = base.contextInfo.userInfo.Userid;
+                    TokenManager.InsertTokenLog(insertTokenLogRequest);
+                }
+
 
                 return GetResult(encryptTicket);
             }

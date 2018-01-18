@@ -232,7 +232,7 @@ namespace Logistics.Controllers
             var result = false;
             try
             {
-                result = UserManger.ValidateUser(request);
+                result = UserManger.ValidateUser(request, out long userID);
                 if (result == false)
                 {
                     return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
@@ -244,16 +244,21 @@ namespace Logistics.Controllers
                             FormsAuthentication.FormsCookiePath);
                 //token进行加密
                 encryptTicket = FormsAuthentication.Encrypt(ticket);
+                //写入token log
+                InsertTokenLogRequest insertTokenLogRequest = new InsertTokenLogRequest();
+                insertTokenLogRequest.token = encryptTicket;
+                insertTokenLogRequest.userID = userID;
+                TokenManager.InsertTokenLog(insertTokenLogRequest);
 
                 // 用户新增是会员角色；
                 //用户token写入缓存；
-              //  UserManger.GetTokenCahced(request.TenantID, request.user, false, encryptTicket);
-             //   var currentInfo = new ContextInfo();
+                //  UserManger.GetTokenCahced(request.TenantID, request.user, false, encryptTicket);
+                //   var currentInfo = new ContextInfo();
                 //currentInfo = UserManger.GetCurrentInfo(request.TenantID, request.user);
                 //用户信息写入缓存；
-              //  if (currentInfo == null)
-          //          return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
-           //     UserManger.GetCurrentInfoCahced(request.TenantID, request.user, false, currentInfo);
+                //  if (currentInfo == null)
+                //          return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
+                //     UserManger.GetCurrentInfoCahced(request.TenantID, request.user, false, currentInfo);
 
                 return GetResult(encryptTicket);
             }
@@ -342,11 +347,11 @@ namespace Logistics.Controllers
         public ResponseMessage<string> Logout()
         {
 
-            var user = string.IsNullOrEmpty (base.contextInfo.userInfo.Tel) ?base.contextInfo.userInfo.Email: base.contextInfo.userInfo.Tel;
+            var user = string.IsNullOrEmpty(base.contextInfo.userInfo.Tel) ? base.contextInfo.userInfo.Email : base.contextInfo.userInfo.Tel;
             var result = false;
             try
             {
-                result = UserManger.RemoveTokenCached(BusinessConstants.Admin.TenantID, user);
+                result = TokenManager.DeleteTokenLog(base.contextInfo.userInfo.Userid);
 
                 return GetResult(result.ToString());
             }

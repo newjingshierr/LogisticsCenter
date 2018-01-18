@@ -136,10 +136,13 @@ namespace Logistics_Model
         /// </summary>
         [Description("Userinfo Not Found")]
         UserinfoNotFound = 40002,
-
+        [Description("TokenExpired")]
+        TokenExpired = 40003,
         #endregion
         //用户订单 42000-4300
-         OrderException = 42000
+        OrderException = 42000
+
+
 
         #region
 

@@ -83,24 +83,32 @@ namespace Logistics
                 }
                 else
                 {
-                    string authorization = controllerContext.Request.Headers.Authorization.ToString();
-                    var strTicket = FormsAuthentication.Decrypt(authorization).UserData;
-
-
-                    var ticketArray = strTicket.Split('&');
-                    var User = ticketArray[0];
-                    var Pwd = ticketArray[1];
-                    var TenantID = ticketArray[2];
-
-                    var index = strTicket.IndexOf("&");
-                    string strUser = strTicket.Substring(0, index);
-
-                    //contextInfo = UserManger.GetCurrentInfoCahced(BusinessConstants.Admin.TenantID, strUser);
-                    // var currentInfo = new ContextInfo();
-                    contextInfo = UserManger.GetCurrentInfo(long.Parse(TenantID), User);
-                    if (contextInfo == null)
+                    try
                     {
-                        throw new LogisticsException(SystemStatusEnum.UserinfoNotFound, $"Userinfo Not Found");
+                        string authorization = controllerContext.Request.Headers.Authorization.ToString();
+                        var strTicket = FormsAuthentication.Decrypt(authorization).UserData;
+
+
+                        var ticketArray = strTicket.Split('&');
+                        var User = ticketArray[0];
+                        _user = ticketArray[0];
+                        var Pwd = ticketArray[1];
+                        _pwd = ticketArray[1];
+                        var TenantID = ticketArray[2];
+                        _tenantID = ticketArray[2];
+                        var index = strTicket.IndexOf("&");
+                        string strUser = strTicket.Substring(0, index);
+                        //contextInfo = UserManger.GetCurrentInfoCahced(BusinessConstants.Admin.TenantID, strUser);
+                        // var currentInfo = new ContextInfo();
+                        contextInfo = UserManger.GetCurrentInfo(long.Parse(TenantID), User);
+                        if (contextInfo == null)
+                        {
+                            throw new LogisticsException(SystemStatusEnum.UserinfoNotFound, $"Userinfo Not Found");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new LogisticsException(SystemStatusEnum.TokenExpired, $"Token Expired");
                     }
                 }
                 base.Initialize(controllerContext);
@@ -116,6 +124,10 @@ namespace Logistics
 
         }
         protected ContextInfo contextInfo { get; set; }
+
+        protected string _user { get; set; }
+        protected string _pwd { get; set; }
+        protected string _tenantID { get; set; }
 
     }
 }

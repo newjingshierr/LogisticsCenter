@@ -11,6 +11,12 @@ namespace Logistics_DAL
     /// </summary>
     public class Proc
     {
+        public class TokenLog
+        {
+            public const string logistics_base_token_log_delete_by_user_id = "logistics_base_token_log_delete_by_user_id";
+            public const string logistics_base_token_log_insert = "logistics_base_token_log_insert";
+            public const string logistics_base_token_log_select_by_user_id = "logistics_base_token_log_select_by_user_id";
+        }
         public class ExpressType
         {
             public const string logistics_base_express_type_insert = "logistics_base_express_type_insert";
@@ -95,6 +101,7 @@ namespace Logistics_DAL
             public const string logistics_base_agent_delete_by_id = "logistics_base_agent_select_all";
             public const string logistics_base_agent_update_by_id = "logistics_base_agent_update_by_id";
         }
+        
         public class OrderStatus
         {
             public const string logistics_order_select_by_userid_summary = "logistics_order_select_by_userid_summary";
