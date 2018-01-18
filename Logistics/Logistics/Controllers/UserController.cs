@@ -230,9 +230,10 @@ namespace Logistics.Controllers
 
             var encryptTicket = "";
             var result = false;
+            string userID;
             try
             {
-                result = UserManger.ValidateUser(request, out string userID);
+                result = UserManger.ValidateUser(request, out  userID);
                 if (result == false)
                 {
                     return GetErrorResult<string>(SystemStatusEnum.InvalidUserRequest);
