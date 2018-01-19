@@ -34,7 +34,7 @@ namespace Logistics.Controllers
                 if (TokenManager.GetTokenByUserID(base.contextInfo.userInfo.Userid))
                 {
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, _user, DateTime.Now,
-                          DateTime.Now.AddHours(1), true, string.Format("{0}&{1}&{2}", _user, _pwd, _pwd),
+                          DateTime.Now.AddYears(1), true, string.Format("{0}&{1}&{2}", _user, _pwd, _pwd),
                           FormsAuthentication.FormsCookiePath);
                     //token进行加密
                     encryptTicket = FormsAuthentication.Encrypt(ticket);

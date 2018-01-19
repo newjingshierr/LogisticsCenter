@@ -93,13 +93,11 @@ namespace Logistics
                     _user = ticketArray[0];
                     var Pwd = ticketArray[1];
                     _pwd = ticketArray[1];
-                    var TenantID = ticketArray[2];
-                    _tenantID = ticketArray[2];
                     var index = strTicket.IndexOf("&");
-                    string strUser = strTicket.Substring(0, index);
+                  //  string strUser = strTicket.Substring(0, index);
                     //contextInfo = UserManger.GetCurrentInfoCahced(BusinessConstants.Admin.TenantID, strUser);
                     // var currentInfo = new ContextInfo();
-                    contextInfo = UserManger.GetCurrentInfo(long.Parse(TenantID), User);
+                    contextInfo = UserManger.GetCurrentInfo(BusinessConstants.Admin.TenantID, _user);
                     if (contextInfo == null)
                     {
                         throw new LogisticsException(SystemStatusEnum.UserinfoNotFound, $"Userinfo Not Found");
