@@ -16,6 +16,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -34,6 +35,7 @@ namespace Logistics_Model
         /// Userid
         /// </summary>		
         private long _userid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long Userid
         {
             get { return _userid; }
@@ -61,6 +63,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -70,6 +73,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -84,6 +88,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -93,6 +98,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -102,6 +108,7 @@ namespace Logistics_Model
         /// Userid
         /// </summary>		
         private long _userid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long Userid
         {
             get { return _userid; }
@@ -111,6 +118,7 @@ namespace Logistics_Model
         /// ProvinceID
         /// </summary>		
         private long _provinceid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ProvinceID
         {
             get { return _provinceid; }
@@ -120,6 +128,7 @@ namespace Logistics_Model
         /// CityID
         /// </summary>		
         private long _cityid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CityID
         {
             get { return _cityid; }
@@ -174,6 +183,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -183,6 +193,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -197,6 +208,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -206,6 +218,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -224,6 +237,7 @@ namespace Logistics_Model
         /// customerOrderID
         /// </summary>		
         private long _customerorderid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long customerOrderID
         {
             get { return _customerorderid; }
@@ -251,6 +265,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -260,6 +275,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -274,6 +290,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -283,6 +300,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -319,6 +337,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -328,6 +347,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -342,6 +362,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -351,6 +372,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -387,6 +409,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -396,6 +419,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -410,6 +434,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -419,6 +444,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -428,6 +454,7 @@ namespace Logistics_Model
         /// NavigationID
         /// </summary>		
         private long _navigationid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long NavigationID
         {
             get { return _navigationid; }
@@ -437,6 +464,7 @@ namespace Logistics_Model
         /// RoleID
         /// </summary>		
         private long _roleid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long RoleID
         {
             get { return _roleid; }
@@ -464,6 +492,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -473,6 +502,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -488,6 +518,7 @@ namespace Logistics_Model
         /// </summary>		
         private long _tenantid;
         [JsonConverter(typeof(Long2StringConverter))]
+
         public long TenantID
         {
             get { return _tenantid; }
@@ -560,6 +591,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -569,6 +601,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -578,6 +611,7 @@ namespace Logistics_Model
         /// RoleID
         /// </summary>		
         private long _roleid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long RoleID
         {
             get { return _roleid; }
@@ -587,6 +621,7 @@ namespace Logistics_Model
         /// Userid
         /// </summary>		
         private long _userid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long Userid
         {
             get { return _userid; }
@@ -614,6 +649,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -623,6 +659,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -637,6 +674,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -646,6 +684,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -682,6 +721,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -691,6 +731,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -705,6 +746,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -714,6 +756,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -723,6 +766,7 @@ namespace Logistics_Model
         /// userid
         /// </summary>		
         private long _userid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long userid
         {
             get { return _userid; }
@@ -750,6 +794,7 @@ namespace Logistics_Model
         /// expressTypeID
         /// </summary>		
         private long _expresstypeid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long expressTypeID
         {
             get { return _expresstypeid; }
@@ -831,6 +876,7 @@ namespace Logistics_Model
         /// WareHouseID
         /// </summary>		
         private long _warehouseid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long WareHouseID
         {
             get { return _warehouseid; }
@@ -849,6 +895,7 @@ namespace Logistics_Model
         /// CustomerServiceID
         /// </summary>		
         private long _customerserviceid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CustomerServiceID
         {
             get { return _customerserviceid; }
@@ -876,6 +923,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -885,6 +933,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -899,6 +948,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -908,6 +958,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -935,6 +986,7 @@ namespace Logistics_Model
         /// CustomerChooseChannelID
         /// </summary>		
         private long _customerchoosechannelid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CustomerChooseChannelID
         {
             get { return _customerchoosechannelid; }
@@ -1178,6 +1230,7 @@ namespace Logistics_Model
         /// ChannelID
         /// </summary>		
         private long _channelid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ChannelID
         {
             get { return _channelid; }
@@ -1205,6 +1258,7 @@ namespace Logistics_Model
         /// AgentID
         /// </summary>		
         private long _agentid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long AgentID
         {
             get { return _agentid; }
@@ -1255,6 +1309,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -1336,6 +1391,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -1345,6 +1401,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -1359,6 +1416,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -1368,6 +1426,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -1377,6 +1436,7 @@ namespace Logistics_Model
         /// mergeOrderID
         /// </summary>		
         private long _mergeorderid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long mergeOrderID
         {
             get { return _mergeorderid; }
@@ -1386,6 +1446,7 @@ namespace Logistics_Model
         /// orderID
         /// </summary>		
         private long _orderid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long orderID
         {
             get { return _orderid; }
@@ -1413,6 +1474,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -1422,6 +1484,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -1436,6 +1499,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -1445,6 +1509,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -1454,6 +1519,7 @@ namespace Logistics_Model
         /// mergeOrderID
         /// </summary>		
         private long _mergeorderid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long mergeOrderID
         {
             get { return _mergeorderid; }
@@ -1508,6 +1574,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -1517,6 +1584,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -1531,6 +1599,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -1540,6 +1609,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -1639,6 +1709,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -1662,6 +1733,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -1671,6 +1743,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -1689,6 +1762,7 @@ namespace Logistics_Model
         /// userid
         /// </summary>		
         private long _userid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long userid
         {
             get { return _userid; }
@@ -1721,6 +1795,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -1730,6 +1805,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -1745,6 +1821,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -1754,6 +1831,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -1808,6 +1886,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -1817,6 +1896,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -1866,6 +1946,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -1875,6 +1956,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -1884,6 +1966,7 @@ namespace Logistics_Model
         /// Userid
         /// </summary>		
         private long _userid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long Userid
         {
             get { return _userid; }
@@ -1938,6 +2021,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -1947,6 +2031,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -1962,6 +2047,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -1971,6 +2057,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -2025,6 +2112,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -2034,6 +2122,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -2049,6 +2138,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -2058,6 +2148,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -2067,6 +2158,7 @@ namespace Logistics_Model
         /// Userid
         /// </summary>		
         private long _userid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long Userid
         {
             get { return _userid; }
@@ -2076,6 +2168,7 @@ namespace Logistics_Model
         /// ProvinceID
         /// </summary>		
         private long _provinceid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ProvinceID
         {
             get { return _provinceid; }
@@ -2085,6 +2178,7 @@ namespace Logistics_Model
         /// CityID
         /// </summary>		
         private long _cityid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CityID
         {
             get { return _cityid; }
@@ -2139,6 +2233,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -2148,6 +2243,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -2162,6 +2258,7 @@ namespace Logistics_Model
 		/// TenantID
         /// </summary>		
 		private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -2171,6 +2268,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -2390,6 +2488,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -2399,6 +2498,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -2471,6 +2571,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -2480,6 +2581,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -2497,6 +2599,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -2506,6 +2609,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -2533,6 +2637,7 @@ namespace Logistics_Model
         /// channelID
         /// </summary>		
         private long _channelid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long channelID
         {
             get { return _channelid; }
@@ -2542,6 +2647,7 @@ namespace Logistics_Model
         /// partitionID
         /// </summary>		
         private long _partitionid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long partitionID
         {
             get { return _partitionid; }
@@ -2596,6 +2702,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -2605,6 +2712,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -2620,6 +2728,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -2629,6 +2738,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -2656,6 +2766,7 @@ namespace Logistics_Model
         /// channelID
         /// </summary>		
         private long _channelid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long channelID
         {
             get { return _channelid; }
@@ -2665,6 +2776,7 @@ namespace Logistics_Model
         /// partitionID
         /// </summary>		
         private long _partitionid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long partitionID
         {
             get { return _partitionid; }
@@ -2719,6 +2831,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -2728,6 +2841,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
@@ -2744,6 +2858,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -2753,6 +2868,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -2789,6 +2905,7 @@ namespace Logistics_Model
         /// partitionID
         /// </summary>		
         private long _partitionid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long partitionID
         {
             get { return _partitionid; }
@@ -2816,6 +2933,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -2825,12 +2943,13 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
             set { _modifiedby = value; }
         }
-
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ChannelID { get; set; }
 
     }
@@ -2841,6 +2960,7 @@ namespace Logistics_Model
         /// TenantID
         /// </summary>		
         private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID
         {
             get { return _tenantid; }
@@ -2850,6 +2970,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -2895,6 +3016,7 @@ namespace Logistics_Model
         /// CreatedBy
         /// </summary>		
         private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
         {
             get { return _createdby; }
@@ -2904,6 +3026,7 @@ namespace Logistics_Model
         /// ModifiedBy
         /// </summary>		
         private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ModifiedBy
         {
             get { return _modifiedby; }
