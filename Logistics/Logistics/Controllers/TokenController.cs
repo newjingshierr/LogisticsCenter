@@ -13,6 +13,7 @@ namespace Logistics.Controllers
     /// <summary>
     /// 前端每半小时获取一次token；
     /// </summary>
+    [RoutePrefix(ApiConstants.PrefixApi + "Token")]
     public class TokenController : BaseAuthController
     {
         LogHelper log = LogHelper.GetLogger(typeof(UserController));
@@ -23,7 +24,7 @@ namespace Logistics.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("Token")]
+        [Route("Item")]
         public ResponseMessage<string> GetToken()
         {
             var encryptTicket = "";

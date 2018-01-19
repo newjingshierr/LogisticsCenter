@@ -241,7 +241,7 @@ namespace Logistics.Controllers
 
 
                 FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, request.user, DateTime.Now,
-                            DateTime.Now.AddHours(1), true, string.Format("{0}&{1}&{2}", request.user, request.pwd, request.TenantID.ToString()),
+                            DateTime.Now.AddYears(1), true, string.Format("{0}&{1}&{2}", request.user, request.pwd, request.TenantID.ToString()),
                             FormsAuthentication.FormsCookiePath);
                 //token进行加密
                 encryptTicket = FormsAuthentication.Encrypt(ticket);

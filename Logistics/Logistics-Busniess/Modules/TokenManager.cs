@@ -28,7 +28,7 @@ namespace Logistics_Busniess
             {
                 TimeSpan timeSpan = DateTime.Now - tokenLog.Created;
 
-                if (timeSpan.TotalMinutes > 30)
+                if (timeSpan.TotalMinutes > 10)
                 {
                     dbResult = true;
                 }

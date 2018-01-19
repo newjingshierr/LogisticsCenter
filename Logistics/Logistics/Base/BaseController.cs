@@ -75,52 +75,45 @@ namespace Logistics
 
         protected override void Initialize(HttpControllerContext controllerContext)
         {
-            try
+
+            if (controllerContext.Request.Headers.Authorization == null)
             {
-                if (controllerContext.Request == null)
+                contextInfo = UserManger.GetCurrentInfo(BusinessConstants.Admin.TenantID, ConfigurationManager.AppSettings["CurrentUser"].ToString());
+            }
+            else
+            {
+                try
                 {
-                    contextInfo = UserManger.GetCurrentInfo(BusinessConstants.Admin.TenantID, ConfigurationManager.AppSettings["CurrentUser"].ToString());
-                }
-                else
-                {
-                    try
-                    {
-                        string authorization = controllerContext.Request.Headers.Authorization.ToString();
-                        var strTicket = FormsAuthentication.Decrypt(authorization).UserData;
+                    string authorization = controllerContext.Request.Headers.Authorization.ToString();
+                    var strTicket = FormsAuthentication.Decrypt(authorization).UserData;
 
 
-                        var ticketArray = strTicket.Split('&');
-                        var User = ticketArray[0];
-                        _user = ticketArray[0];
-                        var Pwd = ticketArray[1];
-                        _pwd = ticketArray[1];
-                        var TenantID = ticketArray[2];
-                        _tenantID = ticketArray[2];
-                        var index = strTicket.IndexOf("&");
-                        string strUser = strTicket.Substring(0, index);
-                        //contextInfo = UserManger.GetCurrentInfoCahced(BusinessConstants.Admin.TenantID, strUser);
-                        // var currentInfo = new ContextInfo();
-                        contextInfo = UserManger.GetCurrentInfo(long.Parse(TenantID), User);
-                        if (contextInfo == null)
-                        {
-                            throw new LogisticsException(SystemStatusEnum.UserinfoNotFound, $"Userinfo Not Found");
-                        }
-                    }
-                    catch (Exception ex)
+                    var ticketArray = strTicket.Split('&');
+                    var User = ticketArray[0];
+                    _user = ticketArray[0];
+                    var Pwd = ticketArray[1];
+                    _pwd = ticketArray[1];
+                    var TenantID = ticketArray[2];
+                    _tenantID = ticketArray[2];
+                    var index = strTicket.IndexOf("&");
+                    string strUser = strTicket.Substring(0, index);
+                    //contextInfo = UserManger.GetCurrentInfoCahced(BusinessConstants.Admin.TenantID, strUser);
+                    // var currentInfo = new ContextInfo();
+                    contextInfo = UserManger.GetCurrentInfo(long.Parse(TenantID), User);
+                    if (contextInfo == null)
                     {
-                        throw new LogisticsException(SystemStatusEnum.TokenExpired, $"Token Expired");
+                        throw new LogisticsException(SystemStatusEnum.UserinfoNotFound, $"Userinfo Not Found");
                     }
                 }
-                base.Initialize(controllerContext);
+                catch (Exception ex)
+                {
+                    throw new LogisticsException(SystemStatusEnum.TokenExpired, $"Token Expired");
+                }
             }
-            catch (Exception ex)
-            {
-
-            }
+            base.Initialize(controllerContext);
         }
         public BaseAuthController()
         {
-            HttpRequestContext context = base.RequestContext;
 
         }
         protected ContextInfo contextInfo { get; set; }
