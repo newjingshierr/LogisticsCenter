@@ -18,7 +18,7 @@ namespace Logistics_Busniess
         /// <summary>
         ///  生成编号；
         ///  会员编号：defKey: user
-        ///  用户订单：defKey: order
+        ///  用户订单：defKey: customerorder
         /// </summary>
         /// <param name="tenantID"></param>
         /// <param name="defKey"></param>

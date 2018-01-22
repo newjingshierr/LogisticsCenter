@@ -16,7 +16,7 @@ namespace Logistics_Busniess
         public static OrderStatusSummaryView SelectOrderStatusByUserID(OrderStatusRequest item)
         {
             var result = new OrderStatusSummaryView();
-            var model = Logistics_DAL.OrderStatus.SelectOrderStatusByUserID(item.userID);
+            var model = Logistics_DAL.CustomerOrderStatus.SelectOrderStatusByUserID(item.userID);
             if (model == null)
             {
                 throw new LogisticsException(SystemStatusEnum.OrderException, $"Order Exception");

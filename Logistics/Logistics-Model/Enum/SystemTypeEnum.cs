@@ -36,7 +36,7 @@ namespace Logistics_Model
         LognOut = 1
     }
 
-    public enum orderMergeStep
+    public enum orderMergeStepEnum
     {
         //待打包中
         WaitForPackage = 0,
@@ -50,9 +50,24 @@ namespace Logistics_Model
         WaitForDelivery = 4
     }
 
-    public enum WaitForPackageStatus
+    public enum WaitForPackageStatusEnum
     {
+        unConfirm =0,
+        confirmed = 1
 
+    }
+
+    public enum OrderStepEnum
+    {
+        //入库
+        InWareHouse = 0
+    }
+
+    public enum InWareHouseStatusEum
+    {
+        unConfirm = 0,
+        confirmed = 1,
+        returnBack = 2
     }
 
     public enum messageType

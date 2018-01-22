@@ -56,7 +56,7 @@ namespace Logistics.Controllers
         [Route("items/page")]
         public ResponseMessage<List<logistics_customer_order>> GetItemListByPage([FromUri]CustomerOrderSelectRequest request)
         {
-            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));
+            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderController));
             int totalCount = 0;
             var result = new List<logistics_customer_order>();
             var userID = 0L;
@@ -76,6 +76,41 @@ namespace Logistics.Controllers
                 return GetErrorResult(result, ex.Message);
 
             }
+
+        }
+
+
+        /// <summary>
+        /// 新增customerOrder
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Item/Insert")]
+        public ResponseMessage<bool> InserCustomerOrder(CustomerOrderInsertReqeust request)
+        {
+            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));
+
+            if (request == null)
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+            }
+
+
+            var result = false;
+            try
+            {
+                result = CustomerOrderManager.InserCustomerOrder(request);
+
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+
+            }
+
         }
 
     }
@@ -91,7 +126,7 @@ namespace Logistics.Controllers
     [RoutePrefix(ApiConstants.PrefixApi + "CustomerOrder")]
     public class CustomerOrderStatusController : BaseAuthController
     {
-       
+
 
 
     }

@@ -1,7 +1,39 @@
-﻿
+﻿using Newtonsoft.Json;
+using Akmii;
+
 namespace Logistics_Model
 {
+    public class CustomerOrderInsertReqeust : BaseRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long userid { get; set; }
+        public string expressNo { get; set; }
 
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long expressTypeID { get; set; }
+
+        public string expressTypeName { get; set; }
+
+        public string TransferNo { get; set; }
+
+        public decimal InPackageCount { get; set; }
+
+        public decimal InWeight { get; set; }
+        public decimal InVolume { get; set; }
+
+        [JsonConverter(typeof(Long2StringConverter))]
+        public decimal InLength { get; set; }
+
+        public decimal InWidth { get; set; }
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long WareHouseID { get; set; }
+
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long CustomerServiceID { get; set; }
+
+        public string InWareHouseStatus { get; set; }
+
+    }
     public class CustomerOrderSelectRequest : BaseRequestPage
     {
         public int type { get; set; }

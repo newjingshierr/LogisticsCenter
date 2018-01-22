@@ -102,9 +102,10 @@ namespace Logistics_DAL
             public const string logistics_base_agent_update_by_id = "logistics_base_agent_update_by_id";
         }
         
-        public class OrderStatus
+        public class CustomerOrderStatus
         {
             public const string logistics_order_select_by_userid_summary = "logistics_order_select_by_userid_summary";
+            public const string logistics_customer_order_status_insert = "logistics_customer_order_status_insert";
         }
 
         public class CustomerOrder

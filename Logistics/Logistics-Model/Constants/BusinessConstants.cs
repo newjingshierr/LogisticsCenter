@@ -12,7 +12,8 @@ namespace Logistics_Model
         public class Defkey
         {
             public const string user = "user";
-            public const string order = "order";
+            public const string customerorder = "customerorder";
+            public const string mergeorder = "customermergeorder";
         }
 
         public class Admin

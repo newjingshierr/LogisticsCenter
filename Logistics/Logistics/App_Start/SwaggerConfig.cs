@@ -88,11 +88,11 @@ namespace RestAPI
                     //
                     //c.GroupActionsBy(apiDesc => apiDesc.HttpMethod.ToString());
 
-                    // You can also specify a custom sort order for groups (as defined by "GroupActionsBy") to dictate
-                    // the order in which operations are listed. For example, if the default grouping is in place
-                    // (controller name) and you specify a descending alphabetic sort order, then actions from a
+                    // You can also specify a custom sort customerorder for groups (as defined by "GroupActionsBy") to dictate
+                    // the customerorder in which operations are listed. For example, if the default grouping is in place
+                    // (controller name) and you specify a descending alphabetic sort customerorder, then actions from a
                     // ProductsController will be listed before those from a CustomersController. This is typically
-                    // used to customize the order of groupings in the swagger-ui.
+                    // used to customize the customerorder of groupings in the swagger-ui.
                     //
                     //c.OrderActionGroupsBy(new DescendingAlphabeticComparer());
 
