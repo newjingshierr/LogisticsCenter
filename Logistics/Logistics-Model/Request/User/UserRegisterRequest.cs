@@ -1,6 +1,12 @@
 ﻿
 namespace Logistics_Model
 {
+
+    public class CustomerOrderSelectRequest : BaseRequestPage
+    {
+        public int type { get; set; }
+    }
+
     public class MessageInsertRequest : BaseRequest
     {
         public messageType type { get; set; }

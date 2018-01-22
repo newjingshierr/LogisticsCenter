@@ -10,7 +10,7 @@ namespace Logistics_Model
     {
         public long TenantID { get; set; } = 890501594632818690;
     }
-    public class BaseRequestPage
+    public class BaseRequestPage:BaseRequest
     {
         public int PageIndex { get; set; } = 1;
 

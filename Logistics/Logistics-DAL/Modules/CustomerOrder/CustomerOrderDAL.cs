@@ -10,29 +10,6 @@ namespace Logistics_DAL
 {
     public class CustomerOrderDAL
     {
-        public static List<logistics_customer_order> GetItemListByLatest(long TenantID, int PageIndex, int PageSize, ref int totalCount)
-        {
-            var result = new List<logistics_customer_order>();
-            MySqlParameter[] parameters = {
-                                new MySqlParameter("@_TenantID", TenantID),
-                               new MySqlParameter("@_PageIndex", PageIndex),
-                               new MySqlParameter("@_PageSize", PageSize),
-                                new MySqlParameter("_totalCount", totalCount) { Direction = ParameterDirection.Output }
-            };
-
-            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Base.logistics_base_message_select_by_latest, parameters);
-            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
-            {
-                result = ConvertHelper<logistics_customer_order>.DtToList(dbResult.Tables[0]);
-            }
-            else
-            {
-                result = null;
-            }
-
-            return result;
-        }
-
 
         public static List<logistics_customer_order> GetItemListByPage(long TenantID, long userID, int PageIndex, int PageSize, ref int totalCount)
         {
@@ -45,7 +22,7 @@ namespace Logistics_DAL
                                 new MySqlParameter("_totalCount", totalCount) { Direction = ParameterDirection.Output }
             };
 
-            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Base.logistics_base_message_select_by_page, parameters);
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_select_by_page, parameters);
             if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
             {
                 result = ConvertHelper<logistics_customer_order>.DtToList(dbResult.Tables[0]);

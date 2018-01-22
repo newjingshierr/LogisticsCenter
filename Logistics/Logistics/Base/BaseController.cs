@@ -17,6 +17,8 @@ using System.Configuration;
 
 using Logistics_Busniess;
 using System.Web.Http.Controllers;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Logistics
 {
@@ -72,7 +74,7 @@ namespace Logistics
     public class BaseAuthController : BaseController
     {
 
-
+        public bool tokenExpired { get; set; } = false;
         protected override void Initialize(HttpControllerContext controllerContext)
         {
 
@@ -85,23 +87,32 @@ namespace Logistics
                 try
                 {
                     string authorization = controllerContext.Request.Headers.Authorization.ToString();
+                    if (authorization == "undefined")
+                    {
+                        throw new LogisticsException(SystemStatusEnum.TokenExpired, $"Token Expired");
+                    }
+                    //else
+                    //{
+
+                    //}
+
                     var strTicket = FormsAuthentication.Decrypt(authorization).UserData;
-
-
                     var ticketArray = strTicket.Split('&');
                     var User = ticketArray[0];
                     _user = ticketArray[0];
                     var Pwd = ticketArray[1];
                     _pwd = ticketArray[1];
                     var index = strTicket.IndexOf("&");
-                  //  string strUser = strTicket.Substring(0, index);
+                    //  string strUser = strTicket.Substring(0, index);
                     //contextInfo = UserManger.GetCurrentInfoCahced(BusinessConstants.Admin.TenantID, strUser);
                     // var currentInfo = new ContextInfo();
                     contextInfo = UserManger.GetCurrentInfo(BusinessConstants.Admin.TenantID, _user);
                     if (contextInfo == null)
                     {
+
                         throw new LogisticsException(SystemStatusEnum.UserinfoNotFound, $"Userinfo Not Found");
                     }
+
                 }
                 catch (Exception ex)
                 {
@@ -110,10 +121,14 @@ namespace Logistics
             }
             base.Initialize(controllerContext);
         }
+
+
         public BaseAuthController()
         {
 
         }
+
+          
         protected ContextInfo contextInfo { get; set; }
 
         protected string _user { get; set; }

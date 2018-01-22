@@ -16,19 +16,6 @@ namespace Logistics.Controllers
     [RoutePrefix(ApiConstants.PrefixApi + "CustomerOrder")]
     public class CustomerOrderController : BaseAuthController
     {
-    }
-
-
-    [RoutePrefix(ApiConstants.PrefixApi + "CustomerOrderMerge")]
-    public class CustomerOrderMergeController : BaseAuthController
-    {
-
-    }
-
-
-    [RoutePrefix(ApiConstants.PrefixApi + "CustomerOrderStatus")]
-    public class CustomerOrderStatusController : BaseAuthController
-    {
         //仓库入库 阶段：0  状态：0 未确认 1 已确认 2 仓库退货  
         //統計待打包個數 阶段 0 状态确认 1
         //客服确认阶段： 1  状态：0 未确认 1 已确认 2客服退货 3 客服拒绝
@@ -40,7 +27,7 @@ namespace Logistics.Controllers
         //統計待付款訂單數 阶段
 
         //統計已發貨訂單數
-        [Route("OrderSummary")]
+        [Route("Status")]
         public ResponseMessage<OrderStatusSummaryView> SelectOrderStatusByUserID()
         {
             OrderStatusRequest request = new OrderStatusRequest();
@@ -66,6 +53,45 @@ namespace Logistics.Controllers
 
         }
 
+        [Route("items/page")]
+        public ResponseMessage<List<logistics_customer_order>> GetItemListByPage([FromUri]CustomerOrderSelectRequest request)
+        {
+            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));
+            int totalCount = 0;
+            var result = new List<logistics_customer_order>();
+            var userID = 0L;
+            if (request.type == (int)CustomerOrderReqeustTypeEnum.waitForPackage)
+            {
+                userID = contextInfo.userInfo.Userid;
+            }
+
+            try
+            {
+                result = CustomerOrderManager.GetItemListByPage(request, userID, ref totalCount);
+
+                return GetResult(result, totalCount);
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+        }
+
+    }
+
+
+    [RoutePrefix(ApiConstants.PrefixApi + "CustomerOrderMerge")]
+    public class CustomerOrderMergeController : BaseAuthController
+    {
+
+    }
+
+
+    [RoutePrefix(ApiConstants.PrefixApi + "CustomerOrder")]
+    public class CustomerOrderStatusController : BaseAuthController
+    {
+       
 
 
     }

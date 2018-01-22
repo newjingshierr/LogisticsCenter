@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Modules\BaseManager.cs" />
+    <Compile Include="Modules\CustomerOrderManager.cs" />
     <Compile Include="Modules\DemoManger.cs" />
     <Compile Include="Modules\NavigationManager.cs" />
     <Compile Include="Modules\OrderStatus.cs" />

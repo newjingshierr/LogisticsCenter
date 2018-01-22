@@ -304,10 +304,11 @@ namespace Logistics_Busniess
 
             var navigations = new List<logistics_base_navigation>();
             navigations = NavigationDal.SelectNavigationItemsByRoleID(role.RoleID);
-            NavigationView navigationView = new NavigationView();
+            NavigationView navigationView = null;
             List<NavigationView> navigationViewList = new List<NavigationView>();
             foreach (var o in navigations)
             {
+                navigationView = new NavigationView();
                 navigationView.parentItem = o;
                 navigationView.childItems = NavigationDal.SelectNavigationChildrenItems(o.ID);
                 navigationViewList.Add(navigationView);

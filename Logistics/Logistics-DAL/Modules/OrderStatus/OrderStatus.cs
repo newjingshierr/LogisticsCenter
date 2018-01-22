@@ -15,7 +15,7 @@ namespace Logistics_DAL
             var result = new OrderStatusSummaryView();
             MySqlParameter[] parameters = {
                 new MySqlParameter("@_TenantID",TenantID),
-                new MySqlParameter("@_user", userID),
+                new MySqlParameter("@_userID", userID),
             };
 
             var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.OrderStatus.logistics_order_select_by_userid_summary, parameters);

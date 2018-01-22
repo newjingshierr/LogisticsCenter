@@ -63,4 +63,10 @@ namespace Logistics_Model
         WaitForPay =3,
         Delivered = 4
     }
+
+    public enum CustomerOrderReqeustTypeEnum
+    {
+        warehouse = 0,
+        waitForPackage = 1
+    }
 }

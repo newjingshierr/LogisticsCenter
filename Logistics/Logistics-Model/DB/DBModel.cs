@@ -564,7 +564,7 @@ namespace Logistics_Model
         /// <summary>
         /// CreatedBy
         /// </summary>	
-       [JsonConverter(typeof(Long2StringConverter))]
+        [JsonConverter(typeof(Long2StringConverter))]
         private long _createdby;
         [JsonConverter(typeof(Long2StringConverter))]
         public long CreatedBy
@@ -2480,6 +2480,7 @@ namespace Logistics_Model
             set { _sortid = value; }
         }
 
+        public string color { get; set; }
     }
 
     public class logistics_quotation_channel
