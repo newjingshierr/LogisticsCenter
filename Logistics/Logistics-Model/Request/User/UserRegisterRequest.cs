@@ -3,6 +3,46 @@ using Akmii;
 
 namespace Logistics_Model
 {
+
+    public class CustomerOrderUpdateReqeust : BaseRequest
+    {
+
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long ID { get; set; }
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long userid { get; set; }
+        public string expressNo { get; set; }
+
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long expressTypeID { get; set; }
+
+        public string expressTypeName { get; set; }
+
+        public string TransferNo { get; set; }
+
+        public decimal InPackageCount { get; set; }
+
+        public decimal InWeight { get; set; }
+
+        public decimal InHeight { get; set; }
+
+        public decimal InVolume { get; set; }
+
+        [JsonConverter(typeof(Long2StringConverter))]
+        public decimal InLength { get; set; }
+
+        public decimal InWidth { get; set; }
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long WareHouseID { get; set; }
+
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long CustomerServiceID { get; set; }
+
+        public string InWareHouseStatus { get; set; }
+
+    }
+
+
     public class CustomerOrderInsertReqeust : BaseRequest
     {
         [JsonConverter(typeof(Long2StringConverter))]
@@ -25,6 +65,8 @@ namespace Logistics_Model
         public decimal InLength { get; set; }
 
         public decimal InWidth { get; set; }
+
+        public decimal InHeight { get; set; }
         [JsonConverter(typeof(Long2StringConverter))]
         public long WareHouseID { get; set; }
 

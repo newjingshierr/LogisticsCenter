@@ -140,8 +140,11 @@ namespace Logistics_Model
         TokenExpired = 40003,
         #endregion
         //用户订单 42000-4300
-        OrderException = 42000
+        [Description("Order Exception")]
+        OrderException = 42000,
 
+        [Description("Order Status Not Found")]
+        OrderStatusNotFound = 42001
 
 
         #region

@@ -35,6 +35,7 @@ namespace Logistics_Busniess
             customerOrder.InVolume = item.InVolume;
             customerOrder.InLength = item.InLength;
             customerOrder.InWidth = item.InWidth;
+            customerOrder.InHeight = item.InHeight;
             customerOrder.WareHouseID = item.WareHouseID;
             customerOrder.CustomerServiceID = item.CustomerServiceID;
             customerOrder.CreatedBy = BusinessConstants.Admin.TenantID;
@@ -53,13 +54,56 @@ namespace Logistics_Busniess
                 dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
                 {
                     var result = true;
-                    result = CustomerOrderDAL.Insert(customerOrder, trans) && CustomerOrderStatus.Insert(customerOrderStatus, trans);
+                    result = CustomerOrderDAL.Insert(customerOrder, trans) && CustomerOrderStatusDAL.Insert(customerOrderStatus, trans);
                     return result;
                 });
             }
 
             return dbResult;
         }
+        public static bool UpdateCustomerOrder(CustomerOrderUpdateReqeust item)
+        {
+            logistics_customer_order customerOrder = new logistics_customer_order();
+            customerOrder.TenantID = BusinessConstants.Admin.TenantID;
+            customerOrder.ID = item.ID;
+            customerOrder.userid = item.userid;
+            customerOrder.expressNo = item.expressNo;
+            customerOrder.expressTypeID = item.expressTypeID;
+            customerOrder.expressTypeName = item.expressTypeName;
+            customerOrder.TransferNo = item.TransferNo;
+            customerOrder.InPackageCount = item.InPackageCount;
+            customerOrder.InWeight = item.InWeight;
+            customerOrder.InVolume = item.InVolume;
+            customerOrder.InLength = item.InLength;
+            customerOrder.InWidth = item.InWidth;
+            customerOrder.InHeight = item.InHeight;
+            customerOrder.WareHouseID = item.WareHouseID;
+            customerOrder.CustomerServiceID = item.CustomerServiceID;
+            customerOrder.ModifiedBy = BusinessConstants.Admin.TenantID;
 
+
+
+            var customerOrderStatus = CustomerOrderStatusDAL.SelectOrderStatusByOrderID(item.ID);
+            if (customerOrderStatus == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.OrderStatusNotFound, $"Order Status Not Found");
+            }
+            customerOrderStatus.currentStatus = item.InWareHouseStatus;
+            customerOrderStatus.ModifiedBy = BusinessConstants.Admin.TenantID;
+
+            var dbResult = false;
+
+            using (var conn = ConnectionManager.GetWriteConn())
+            {
+                dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
+                {
+                    var result = true;
+                    result = CustomerOrderDAL.Update(customerOrder, trans) && CustomerOrderStatusDAL.Update(customerOrderStatus, trans);
+                    return result;
+                });
+            }
+
+            return dbResult;
+        }
     }
 }

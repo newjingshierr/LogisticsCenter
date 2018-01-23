@@ -113,6 +113,41 @@ namespace Logistics.Controllers
 
         }
 
+        /// <summary>
+        /// 新增customerOrder
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("Item/update")]
+        public ResponseMessage<bool> UpdateCustomerOrder(CustomerOrderUpdateReqeust request)
+        {
+            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));
+
+            if (request == null)
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+            }
+
+
+            var result = false;
+            try
+            {
+                result = CustomerOrderManager.UpdateCustomerOrder(request);
+
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+
+            }
+
+        }
+
+
+
     }
 
 
