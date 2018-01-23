@@ -85,9 +85,59 @@ namespace Logistics.Controllers
         }
 
 
+    }
+
+    [RoutePrefix(ApiConstants.PrefixApi + "ExpressType")]
+    public class ExpressController : BaseAuthController
+    {
+        LogHelper log = LogHelper.GetLogger(typeof(UserController));
+
+        [HttpGet]
+        [Route("all")]
+        public ResponseMessage<List<logistics_base_express_type>> GetAll()
+        {
+
+            var result = new List<logistics_base_express_type>();
+            try
+            {
+                result = ExpressTypeManger.GetAll();
+
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+            }
+        }
+
+
+    }
 
 
 
+    [RoutePrefix(ApiConstants.PrefixApi + "Warehouse")]
+    public class WarehouseController : BaseAuthController
+    {
+        LogHelper log = LogHelper.GetLogger(typeof(WarehouseController));
+
+        [HttpGet]
+        [Route("all")]
+        public ResponseMessage<List<logistics_base_warehouse>> GetAll()
+        {
+
+            var result = new List<logistics_base_warehouse>();
+            try
+            {
+                result =WarehouseManger.GetAll();
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+            }
+        }
 
 
     }

@@ -72,6 +72,7 @@
     <Compile Include="Demo.cs" />
     <Compile Include="Modules\Base\AgentDAL.cs" />
     <Compile Include="Modules\Base\ChannelDAL.cs" />
+    <Compile Include="Modules\Base\ExpressDAL.cs" />
     <Compile Include="Modules\Base\MessageDal.cs" />
     <Compile Include="Modules\Base\RecipientsAddressDAL.cs" />
     <Compile Include="Modules\Base\SmsValidateDal.cs" />

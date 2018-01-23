@@ -36,4 +36,21 @@ namespace Logistics_Busniess
         }
 
     }
+
+    public class ExpressTypeManger
+    {
+        public static List<logistics_base_express_type> GetAll( )
+        {
+            return ExpressDAL.GetAll();
+        }
+    }
+
+    public class WarehouseManger
+    {
+
+        public static List<logistics_base_warehouse> GetAll()
+        {
+            return WareHouseDAL.GetAll();
+        }
+    }
 }

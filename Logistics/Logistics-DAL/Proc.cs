@@ -35,12 +35,13 @@ namespace Logistics_DAL
 
         public class Warehouse
         {
-            public const string logistics_base_warehouse_address_insert = "logistics_base_warehouse_address_insert";
+            public const string logistics_base_warehouse_select_all = "logistics_base_warehouse_select_all";
+            public const string logistics_base_warehouse_Insert = "logistics_base_warehouse_Insert";
             public const string logistics_base_warehouse_select_by_page = "logistics_base_warehouse_select_by_page";
             public const string logistics_base_warehouse_select_by_id = "logistics_base_warehouse_select_by_id";
-            public const string logistics_base_warehouse_delete_by_id = "logistics_base_warehouse_delete_by_id";
+            public const string logistics_base_warehouse_detete_by_id = "logistics_base_warehouse_detete_by_id";
             public const string logistics_base_warehouse_update_by_id = "logistics_base_warehouse_update_by_id";
-
+            public const string logistics_base_warehouse_update_volumne_by_id = "logistics_base_warehouse_update_volumne_by_id";
         }
 
         public class RecipientsAddress
