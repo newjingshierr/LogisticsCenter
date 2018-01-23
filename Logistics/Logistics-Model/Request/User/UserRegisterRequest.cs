@@ -3,6 +3,10 @@ using Akmii;
 
 namespace Logistics_Model
 {
+    public class CustomerOrderDeleteRequest : BaseRequest
+    {
+        public long ID { get; set; }
+    }
 
     public class CustomerOrderUpdateReqeust : BaseRequest
     {

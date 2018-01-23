@@ -105,5 +105,37 @@ namespace Logistics_Busniess
 
             return dbResult;
         }
+
+
+
+        public static bool DeleteCustomerOrderByID(CustomerOrderDeleteRequest item)
+        {
+            logistics_customer_order customerOrder = new logistics_customer_order();
+            customerOrder.ModifiedBy = BusinessConstants.Admin.TenantID;
+
+            var customerOrderStatus = CustomerOrderStatusDAL.SelectOrderStatusByOrderID(item.ID);
+            if (customerOrderStatus == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.OrderStatusNotFound, $"Order Status Not Found");
+            }
+
+
+            var dbResult = false;
+
+            using (var conn = ConnectionManager.GetWriteConn())
+            {
+                dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
+                {
+                    var result = true;
+                    result = CustomerOrderDAL.Delete(BusinessConstants.Admin.TenantID,item.ID, trans) && CustomerOrderStatusDAL.Delete(BusinessConstants.Admin.TenantID, customerOrderStatus.ID, trans);
+                    return result;
+                });
+            }
+
+            return dbResult;
+        }
+
+
+
     }
 }

@@ -114,7 +114,7 @@ namespace Logistics.Controllers
         }
 
         /// <summary>
-        /// 新增customerOrder
+        ///修改customerOrder
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -145,6 +145,41 @@ namespace Logistics.Controllers
             }
 
         }
+
+
+        /// <summary>
+        ///修改customerOrder
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("Item/delete")]
+        public ResponseMessage<bool> DeleteCustomerOrder(CustomerOrderDeleteRequest request)
+        {
+            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));
+
+            if (request == null)
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+            }
+
+
+            var result = false;
+            try
+            {
+                result = CustomerOrderManager.DeleteCustomerOrderByID(request);
+
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+
+            }
+
+        }
+
 
 
 

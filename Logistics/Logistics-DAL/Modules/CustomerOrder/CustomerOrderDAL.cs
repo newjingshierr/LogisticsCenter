@@ -107,5 +107,27 @@ namespace Logistics_DAL
             return result == 1;
 
         }
+
+        public static bool Delete(long TenantID, long ID, AkmiiMySqlTransaction trans = null)
+        {
+
+            MySqlParameter[] parameters = {
+                        new MySqlParameter("@_TenantID",TenantID),
+                        new MySqlParameter("@_ID",ID)
+            };
+
+            int result = 0;
+            if (trans == null)
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_delete_by_id, parameters);
+            }
+            else
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_delete_by_id, parameters);
+            }
+            return result == 1;
+
+        }
+
     }
 }
