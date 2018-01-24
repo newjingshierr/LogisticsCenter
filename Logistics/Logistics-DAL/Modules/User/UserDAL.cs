@@ -158,7 +158,69 @@ namespace Logistics_DAL
             return result == 1;
         }
 
+        public static List<UserInfo> SelectMemberIndex(string Name, long TenantID = BusinessConstants.Admin.TenantID)
+        {
+            var result = new List<UserInfo>();
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID", TenantID),
+                new MySqlParameter("@_Name",Name)
+            };
 
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.User.logistics_base_userinfo_select_member_index, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<UserInfo>.DtToList(dbResult.Tables[0]);
+            }
+            else
+            {
+                result = null;
+            }
+
+            return result;
+        }
+
+        public static List<UserInfo> SelectCusteomrerServiceIndex(string Name, long TenantID = BusinessConstants.Admin.TenantID)
+        {
+            var result = new List<UserInfo>();
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID", TenantID),
+                new MySqlParameter("@_Name",Name)
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.User.logistics_base_userinfo_select_customer_service_index, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<UserInfo>.DtToList(dbResult.Tables[0]);
+            }
+            else
+            {
+                result = null;
+            }
+
+            return result;
+        }
+
+
+        public static List<UserInfo> SelectWarehouseAdminIndex(string Name, long TenantID = BusinessConstants.Admin.TenantID)
+        {
+            var result = new List<UserInfo>();
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID", TenantID),
+                new MySqlParameter("@_Name",Name)
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.User.logistics_base_userinfo_select_warehouse_admin_index, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<UserInfo>.DtToList(dbResult.Tables[0]);
+            }
+            else
+            {
+                result = null;
+            }
+
+            return result;
+        }
 
     }
 }

@@ -30,5 +30,8 @@ namespace Logistics_DAL
 
             return result;
         }
+
+
+
     }
 }

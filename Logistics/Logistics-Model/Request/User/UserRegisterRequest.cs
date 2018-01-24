@@ -106,7 +106,11 @@ namespace Logistics_Model
         public string token { get; set; } = "";
 
     }
-
+    public class GetUserIndexRequest : BaseRequest
+    {
+        public string name { get; set; } = "";
+        public UserIndexRequestEnum type { get; set; }
+    }
     public class UpdateUserPwdRequest : BaseRequest
     {
         public string mail { get; set; } = "";

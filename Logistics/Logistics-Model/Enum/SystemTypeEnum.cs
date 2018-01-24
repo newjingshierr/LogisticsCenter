@@ -6,6 +6,15 @@ using System.Threading.Tasks;
 
 namespace Logistics_Model
 {
+    public enum UserIndexRequestEnum
+    {
+        CustomerOrder =1,
+        Member = 2,
+        WarehouseAdmin =3,
+        CustomerService = 4,
+        ExpressNo =5
+    }
+
     public enum SMSTypeEnum
     {
         /// <summary>

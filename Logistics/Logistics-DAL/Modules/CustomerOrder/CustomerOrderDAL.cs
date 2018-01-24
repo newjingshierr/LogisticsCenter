@@ -129,5 +129,27 @@ namespace Logistics_DAL
 
         }
 
+
+        public static List<logistics_customer_order> SelectCustomerOrderExpressIndex(string Name, long TenantID = BusinessConstants.Admin.TenantID)
+        {
+            var result = new List<logistics_customer_order>();
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID", TenantID),
+                new MySqlParameter("@_Name",Name)
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_express_index, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<logistics_customer_order>.DtToList(dbResult.Tables[0]);
+            }
+            else
+            {
+                result = null;
+            }
+
+            return result;
+        }
+
     }
 }

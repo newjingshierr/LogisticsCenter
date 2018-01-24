@@ -61,7 +61,7 @@ namespace Logistics_Busniess
             return dbResult;
         }
 
-        public static bool ValidateUser(LoginRequest request,out string userID)
+        public static bool ValidateUser(LoginRequest request, out string userID)
         {
             var dbResult = false;
 
@@ -341,5 +341,42 @@ namespace Logistics_Busniess
             }, CacheConstants.GetCurrentInfoTime()).Result;
             return result;
         }
+
+        public static List<UserInfo> GetMemberIndex(string userName)
+        {
+            return UserDAL.SelectMemberIndex(userName);
+        }
+
+        public static List<UserInfo> GetCusomterServiceIndex(string userName)
+        {
+            return UserDAL.SelectCusteomrerServiceIndex(userName);
+        }
+        public static List<UserInfo> GetWarehouseAdminIndex(string userName)
+        {
+            return UserDAL.SelectWarehouseAdminIndex(userName);
+        }
+
+        public static List<UserInfo> GetUserIndex(GetUserIndexRequest request)
+        {
+            List<UserInfo> userInfoList = new List<UserInfo>();
+
+            if (request.type == UserIndexRequestEnum.Member)
+            {
+                userInfoList = UserDAL.SelectMemberIndex(request.name);
+            }
+            else if (request.type == UserIndexRequestEnum.CustomerService)
+            {
+                userInfoList = UserDAL.SelectCusteomrerServiceIndex(request.name);
+            }
+            else if (request.type == UserIndexRequestEnum.WarehouseAdmin)
+            {
+                userInfoList = UserDAL.SelectWarehouseAdminIndex(request.name);
+            }
+
+            return userInfoList;
+        }
+
     }
+
+
 }

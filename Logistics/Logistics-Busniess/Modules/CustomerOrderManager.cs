@@ -136,6 +136,12 @@ namespace Logistics_Busniess
         }
 
 
+        public static List<logistics_customer_order> GetCustomerOrderExpressIndex(string userName)
+        {
+            return CustomerOrderDAL.SelectCustomerOrderExpressIndex(userName);
+        }
+
+
 
     }
 }

@@ -363,5 +363,33 @@ namespace Logistics.Controllers
             }
 
         }
+
+        /// <summary>
+        /// 会员，仓库管理员，客服
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("users/Index")]
+        public ResponseMessage<List<UserInfo>> GetUserIndex(GetUserIndexRequest request)
+        {
+            if (request == null)
+            {
+                return GetErrorResult<List<UserInfo>>(SystemStatusEnum.InvalidRequest);
+            }
+            var result = new List<UserInfo>();
+
+            try
+            {
+                result =UserManger.GetUserIndex(request);
+
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+
+            }
+        }
     }
 }
