@@ -142,6 +142,20 @@ namespace Logistics_Busniess
         }
 
 
+        public static List<logistics_customer_order> GetCustomerOrderIndex(GeIndexRequest request)
+        {
+            List<logistics_customer_order> userInfoList = new List<logistics_customer_order>();
 
+            if (request.type == IndexRequestEnum.CustomerOrder)
+            {
+                userInfoList = CustomerOrderDAL.SelectCustomerOrderIndex(request.name);
+            }
+            else if (request.type == IndexRequestEnum.ExpressNo)
+            {
+                userInfoList = CustomerOrderDAL.SelectCustomerOrderExpressIndex(request.name);
+            }
+
+            return userInfoList;
+        }
     }
 }

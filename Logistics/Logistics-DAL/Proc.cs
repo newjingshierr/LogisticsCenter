@@ -120,6 +120,7 @@ namespace Logistics_DAL
             public const string logistics_customer_order_select_by_where = "logistics_customer_order_select_by_where";
             public const string logistics_customer_order_select_by_page = "logistics_customer_order_select_by_page";
             public const string logistics_customer_order_express_index = "logistics_customer_order_express_index";
+            public const string logistics_customer_order_index = "logistics_customer_order_index";
         }
 
         public class Quotation
@@ -181,7 +182,7 @@ namespace Logistics_DAL
             public const string logistics_userinfo_update_pwd = "logistics_base_userinfo_update_pwd";
             public const string logistics_base_userinfo_log_insert = "logistics_base_userinfo_log_insert";
             public const string logistics_base_userinfo_log_select_by_time = "logistics_base_userinfo_log_select_by_time";
-            public const string logistics_base_userinfo_select_member_index = "logistics_base_userinfo_select_name_index";
+            public const string logistics_base_userinfo_select_member_index = "logistics_base_userinfo_select_member_index";
             public const string logistics_base_userinfo_select_customer_service_index = "logistics_base_userinfo_select_customer_service_index";
             public const string logistics_base_userinfo_select_warehouse_admin_index = "logistics_base_userinfo_select_warehouse_admin_index";
  

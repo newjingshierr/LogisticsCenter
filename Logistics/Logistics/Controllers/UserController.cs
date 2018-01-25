@@ -365,13 +365,13 @@ namespace Logistics.Controllers
         }
 
         /// <summary>
-        /// 会员，仓库管理员，客服
+        /// 索引会员，仓库管理员，客服 角色的查询
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("users/Index")]
-        public ResponseMessage<List<UserInfo>> GetUserIndex(GetUserIndexRequest request)
+        public ResponseMessage<List<UserInfo>> GetUserIndex([FromUri] GeIndexRequest request)
         {
             if (request == null)
             {

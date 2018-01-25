@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Logistics_Model
 {
-    public enum UserIndexRequestEnum
+    public enum IndexRequestEnum
     {
         CustomerOrder =1,
         Member = 2,

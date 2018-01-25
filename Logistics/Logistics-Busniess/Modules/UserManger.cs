@@ -356,19 +356,19 @@ namespace Logistics_Busniess
             return UserDAL.SelectWarehouseAdminIndex(userName);
         }
 
-        public static List<UserInfo> GetUserIndex(GetUserIndexRequest request)
+        public static List<UserInfo> GetUserIndex(GeIndexRequest request)
         {
             List<UserInfo> userInfoList = new List<UserInfo>();
 
-            if (request.type == UserIndexRequestEnum.Member)
+            if (request.type == IndexRequestEnum.Member)
             {
                 userInfoList = UserDAL.SelectMemberIndex(request.name);
             }
-            else if (request.type == UserIndexRequestEnum.CustomerService)
+            else if (request.type == IndexRequestEnum.CustomerService)
             {
                 userInfoList = UserDAL.SelectCusteomrerServiceIndex(request.name);
             }
-            else if (request.type == UserIndexRequestEnum.WarehouseAdmin)
+            else if (request.type == IndexRequestEnum.WarehouseAdmin)
             {
                 userInfoList = UserDAL.SelectWarehouseAdminIndex(request.name);
             }

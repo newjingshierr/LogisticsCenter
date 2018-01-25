@@ -106,10 +106,16 @@ namespace Logistics_Model
         public string token { get; set; } = "";
 
     }
-    public class GetUserIndexRequest : BaseRequest
+    public class GeIndexRequest : BaseRequest
     {
+        /// <summary>
+        /// 查询信息
+        /// </summary>
         public string name { get; set; } = "";
-        public UserIndexRequestEnum type { get; set; }
+        /// <summary>
+        /// 查询类型
+        /// </summary>
+        public IndexRequestEnum type { get; set; }
     }
     public class UpdateUserPwdRequest : BaseRequest
     {
