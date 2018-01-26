@@ -21,6 +21,7 @@ namespace Logistics_DAL
         {
             public const string logistics_base_express_type_insert = "logistics_base_express_type_insert";
             public const string logistics_base_express_type_select_all = "logistics_base_express_type_select_all";
+            public const string logistics_express_type_select_index = "logistics_express_type_select_index";
         }
         public class Channel
         {
@@ -42,6 +43,7 @@ namespace Logistics_DAL
             public const string logistics_base_warehouse_detete_by_id = "logistics_base_warehouse_detete_by_id";
             public const string logistics_base_warehouse_update_by_id = "logistics_base_warehouse_update_by_id";
             public const string logistics_base_warehouse_update_volumne_by_id = "logistics_base_warehouse_update_volumne_by_id";
+            public const string logistics_warehouse_select_index = "logistics_warehouse_select_index";
         }
 
         public class RecipientsAddress

@@ -18,9 +18,9 @@ namespace Logistics_Busniess
             return MessageDal.GetItemListByLatest(userID);
         }
 
-        public static List<logistics_base_message> GetMessageListByPage(GetItemListByPageRequest request,long userID,ref int totalCount)
+        public static List<logistics_base_message> GetMessageListByPage(GetItemListByPageRequest request, long userID, ref int totalCount)
         {
-            return MessageDal.GetItemListByPage(request.PageIndex,request.PageSize,userID,ref totalCount);
+            return MessageDal.GetItemListByPage(request.PageIndex, request.PageSize, userID, ref totalCount);
         }
 
         public static bool InsertMessage(MessageInsertRequest item)
@@ -28,7 +28,7 @@ namespace Logistics_Busniess
             logistics_base_message message = new logistics_base_message();
             message.ID = IdWorker.GetID();
             message.TenantID = BusinessConstants.Admin.TenantID;
-            message.type =(int) item.type;
+            message.type = (int)item.type;
             message.message = item.message;
             message.userid = item.userid;
 
@@ -39,9 +39,14 @@ namespace Logistics_Busniess
 
     public class ExpressTypeManger
     {
-        public static List<logistics_base_express_type> GetAll( )
+        public static List<logistics_base_express_type> GetAll()
         {
             return ExpressDAL.GetAll();
+        }
+
+        public static List<logistics_base_express_type> GetIndex(GetExpressTypeIndexRequest request)
+        {
+            return ExpressDAL.GetIndex(request.name);
         }
     }
 
@@ -51,6 +56,11 @@ namespace Logistics_Busniess
         public static List<logistics_base_warehouse> GetAll()
         {
             return WareHouseDAL.GetAll();
+        }
+
+        public static List<logistics_base_warehouse> GetIndex(GetWarehouseIndexRequest request)
+        {
+            return WareHouseDAL.GetIndex(request.name);
         }
     }
 }

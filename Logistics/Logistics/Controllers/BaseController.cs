@@ -111,6 +111,24 @@ namespace Logistics.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("index")]
+        public ResponseMessage<List<logistics_base_express_type>> GetIndex([FromUri] GetExpressTypeIndexRequest request)
+        {
+
+            var result = new List<logistics_base_express_type>();
+            try
+            {
+                result = ExpressTypeManger.GetIndex(request);
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+            }
+        }
+
 
     }
 
@@ -129,7 +147,7 @@ namespace Logistics.Controllers
             var result = new List<logistics_base_warehouse>();
             try
             {
-                result =WarehouseManger.GetAll();
+                result = WarehouseManger.GetAll();
                 return GetResult(result);
             }
             catch (LogisticsException ex)
@@ -138,6 +156,27 @@ namespace Logistics.Controllers
                 return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
             }
         }
+
+
+        [HttpGet]
+        [Route("index")]
+        public ResponseMessage<List<logistics_base_warehouse>> GetIndex([FromUri] GetWarehouseIndexRequest request)
+        {
+
+            var result = new List<logistics_base_warehouse>();
+            try
+            {
+                result = WarehouseManger.GetIndex(request);
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+            }
+        }
+
+
 
 
     }

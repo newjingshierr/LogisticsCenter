@@ -3,6 +3,16 @@ using Akmii;
 
 namespace Logistics_Model
 {
+    public class GetExpressTypeIndexRequest : BaseRequest
+    {
+        public string name { get; set; }
+    }
+
+    public class GetWarehouseIndexRequest : BaseRequest
+    {
+        public string name { get; set; }
+    }
+
     public class CustomerOrderDeleteRequest : BaseRequest
     {
         public long ID { get; set; }
