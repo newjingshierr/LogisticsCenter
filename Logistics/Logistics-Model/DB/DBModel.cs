@@ -1103,14 +1103,16 @@ namespace Logistics_Model
             get { return _id; }
             set { _id = value; }
         }
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long UserID { get; set; }
         /// <summary>
         /// MergeOrder
         /// </summary>		
-        private string _mergeorder;
-        public string MergeOrder
+        private string _mergeorderno;
+        public string MergeOrderNo
         {
-            get { return _mergeorder; }
-            set { _mergeorder = value; }
+            get { return _mergeorderno; }
+            set { _mergeorderno = value; }
         }
         /// <summary>
         /// CustomerMark
@@ -1481,6 +1483,8 @@ namespace Logistics_Model
             get { return _productname; }
             set { _productname = value; }
         }
+
+        public string productNameEN { get; set; }
         /// <summary>
         /// HSCode
         /// </summary>		
@@ -1546,6 +1550,8 @@ namespace Logistics_Model
             get { return _modifiedby; }
             set { _modifiedby = value; }
         }
+
+        public decimal count { get; set; }
 
     }
     public class logistics_customer_order_merge_relation

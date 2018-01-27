@@ -215,7 +215,37 @@ namespace Logistics.Controllers
     [RoutePrefix(ApiConstants.PrefixApi + "CustomerOrderMerge")]
     public class CustomerOrderMergeController : BaseAuthController
     {
+        /// <summary>
+        /// 新增 merge customer Order
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Item/Insert")]
+        public ResponseMessage<bool> InserCustomerOrder(CustomerOrderMergeInsertReqeust request)
+        {
+            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));
 
+            if (request == null || request.customerOrderList == null || request.productList == null)
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+            }
+
+            var result = false;
+            try
+            {
+                result = CustomerOrderMergeManger.InserCustomerOrderMerge(request);
+
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+
+            }
+
+        }
     }
 
 
@@ -226,6 +256,9 @@ namespace Logistics.Controllers
 
 
     }
+
+
+
 
 
 

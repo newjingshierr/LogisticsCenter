@@ -9,30 +9,8 @@ using Akmii;
 
 namespace Logistics_DAL
 {
-    public class CustomerOrderDAL
+    public class MergeCustomerOrderDetailDAL
     {
-        public static logistics_customer_order GetCustomerOrderByID(long ID,long TenantID = BusinessConstants.Admin.TenantID)
-        {
-            var result = new logistics_customer_order();
-            MySqlParameter[] parameters = {
-                new MySqlParameter("@_TenantID",TenantID),
-                new MySqlParameter("@_ID", ID)
-            };
-
-            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_select_by_id, parameters);
-            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
-            {
-                result = ConvertHelper<logistics_customer_order>.DtToModel(dbResult.Tables[0]);
-            }
-            else
-            {
-                result = null;
-            }
-
-
-            return result;
-        }
-
 
         public static List<logistics_customer_order> GetItemListByPage(long TenantID, long userID, int PageIndex, int PageSize, ref int totalCount)
         {
@@ -60,39 +38,39 @@ namespace Logistics_DAL
 
             return result;
         }
+        public static bool InsertList(List<logistics_customer_order_merge_detail> detailList, AkmiiMySqlTransaction trans = null)
+        {
+            bool result = true;
+            foreach (var d in detailList)
+            {
+                result = result && Insert(d, trans);
+            }
+            return result;
+        }
 
-
-        public static bool Insert(logistics_customer_order model, AkmiiMySqlTransaction trans = null)
+        public static bool Insert(logistics_customer_order_merge_detail model, AkmiiMySqlTransaction trans = null)
         {
 
             MySqlParameter[] parameters = {
                         new MySqlParameter("@_TenantID", model.TenantID),
                         new MySqlParameter("@_ID",model.ID),
-                        new MySqlParameter("@_userid", model.userid),
-                        new MySqlParameter("@_CustomerOrderNo",model.CustomerOrderNo),
-                        new MySqlParameter("@_expressNo",model.expressNo),
-                        new MySqlParameter("@_expressTypeID",model.expressTypeID),
-                        new MySqlParameter("@_expressTypeName",model.expressTypeName),
-                        new MySqlParameter("@_TransferNo",model.TransferNo),
-                        new MySqlParameter("@_InPackageCount",model.InPackageCount),
-                        new MySqlParameter("@_InWeight",model.InWeight),
-                        new MySqlParameter("@_InVolume",model.InVolume),
-                        new MySqlParameter("@_InLength",model.InLength),
-                        new MySqlParameter("@_InWidth",model.InWidth),
-                        new MySqlParameter("@_InHeight",model.InHeight),
-                        new MySqlParameter("@_WareHouseID",model.WareHouseID),
-                        new MySqlParameter("@_CustomerServiceID",model.CustomerServiceID),
+                         new MySqlParameter("@_mergeOrderID",model.mergeOrderID),
+                        new MySqlParameter("@_productName", model.productName),
+                       new MySqlParameter("@_productNameEN", model.productNameEN),
+                        new MySqlParameter("@_HSCode", model.HSCode),
+                        new MySqlParameter("@_declareUnitPrice",model.declareUnitPrice),
+                        new MySqlParameter("@_declareTotal",model.declareTotal),
                         new MySqlParameter("@_CreatedBy",model.CreatedBy),
             };
 
             int result = 0;
             if (trans == null)
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_insert, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMergeDetail.logistics_customer_order_merge_detail_insert, parameters);
             }
             else
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_insert, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.CustomerOrderMergeDetail.logistics_customer_order_merge_detail_insert, parameters);
             }
             return result == 1;
 
@@ -198,6 +176,5 @@ namespace Logistics_DAL
 
             return result;
         }
-
     }
 }

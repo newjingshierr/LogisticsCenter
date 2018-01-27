@@ -1,8 +1,43 @@
 ﻿using Newtonsoft.Json;
 using Akmii;
+using System.Collections.Generic;
 
 namespace Logistics_Model
 {
+    public class CustomerOrderMergeInsertReqeust : BaseRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long userid { get; set; }
+        public string CustomerMark { get; set; }
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long CustomerChooseChannelID { get; set; }
+        public string recipient { get; set; }
+        public string country { get; set; }
+        public string address { get; set; }
+        public string city { get; set; }
+        public string code { get; set; }
+        public string tel { get; set; }
+        public string company { get; set; }
+        public string taxNo { get; set; }
+        public List<CustomerOrderRequest> customerOrderList { get; set; }
+        public List<InsertProductRequet> productList { get; set; }
+
+    }
+    public class InsertProductRequet
+    {
+        public string productName { get; set; }
+        public string productNameEN { get; set; }
+        public string HSCode { get; set; }
+        public decimal declareUnitPrice { get; set; }
+        public decimal count { get; set; }
+
+    }
+    public class CustomerOrderRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long customerOrderID { get; set; }
+    }
+
     public class GetExpressTypeIndexRequest : BaseRequest
     {
         public string name { get; set; }

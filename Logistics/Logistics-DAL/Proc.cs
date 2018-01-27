@@ -121,6 +121,7 @@ namespace Logistics_DAL
             public const string logistics_customer_order_insert = "logistics_customer_order_insert";
             public const string logistics_customer_order_select_by_where = "logistics_customer_order_select_by_where";
             public const string logistics_customer_order_select_by_page = "logistics_customer_order_select_by_page";
+            public const string logistics_customer_order_select_by_id = "logistics_customer_order_select_by_id";
             public const string logistics_customer_order_express_index = "logistics_customer_order_express_index";
             public const string logistics_customer_order_index = "logistics_customer_order_index";
         }
