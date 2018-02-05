@@ -216,6 +216,15 @@ namespace Logistics_Model
     public class CustomerOrderSelectRequest : BaseRequestPage
     {
         public int type { get; set; }
+        public string customerOrderNo { get; set; } = "";
+        public string expressNo { get; set; } = "";
+        public long expressTypeID { get; set; } = 0L;
+
+        public string TransferNo { get; set; } = "";
+        public long warehouseID { get; set; } = 0L;
+        public System.DateTime ? InWarehouseIimeBegin { get; set; } = null;
+        public System.DateTime? InWarehouseIimeEnd { get; set; } = null;
+        public long CustomerServiceID { get; set; } = 0L;
     }
 
     public class MessageInsertRequest : BaseRequest

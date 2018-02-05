@@ -34,7 +34,17 @@ namespace Logistics_DAL
         }
 
 
-        public static List<logistics_customer_order> GetItemListByPage(long TenantID, long userID, int PageIndex, int PageSize, ref int totalCount)
+        public static List<logistics_customer_order> GetItemListByPage(long TenantID, long userID, string  customerOrderNo,
+            string expressNo,
+                long expressTypeID, 
+                    string TransferNo,
+                        long warehouseID, 
+                            DateTime? InWarehouseTimeBegin,
+                            DateTime ?InWarehouseTimeEnd,
+                                long CustomerServiceID,
+                                    int PageIndex, 
+                                         int PageSize, 
+                                            ref int totalCount)
         {
             var result = new List<logistics_customer_order>();
             var total = new MySqlParameter("@_TotalCount", totalCount) { Direction = ParameterDirection.Output };
