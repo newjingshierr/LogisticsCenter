@@ -75,26 +75,25 @@ namespace Logistics_DAL
         }
 
 
-        public static bool Update(logistics_customer_order model, AkmiiMySqlTransaction trans = null)
+        public static bool UpdateList(List<logistics_customer_order_merge_relation> relationList, AkmiiMySqlTransaction trans = null)
+        {
+            bool result = true;
+            foreach (var d in relationList)
+            {
+                result = result && Update(d, trans);
+            }
+            return result;
+        }
+
+        public static bool Update(logistics_customer_order_merge_relation model, AkmiiMySqlTransaction trans = null)
         {
 
             MySqlParameter[] parameters = {
                         new MySqlParameter("@_TenantID", model.TenantID),
                         new MySqlParameter("@_ID",model.ID),
-                        new MySqlParameter("@_userid", model.userid),
-                        new MySqlParameter("@_expressNo",model.expressNo),
-                        new MySqlParameter("@_expressTypeID",model.expressTypeID),
-                        new MySqlParameter("@_expressTypeName",model.expressTypeName),
-                        new MySqlParameter("@_TransferNo",model.TransferNo),
-                        new MySqlParameter("@_InPackageCount",model.InPackageCount),
-                        new MySqlParameter("@_InWeight",model.InWeight),
-                        new MySqlParameter("@_InVolume",model.InVolume),
-                        new MySqlParameter("@_InLength",model.InLength),
-                        new MySqlParameter("@_InWidth",model.InWidth),
-                        new MySqlParameter("@_InHeight",model.InHeight),
-                        new MySqlParameter("@_WareHouseID",model.WareHouseID),
-                        new MySqlParameter("@_CustomerServiceID",model.CustomerServiceID),
-                        new MySqlParameter("@_ModifiedBy",model.ModifiedBy),
+                         new MySqlParameter("@_mergeOrderID",model.mergeOrderID),
+                        new MySqlParameter("@_orderID", model.orderID),
+                        new MySqlParameter("@_CreatedBy",model.CreatedBy),
             };
 
             int result = 0;
@@ -109,6 +108,7 @@ namespace Logistics_DAL
             return result == 1;
 
         }
+
 
         public static bool Delete(long TenantID, long ID, AkmiiMySqlTransaction trans = null)
         {

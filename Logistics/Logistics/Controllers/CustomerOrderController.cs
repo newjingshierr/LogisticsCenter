@@ -250,7 +250,7 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Item/Insert")]
-        public ResponseMessage<bool> InserCustomerOrder(CustomerOrderMergeInsertReqeust request)
+        public ResponseMessage<bool> InsertCustomerOrder(CustomerOrderMergeInsertReqeust request)
         {
             LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));
 
@@ -271,6 +271,38 @@ namespace Logistics.Controllers
                 log.Error(ex.Message);
                 return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
 
+            }
+
+        }
+
+
+        /// <summary>
+        /// 新增 merge customer Order
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("Item/Update")]
+        public ResponseMessage<bool> UpdateCustomerOrder(CustomerOrderMergeUpdateReqeust request)
+        {
+            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));
+
+            if (request == null || request.customerOrderList == null || request.productList == null)
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+            }
+
+            var result = false;
+            try
+            {
+                result = CustomerOrderMergeManger.UpdateCustomerOrderMerge(request);
+
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
             }
 
         }

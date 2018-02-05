@@ -72,8 +72,45 @@ namespace Logistics_Model
         public List<InsertProductRequet> productList { get; set; }
 
     }
+
+
+    public class CustomerOrderMergeUpdateReqeust : BaseRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long ID { get; set; }
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long userid { get; set; }
+        public string CustomerMark { get; set; }
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long CustomerChooseChannelID { get; set; }
+        public string recipient { get; set; }
+        public string country { get; set; }
+        public string address { get; set; }
+        public string city { get; set; }
+        public string code { get; set; }
+        public string tel { get; set; }
+        public string company { get; set; }
+        public string taxNo { get; set; }
+        public List<CustomerOrderRequest> customerOrderList { get; set; }
+        public List<InsertProductUpdateRequet> productList { get; set; }
+        public List<logistics_customer_order_merge_relation> relationlist { get; set; }
+
+    }
+
+
     public class InsertProductRequet
     {
+        public string productName { get; set; }
+        public string productNameEN { get; set; }
+        public string HSCode { get; set; }
+        public decimal declareUnitPrice { get; set; }
+        public decimal count { get; set; }
+
+    }
+
+    public class InsertProductUpdateRequet
+    {
+        public long ID { get; set; }
         public string productName { get; set; }
         public string productNameEN { get; set; }
         public string HSCode { get; set; }

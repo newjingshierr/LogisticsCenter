@@ -248,5 +248,61 @@ namespace Logistics_Busniess
 
             return dbResult;
         }
+
+        public static bool UpdateCustomerOrderMerge(CustomerOrderMergeUpdateReqeust item)
+        {
+            logistics_customer_order customerOrder;
+            List<logistics_customer_order> customerOrderList = new List<logistics_customer_order>();
+            foreach (var c in item.customerOrderList)
+            {
+                customerOrder = CustomerOrderDAL.GetCustomerOrderByID(c.customerOrderID);
+                customerOrderList.Add(customerOrder);
+            }
+            //主订单信息
+            logistics_customer_order_merge customerOrderMerge = new logistics_customer_order_merge();
+            customerOrderMerge.TenantID = BusinessConstants.Admin.TenantID;
+            customerOrderMerge.ID = item.ID;
+            customerOrderMerge.UserID = item.userid;
+            customerOrderMerge.CustomerMark = item.CustomerMark;
+            customerOrderMerge.CustomerChooseChannelID = item.CustomerChooseChannelID;
+            customerOrderMerge.InWeightTotal = customerOrderList.Sum(o => o.InWeight);
+            customerOrderMerge.InVolumeTotal = customerOrderList.Sum(o => o.InVolume);
+            customerOrderMerge.InPackageCountTotal = customerOrderList.Sum(o => o.InPackageCount);
+            customerOrderMerge.ModifiedBy = BusinessConstants.Admin.TenantID;
+            //产品明细
+            logistics_customer_order_merge_detail detail;
+            List<logistics_customer_order_merge_detail> detailList = new List<logistics_customer_order_merge_detail>();
+
+            foreach (var p in item.productList)
+            {
+                detail = new logistics_customer_order_merge_detail();
+                detail.TenantID = BusinessConstants.Admin.TenantID;
+                detail.ID =p.ID;
+                detail.mergeOrderID = customerOrderMerge.ID;
+                detail.productName = p.productName;
+                detail.productNameEN = p.productNameEN;
+                detail.HSCode = p.HSCode;
+                detail.declareUnitPrice = p.declareUnitPrice;
+                detail.count = p.count;
+                detail.declareTotal = p.declareUnitPrice * p.count;
+                detail.ModifiedBy = BusinessConstants.Admin.TenantID;
+                detailList.Add(detail);
+            }
+
+            var dbResult = false;
+
+            using (var conn = ConnectionManager.GetWriteConn())
+            {
+                dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
+                {
+                    var result = true;
+                    result = MergeCustomerOrderDAL.Update(customerOrderMerge, trans) &&
+                    MergeCustomerOrderRelationDAL.UpdateList(item.relationlist, trans) && MergeCustomerOrderDetailDAL.UpdateList(detailList, trans);
+                    return result;
+                });
+            }
+
+            return dbResult;
+        }
     }
 }
