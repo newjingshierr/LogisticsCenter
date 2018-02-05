@@ -183,7 +183,12 @@ namespace Logistics_Model
     }
     public class logistics_base_recipients_address
     {
+        public string taxno { get; set; }
+        public string companyName { get; set; }
 
+        public string recipient { get; set; }
+
+        public string country { get; set; }
         /// <summary>
         /// TenantID
         /// </summary>		
@@ -227,12 +232,12 @@ namespace Logistics_Model
         /// <summary>
         /// CityID
         /// </summary>		
-        private long _cityid;
+        private string _city;
         [JsonConverter(typeof(Long2StringConverter))]
-        public long CityID
+        public string  City
         {
-            get { return _cityid; }
-            set { _cityid = value; }
+            get { return _city; }
+            set { _city = value; }
         }
         /// <summary>
         /// postalcode
@@ -880,7 +885,12 @@ namespace Logistics_Model
 
     public class logistics_customer_order
     {
-
+        //视图字段
+        public string CustomerServiceName { get; set; }
+        public string WareHouseName { get; set; }
+        public string MemeberCode { get; set; }
+        public string currentStep { get; set; }
+        public string currentStatus { get; set; }
         /// <summary>
         /// TenantID
         /// </summary>		
@@ -891,6 +901,7 @@ namespace Logistics_Model
             get { return _tenantid; }
             set { _tenantid = value; }
         }
+        public string WarehouseAdminRemark { get; set; }
         /// <summary>
         /// ID
         /// </summary>		
@@ -911,6 +922,9 @@ namespace Logistics_Model
             get { return _userid; }
             set { _userid = value; }
         }
+
+
+
         /// <summary>
         /// CustomerOrderNo
         /// </summary>		
@@ -1078,6 +1092,7 @@ namespace Logistics_Model
             get { return _modifiedby; }
             set { _modifiedby = value; }
         }
+
 
     }
     public class logistics_customer_order_merge

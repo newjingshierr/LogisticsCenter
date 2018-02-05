@@ -4,6 +4,55 @@ using System.Collections.Generic;
 
 namespace Logistics_Model
 {
+    public class RecipientsAddressDeleteRequest : BaseRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long id { get; set; }
+    }
+
+    public class RecipientsAddressGetAllRequest : BaseRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long userid { get; set; }
+    }
+    public class RecipientsAddressGetRequest : BaseRequest
+    {
+        public long id { get; set; }
+    }
+
+    public class RecipientsAddressInsertRequest : BaseRequest
+    {
+        public string country { get; set; }
+
+        public string recipient { get; set; }
+        public string City { get; set; }
+        public string postalcode { get; set; }
+
+        public string Tel { get; set; }
+        public string taxno { get; set; }
+        public string companyName { get; set; }
+        public string Address { get; set; }
+
+    }
+
+    public class RecipientsAddressUpdateRequest : BaseRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long id { get; set; }
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long userid { get; set; }
+        public string country { get; set; }
+        public string recipient { get; set; }
+        public string City { get; set; }
+        public string postalcode { get; set; }
+        public string Tel { get; set; }
+        public string taxno { get; set; }
+        public string companyName { get; set; }
+        public string Address { get; set; }
+    }
+
+
+
     public class CustomerOrderMergeInsertReqeust : BaseRequest
     {
         [JsonConverter(typeof(Long2StringConverter))]
@@ -123,6 +172,8 @@ namespace Logistics_Model
         public long CustomerServiceID { get; set; }
 
         public string InWareHouseStatus { get; set; }
+        
+        public string WarehouseAdminRemark { get; set; }
 
     }
     public class CustomerOrderSelectRequest : BaseRequestPage
@@ -151,6 +202,20 @@ namespace Logistics_Model
         public string token { get; set; } = "";
 
     }
+    public class GeItemsRequest : BaseRequest
+    {
+        /// <summary>
+        /// 查询信息
+        /// </summary>
+        public List<CustomerOrderID> customerOrderIDLists { get; set; }
+
+    }
+
+    public class CustomerOrderID
+    {
+        public string customerOrderID { get; set; }
+    }
+
     public class GeIndexRequest : BaseRequest
     {
         /// <summary>

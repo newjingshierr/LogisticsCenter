@@ -82,6 +82,7 @@ namespace Logistics_DAL
                         new MySqlParameter("@_InHeight",model.InHeight),
                         new MySqlParameter("@_WareHouseID",model.WareHouseID),
                         new MySqlParameter("@_CustomerServiceID",model.CustomerServiceID),
+                         new MySqlParameter("@_WarehouseAdminRemark",model.WarehouseAdminRemark),
                         new MySqlParameter("@_CreatedBy",model.CreatedBy),
             };
 

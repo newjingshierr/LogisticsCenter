@@ -63,4 +63,60 @@ namespace Logistics_Busniess
             return WareHouseDAL.GetIndex(request.name);
         }
     }
+
+    public class RecipientsAddressManager
+    {
+        public static logistics_base_recipients_address GetItem(RecipientsAddressGetRequest request)
+        {
+            return RecipientsAddressDAL.GetItem(request.id);
+
+        }
+        public static List<logistics_base_recipients_address> GetAll(RecipientsAddressGetAllRequest request)
+        {
+            return RecipientsAddressDAL.GetAll(request.userid);
+        }
+
+        public static bool Insert(RecipientsAddressInsertRequest item,long userid)
+        {
+            logistics_base_recipients_address address = new logistics_base_recipients_address();
+            address.ID = IdWorker.GetID();
+            address.recipient = item.recipient;
+            address.TenantID = BusinessConstants.Admin.TenantID;
+            address.Userid = userid;
+            address.country = item.country;
+            address.postalcode = item.postalcode;
+            address.Tel = item.Tel;
+            address.taxno = item.taxno;
+            address.City = item.City;
+            address.companyName = item.companyName;
+            address.Address = item.Address;
+            address.CreatedBy = BusinessConstants.Admin.TenantID;
+            return RecipientsAddressDAL.Insert(address);
+        }
+
+        public static bool update(RecipientsAddressUpdateRequest item)
+        {
+            logistics_base_recipients_address address = new logistics_base_recipients_address();
+            address.ID = item.id;
+            address.TenantID = BusinessConstants.Admin.TenantID;
+            address.Userid = item.userid;
+            address.recipient = item.recipient;
+            address.country = item.country;
+            address.postalcode = item.postalcode;
+            address.Tel = item.Tel;
+            address.taxno = item.taxno;
+            address.companyName = item.companyName;
+            address.Address = item.Address;
+            address.CreatedBy = BusinessConstants.Admin.TenantID;
+            return RecipientsAddressDAL.Update(address);
+        }
+
+        public static bool DeleteByID(RecipientsAddressDeleteRequest item)
+        {
+            return RecipientsAddressDAL.Delete(item.id);
+           
+        }
+
+
+    }
 }

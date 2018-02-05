@@ -176,8 +176,114 @@ namespace Logistics.Controllers
             }
         }
 
+    }
+
+    [RoutePrefix(ApiConstants.PrefixApi + "RecipientsAddress")]
+    public class RecipientsAddressController : BaseAuthController
+    {
+        LogHelper log = LogHelper.GetLogger(typeof(RecipientsAddressController));
+
+        [HttpGet]
+        [Route("all")]
+        public ResponseMessage<List<logistics_base_recipients_address>> GetAll([FromUri] RecipientsAddressGetAllRequest request)
+        {
+
+            var result = new List<logistics_base_recipients_address>();
+            try
+            {
+                request.userid = this.contextInfo.userInfo.Userid;
+                result = RecipientsAddressManager.GetAll(request);
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+            }
+        }
+
+
+        [HttpPost]
+        [Route("Item")]
+        public ResponseMessage<string> Insert(RecipientsAddressInsertRequest request)
+        {
+
+            var result = false;
+            try
+            {
+                result = RecipientsAddressManager.Insert(request, contextInfo.userInfo.Userid);
+
+                return GetResult(result.ToString());
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result.ToString(), ex.Message);
+
+            }
+        }
+
+        [HttpPut]
+        [Route("Item")]
+        public ResponseMessage<string> Update(RecipientsAddressUpdateRequest request)
+        {
+
+            var result = false;
+            try
+            {
+                result = RecipientsAddressManager.update(request);
+
+                return GetResult(result.ToString());
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result.ToString(), ex.Message);
+
+            }
+
+        }
+
+
+        [HttpDelete]
+        [Route("Item")]
+        public ResponseMessage<string> Delete([FromUri] RecipientsAddressDeleteRequest request)
+        {
+
+            var result = false;
+            try
+            {
+                result = RecipientsAddressManager.DeleteByID(request);
+
+                return GetResult(result.ToString());
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result.ToString(), ex.Message);
+
+            }
+
+
+        }
+        [HttpGet]
+        [Route("Item")]
+        public ResponseMessage<logistics_base_recipients_address> GetItem([FromUri] RecipientsAddressGetRequest request)
+        {
+
+            var result = new logistics_base_recipients_address();
+            try
+            {
+                result = RecipientsAddressManager.GetItem(request);
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+            }
+        }
 
 
 
     }
+
+
 }

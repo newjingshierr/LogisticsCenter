@@ -49,10 +49,10 @@ namespace Logistics_DAL
         public class RecipientsAddress
         {
             public const string logistics_base_recipients_address_insert = "logistics_base_recipients_address_insert";
-            public const string logistics_base_recipients_select_by_page = "logistics_base_recipients_select_by_page";
-            public const string logistics_base_recipients_select_by_id = "logistics_base_recipients_select_by_id";
-            public const string logistics_base_recipients_delete_by_id = "logistics_base_recipients_delete_by_id";
-            public const string logistics_base_recipients_update_by_id = "logistics_base_recipients_update_by_id";
+            public const string logistics_base_recipients_address_select_by_id = "logistics_base_recipients_address_select_by_id";
+            public const string logistics_base_recipients_address_delete_by_id = "logistics_base_recipients_address_delete_by_id";
+            public const string logistics_base_recipients_address_update = "logistics_base_recipients_address_update";
+            public const string logistics_base_recipients_address_select_all = "logistics_base_recipients_address_select_all";
 
         }
         public class Attachment
@@ -74,8 +74,8 @@ namespace Logistics_DAL
         {
             public const string logistics_customer_order_merge_detail_insert = "logistics_customer_order_merge_detail_insert";
             public const string logistics_customer_order_merge_detail_update = "logistics_customer_order_merge_detail_update";
-            public const string logistics_customer_order_merge_detail_delete_by_order_merge_id = "logistics_customer_order_merge_detail_delete_by_order_merge_id";
-            public const string logistics_customer_order_merge_detail_select_by_order_merge_id = "logistics_customer_order_merge_detail_select_by_order_merge_id";
+            public const string logistics_customer_order_merge_detail_delete_by_id = "logistics_customer_order_merge_detail_delete_by_id";
+            public const string logistics_customer_order_merge_detail_select_by_id = "logistics_customer_order_merge_detail_select_by_id";
 
         }
 
@@ -84,6 +84,7 @@ namespace Logistics_DAL
             public const string logistics_customer_order_merge_status_insert = "logistics_customer_order_merge_status_insert";
             public const string logistics_customer_order_merge_status_select_by_id = "logistics_customer_order_merge_status_select_by_id";
             public const string logistics_customer_order_merge_status_update_by_id = "logistics_customer_order_merge_status_update_by_id";
+            public const string logistics_customer_order_merge_status_delete_by_id = "logistics_customer_order_merge_status_delete_by_id";
         }
 
         public class CustomerOrderMergeRelation
@@ -91,6 +92,7 @@ namespace Logistics_DAL
             public const string logistics_customer_order_merge_relation_insert = "logistics_customer_order_merge_relation_insert";
             public const string logistics_customer_order_merge_relation_select_by_id = "logistics_customer_order_merge_relation_select_by_id";
             public const string logistics_customer_order_merge_relation_update_by_id = "logistics_customer_order_merge_relation_update_by_id";
+            public const string logistics_customer_order_merge_relation_delete_by_id = "logistics_customer_order_merge_relation_delete_by_id";
         }
 
 

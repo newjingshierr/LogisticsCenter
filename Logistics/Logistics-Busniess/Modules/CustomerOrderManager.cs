@@ -39,6 +39,7 @@ namespace Logistics_Busniess
             customerOrder.WareHouseID = item.WareHouseID;
             customerOrder.CustomerServiceID = item.CustomerServiceID;
             customerOrder.CreatedBy = BusinessConstants.Admin.TenantID;
+            customerOrder.WarehouseAdminRemark = item.WarehouseAdminRemark;
 
             logistics_customer_order_status customerOrderStatus = new logistics_customer_order_status();
             customerOrderStatus.TenantID = BusinessConstants.Admin.TenantID;
@@ -157,6 +158,21 @@ namespace Logistics_Busniess
 
             return userInfoList;
         }
+
+        public static List<logistics_customer_order> GetCustomerOrderItems(string request)
+        {
+            List<logistics_customer_order> customerOrderList = new List<logistics_customer_order>();
+            logistics_customer_order customerOrder;
+            String[] orderIDArrary = request.Split(',');
+
+            for(int i  = 0; i < orderIDArrary.Length; i++)
+            {
+                customerOrder = CustomerOrderDAL.GetCustomerOrderByID(long.Parse(orderIDArrary[i]));
+                customerOrderList.Add(customerOrder);
+            }
+         
+            return customerOrderList;
+        }
     }
 
     public class CustomerOrderMergeManger
@@ -224,7 +240,7 @@ namespace Logistics_Busniess
                 dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
                 {
                     var result = true;
-                    result = CustomerOrderMergeDAL.Insert(customerOrderMerge, trans) &&
+                    result = MergeCustomerOrderDAL.Insert(customerOrderMerge, trans) &&
                     MergeCustomerOrderRelationDAL.InsertList(relationList, trans) && MergeCustomerOrderDetailDAL.InsertList(detailList, trans);
                     return result;
                 });

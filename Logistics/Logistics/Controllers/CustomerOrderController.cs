@@ -208,6 +208,34 @@ namespace Logistics.Controllers
             }
         }
 
+        /// <summary>
+        ///  索引订单号，订单号中的快递单号
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("order/items")]
+        public ResponseMessage<List<logistics_customer_order>> GetCustomerOrderItems([FromUri]string request)
+        {
+            if (request == null)
+            {
+                return GetErrorResult<List<logistics_customer_order>>(SystemStatusEnum.InvalidRequest);
+            }
+            var result = new List<logistics_customer_order>();
+
+            try
+            {
+                result = CustomerOrderManager.GetCustomerOrderItems(request);
+
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+
+            }
+        }
+
 
     }
 
@@ -246,6 +274,8 @@ namespace Logistics.Controllers
             }
 
         }
+
+
     }
 
 

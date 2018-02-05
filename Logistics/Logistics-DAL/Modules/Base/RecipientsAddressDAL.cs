@@ -10,7 +10,7 @@ namespace Logistics_DAL
 {
     public class RecipientsAddressDAL
     {
-        public static logistics_base_recipients_address GetItem(long ID, long TenantID)
+        public static logistics_base_recipients_address GetItem(long ID, long TenantID = BusinessConstants.Admin.TenantID)
         {
             var result = new logistics_base_recipients_address();
             MySqlParameter[] parameters = {
@@ -18,7 +18,7 @@ namespace Logistics_DAL
                 new MySqlParameter("@_TenantID", TenantID)
             };
 
-            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.RecipientsAddress.logistics_base_recipients_select_by_id, parameters);
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.RecipientsAddress.logistics_base_recipients_address_select_by_id, parameters);
             if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
             {
                 result = ConvertHelper<logistics_base_recipients_address>.DtToModel(dbResult.Tables[0]);
@@ -32,17 +32,20 @@ namespace Logistics_DAL
             return result;
         }
 
-        public static bool Insert(logistics_base_recipients_address model, AkmiiMySqlTransaction trans = null)
+        public static bool Insert(logistics_base_recipients_address model, AkmiiMySqlTransaction trans = null, long TenantID = BusinessConstants.Admin.TenantID)
         {
 
             MySqlParameter[] parameters = {
-                        new MySqlParameter("@_TenantID", model.TenantID),
+                        new MySqlParameter("@_TenantID", TenantID),
                         new MySqlParameter("@_ID",model.ID),
-                           new MySqlParameter("@_Userid", model.Userid),
-                        new MySqlParameter("@_ProvinceID", model.ProvinceID),
-                        new MySqlParameter("@_CityID", model.CityID),
+                        new MySqlParameter("@_Userid", model.Userid),
+                        new MySqlParameter("_country", model.country),
+                        new MySqlParameter("_recipient", model.recipient),
+                        new MySqlParameter("@_City", model.City),
                         new MySqlParameter("@_postalcode", model.postalcode),
                         new MySqlParameter("@_Tel", model.Tel),
+                        new MySqlParameter("@_taxno", model.taxno),
+                         new MySqlParameter("@_companyName", model.companyName),
                         new MySqlParameter("@_Address", model.Address),
                         new MySqlParameter("@_CreatedBy",model.CreatedBy)
             };
@@ -59,38 +62,41 @@ namespace Logistics_DAL
             return result == 1;
 
         }
-        public static bool Delete(logistics_base_recipients_address model, AkmiiMySqlTransaction trans = null)
+        public static bool Delete(long id, AkmiiMySqlTransaction trans = null, long TenantID = BusinessConstants.Admin.TenantID)
         {
 
             MySqlParameter[] parameters = {
-                         new MySqlParameter("@_TenantID", model.TenantID),
-                        new MySqlParameter("@_ID",model.ID),
+                         new MySqlParameter("@_TenantID", TenantID),
+                        new MySqlParameter("@_ID",id),
             };
 
             int result = 0;
             if (trans == null)
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.RecipientsAddress.logistics_base_recipients_delete_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.RecipientsAddress.logistics_base_recipients_address_delete_by_id, parameters);
             }
             else
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.RecipientsAddress.logistics_base_recipients_delete_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.RecipientsAddress.logistics_base_recipients_address_delete_by_id, parameters);
             }
             return result == 1;
 
         }
 
-        public static bool Update(logistics_base_recipients_address model, AkmiiMySqlTransaction trans = null)
+        public static bool Update(logistics_base_recipients_address model, AkmiiMySqlTransaction trans = null, long TenantID = BusinessConstants.Admin.TenantID)
         {
 
             MySqlParameter[] parameters = {
-                        new MySqlParameter("@_TenantID", model.TenantID),
+                                         new MySqlParameter("@_TenantID", TenantID),
                         new MySqlParameter("@_ID",model.ID),
-                           new MySqlParameter("@_Userid", model.Userid),
-                        new MySqlParameter("@_ProvinceID", model.ProvinceID),
-                        new MySqlParameter("@_CityID", model.CityID),
+                        new MySqlParameter("@_Userid", model.Userid),
+                        new MySqlParameter("_country", model.country),
+                        new MySqlParameter("_recipient", model.recipient),
+                        new MySqlParameter("@_City", model.City),
                         new MySqlParameter("@_postalcode", model.postalcode),
                         new MySqlParameter("@_Tel", model.Tel),
+                        new MySqlParameter("@_taxno", model.taxno),
+                         new MySqlParameter("@_companyName", model.companyName),
                         new MySqlParameter("@_Address", model.Address),
                         new MySqlParameter("@_ModifiedBy",model.ModifiedBy)
             };
@@ -98,34 +104,29 @@ namespace Logistics_DAL
             int result = 0;
             if (trans == null)
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.RecipientsAddress.logistics_base_recipients_update_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.RecipientsAddress.logistics_base_recipients_address_update, parameters);
             }
             else
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.RecipientsAddress.logistics_base_recipients_update_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.RecipientsAddress.logistics_base_recipients_address_update, parameters);
             }
             return result == 1;
 
         }
 
-        public static List<logistics_base_recipients_address> GetByPage(DemoGetByNameRequest request, ref int totalCount, AkmiiMySqlTransaction trans = null)
+        public static List<logistics_base_recipients_address> GetAll(long userid,  AkmiiMySqlTransaction trans = null, long TenantID = BusinessConstants.Admin.TenantID)
         {
             var list = new List<logistics_base_recipients_address>();
             MySqlParameter[] parameters = {
-                new MySqlParameter("@_TenantID",""),
-                 new MySqlParameter("@_CreatedBy",""),
-                new MySqlParameter("@_PageIndex", request.PageIndex),
-                new MySqlParameter("@_PageSize", request.PageSize),
-                new MySqlParameter("_totalCount", totalCount) { Direction = ParameterDirection.Output }
+                new MySqlParameter("@_TenantID",TenantID),
+                 new MySqlParameter("@_userID",userid),
             };
 
-            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.RecipientsAddress.logistics_base_recipients_select_by_page, parameters);
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.RecipientsAddress.logistics_base_recipients_address_select_all, parameters);
             if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
             {
                 list = ConvertHelper<logistics_base_recipients_address>.DtToList(dbResult.Tables[0]);
             }
-
-
             return list;
 
         }
