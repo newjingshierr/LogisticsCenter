@@ -82,6 +82,7 @@
     <Compile Include="Modules\CustomerOrder\MergeCustomerOrderDAL.cs" />
     <Compile Include="Modules\CustomerOrder\MergeCustomerOrderDetailDAL.cs" />
     <Compile Include="Modules\CustomerOrder\MergeCustomerOrderRelationDAL.cs" />
+    <Compile Include="Modules\CustomerOrder\MergeCustomerOrderStatusDAL.cs" />
     <Compile Include="Modules\ExpressType\ExpressTypeDAL.cs" />
     <Compile Include="Modules\Navigation\NavigationDal.cs" />
     <Compile Include="Modules\OrderStatus\OrderStatus.cs" />

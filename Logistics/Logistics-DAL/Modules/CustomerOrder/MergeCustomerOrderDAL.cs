@@ -6,29 +6,59 @@ using System.Data;
 using Logistics_Model;
 using Logistics.Common;
 using Akmii;
+using Akmii.Core;
 
 namespace Logistics_DAL
 {
     public class MergeCustomerOrderDAL
     {
 
-        public static List<logistics_customer_order> GetItemListByPage(long TenantID, long userID, int PageIndex, int PageSize, ref int totalCount)
+        public static List<CustomerOrderMergeVM> GetListByPage(long userID,
+            string customerOrderMergeNo,
+            long CustomerChooseChannelID,
+            string recipient,
+            string country,
+            long ChannelID,
+            System.DateTime deliverTimeBegin,
+            System.DateTime deliverTimeEnd,
+            long AgentID,
+            System.DateTime orderMergeTimeBegin,
+             System.DateTime orderMergeTimeEnd,
+             string expressNo,
+             string currentStep,
+             string currentStatus,
+            int PageIndex, int PageSize, ref int totalCount)
         {
-            var result = new List<logistics_customer_order>();
+            var result = new List<CustomerOrderMergeVM>();
             var total = new MySqlParameter("@_TotalCount", totalCount) { Direction = ParameterDirection.Output };
 
+
+
             MySqlParameter[] parameters = {
-                                new MySqlParameter("@_TenantID", TenantID),
+                                new MySqlParameter("@_TenantID", BusinessConstants.Admin.TenantID),
                                 new MySqlParameter("@_userID", userID),
+                                new MySqlParameter("@_customerOrderMergeNo", customerOrderMergeNo),
+                                new MySqlParameter("@_CustomerChooseChannelID", CustomerChooseChannelID),
+                                new MySqlParameter("@_recipient", recipient),
+                                new MySqlParameter("@_country", country),
+                                new MySqlParameter("@_ChannelID", ChannelID),
+                                new MySqlParameter("@_deliverTimeBegin", deliverTimeBegin.ConvertDBTime()),
+                                new MySqlParameter("@_deliverTimeEnd", deliverTimeEnd.ConvertDBTime()),
+                                new MySqlParameter("@_AgentID", AgentID),
+                                new MySqlParameter("@_orderMergeTimeBegin", orderMergeTimeBegin.ConvertDBTime()),
+                                new MySqlParameter("@_orderMergeTimeEnd", orderMergeTimeEnd.ConvertDBTime()),
+                                new MySqlParameter("@_expressNo", expressNo),
+                                new MySqlParameter("@_currentStep", currentStep),
+                                new MySqlParameter("@_currentStatus", currentStatus),
                                new MySqlParameter("@_PageIndex", PageIndex),
                                new MySqlParameter("@_PageSize", PageSize),
                                 total
             };
 
-            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_select_by_page, parameters);
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMerge.logistics_customer_order_merge_select_by_page, parameters);
             if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
             {
-                result = ConvertHelper<logistics_customer_order>.DtToList(dbResult.Tables[0]);
+                result = ConvertHelper<CustomerOrderMergeVM>.DtToList(dbResult.Tables[0]);
                 totalCount = (total.Value + "").Convert2Int32();
             }
             else

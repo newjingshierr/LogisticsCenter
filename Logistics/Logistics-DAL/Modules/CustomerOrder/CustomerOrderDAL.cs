@@ -11,7 +11,7 @@ namespace Logistics_DAL
 {
     public class CustomerOrderDAL
     {
-        public static logistics_customer_order GetCustomerOrderByID(long ID,long TenantID = BusinessConstants.Admin.TenantID)
+        public static logistics_customer_order GetCustomerOrderByID(long ID, long TenantID = BusinessConstants.Admin.TenantID)
         {
             var result = new logistics_customer_order();
             MySqlParameter[] parameters = {
@@ -34,16 +34,16 @@ namespace Logistics_DAL
         }
 
 
-        public static List<logistics_customer_order> GetItemListByPage(long TenantID, long userID, string  customerOrderNo,
+        public static List<logistics_customer_order> GetItemListByPage(long TenantID, long userID, string customerOrderNo,
             string expressNo,
-                long expressTypeID, 
+                long expressTypeID,
                     string TransferNo,
-                        long warehouseID, 
+                        long warehouseID,
                             DateTime? InWarehouseTimeBegin,
-                            DateTime ?InWarehouseTimeEnd,
+                            DateTime? InWarehouseTimeEnd,
                                 long CustomerServiceID,
-                                    int PageIndex, 
-                                         int PageSize, 
+                                    int PageIndex,
+                                         int PageSize,
                                             ref int totalCount)
         {
             var result = new List<logistics_customer_order>();
@@ -51,7 +51,15 @@ namespace Logistics_DAL
 
             MySqlParameter[] parameters = {
                                 new MySqlParameter("@_TenantID", TenantID),
-                                new MySqlParameter("@_userID", userID),
+                                     new MySqlParameter("@_userID", userID),
+                                         new MySqlParameter("@_customerOrderNo", customerOrderNo),
+                                              new MySqlParameter("@_expressNo", expressNo),
+                                                new MySqlParameter("@_expressTypeID", expressTypeID),
+                                                    new MySqlParameter("@_TransferNo", TransferNo),
+                                                         new MySqlParameter("@_warehouseID", warehouseID),
+                                                            new MySqlParameter("@_InWarehouseTimeBegin", InWarehouseTimeBegin),
+                                                                 new MySqlParameter("@_InWarehouseTimeEnd", InWarehouseTimeEnd),
+                                                                    new MySqlParameter("@_CustomerServiceID", CustomerServiceID),
                                new MySqlParameter("@_PageIndex", PageIndex),
                                new MySqlParameter("@_PageSize", PageSize),
                                 total

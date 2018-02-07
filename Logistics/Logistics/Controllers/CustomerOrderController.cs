@@ -307,6 +307,63 @@ namespace Logistics.Controllers
 
         }
 
+        /// <summary>
+        /// 合并订单查询，用户审批页面的查询；客户确认页面，仓库合并打包页面查询，客服付款页面，仓库打包页面查询公用；单个订单查询；
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("items/page")]
+        public ResponseMessage<List<CustomerOrderMergeVM>> GetItemListByPage([FromUri]CustomerOrderMergeSelectRequest request)
+        {
+            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderController));
+            int totalCount = 0;
+            var result = new List<CustomerOrderMergeVM>();
+            var userID = 0L;
+            // tpe 为0 的情况用户查询
+
+            if (request.type == 0) userID = this.contextInfo.userInfo.Userid;
+
+            if (request.country == null)
+            {
+                request.country = "";
+            }
+            else if (request.currentStatus == null)
+            {
+                request.currentStatus = "";
+            }
+            else if (request.currentStep == null)
+            {
+                request.currentStep = "";
+            }
+            else if (request.customerOrderMergeNo == null)
+            {
+                request.customerOrderMergeNo = "";
+            }
+            else if (request.expressNo == null)
+            {
+                request.expressNo = "";
+            }
+            else if (request.recipient == null)
+            {
+                request.recipient = null;
+            }
+
+
+            try
+            {
+                result = CustomerOrderMergeManger.GetListByPage(request, userID, ref totalCount);
+
+                return GetResult(result, totalCount);
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+
+        }
+
 
     }
 

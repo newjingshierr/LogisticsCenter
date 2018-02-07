@@ -68,6 +68,8 @@ namespace Logistics_Model
         public string tel { get; set; }
         public string company { get; set; }
         public string taxNo { get; set; }
+        public string currentStep { get; set; }
+        public string currentStatus { get; set; }
         public List<CustomerOrderRequest> customerOrderList { get; set; }
         public List<InsertProductRequet> productList { get; set; }
 
@@ -209,7 +211,7 @@ namespace Logistics_Model
         public long CustomerServiceID { get; set; }
 
         public string InWareHouseStatus { get; set; }
-        
+
         public string WarehouseAdminRemark { get; set; }
 
     }
@@ -222,8 +224,29 @@ namespace Logistics_Model
 
         public string TransferNo { get; set; } = "";
         public long warehouseID { get; set; } = 0L;
-        public System.DateTime ? InWarehouseIimeBegin { get; set; } = null;
+        public System.DateTime? InWarehouseIimeBegin { get; set; } = null;
         public System.DateTime? InWarehouseIimeEnd { get; set; } = null;
+        public long CustomerServiceID { get; set; } = 0L;
+    }
+
+    public class CustomerOrderMergeSelectRequest : BaseRequestPage
+    {
+        public int type { get; set; } = 0;
+        public string country { get; set; } ="";
+        public string currentStep { get; set; } = "";
+        public string currentStatus { get; set; } = "";
+        public string expressNo { get; set; } = "";
+        public string customerOrderMergeNo { get; set; } = "";
+        public long CustomerChooseChannelID { get; set; } = 0L;
+        public string recipient { get; set; } = "";
+
+        public long ChannelID { get; set; } = 0L;
+        public System.DateTime deliverTimeBegin { get; set; } 
+        public System.DateTime deliverTimeEnd { get; set; }
+        public long AgentID { get; set; } = 0L;
+        public System.DateTime orderMergeTimeBegin { get; set; }
+
+       public System.DateTime orderMergeTimeEnd { get; set; }
         public long CustomerServiceID { get; set; } = 0L;
     }
 

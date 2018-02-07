@@ -16,7 +16,7 @@ namespace Logistics_Busniess
         public static List<logistics_customer_order> GetItemListByPage(CustomerOrderSelectRequest request, long userID, ref int totalCount)
         {
             return CustomerOrderDAL.GetItemListByPage(request.TenantID, userID, request.customerOrderNo, request.expressNo,
-                request.expressTypeID,request.TransferNo,request.warehouseID, request.InWarehouseIimeBegin, request.InWarehouseIimeEnd,request.CustomerServiceID,
+                request.expressTypeID, request.TransferNo, request.warehouseID, request.InWarehouseIimeBegin, request.InWarehouseIimeEnd, request.CustomerServiceID,
                 request.PageIndex, request.PageSize, ref totalCount);
 
         }
@@ -109,8 +109,6 @@ namespace Logistics_Busniess
             return dbResult;
         }
 
-
-
         public static bool DeleteCustomerOrderByID(CustomerOrderDeleteRequest item)
         {
             logistics_customer_order customerOrder = new logistics_customer_order();
@@ -167,18 +165,37 @@ namespace Logistics_Busniess
             logistics_customer_order customerOrder;
             String[] orderIDArrary = request.Split(',');
 
-            for(int i  = 0; i < orderIDArrary.Length; i++)
+            for (int i = 0; i < orderIDArrary.Length; i++)
             {
                 customerOrder = CustomerOrderDAL.GetCustomerOrderByID(long.Parse(orderIDArrary[i]));
                 customerOrderList.Add(customerOrder);
             }
-         
+
             return customerOrderList;
         }
     }
 
     public class CustomerOrderMergeManger
     {
+        public static List<CustomerOrderMergeVM> GetListByPage(CustomerOrderMergeSelectRequest request, long userID, ref int totalCount)
+        {
+            return MergeCustomerOrderDAL.GetListByPage(userID,
+                  request.customerOrderMergeNo,
+                  request.CustomerChooseChannelID,
+                  request.recipient,
+                  request.country,
+                  request.ChannelID,
+                  request.deliverTimeBegin,
+                  request.deliverTimeEnd,
+                  request.AgentID,
+                  request.orderMergeTimeBegin,
+                  request.orderMergeTimeEnd,
+                  request.expressNo,
+                  request.currentStep,
+                  request.currentStatus, request.PageIndex, request.PageSize, ref totalCount);
+
+        }
+
         public static bool InserCustomerOrderMerge(CustomerOrderMergeInsertReqeust item)
         {
             logistics_customer_order customerOrder;
@@ -200,6 +217,17 @@ namespace Logistics_Busniess
             customerOrderMerge.InVolumeTotal = customerOrderList.Sum(o => o.InVolume);
             customerOrderMerge.InPackageCountTotal = customerOrderList.Sum(o => o.InPackageCount);
             customerOrderMerge.CreatedBy = BusinessConstants.Admin.TenantID;
+            customerOrderMerge.deliverTime = null;
+
+            //订单状态
+            logistics_customer_order_merge_status status = new logistics_customer_order_merge_status();
+            status.currentStatus = item.currentStatus;
+            status.currentStep =item.currentStep;
+            status.ID = IdWorker.GetID();
+            status.mergeOrderID = customerOrderMerge.ID;
+            status.mergeOrderNo = customerOrderMerge.MergeOrderNo;
+            status.TenantID = BusinessConstants.Admin.TenantID;
+            status.CreatedBy  = BusinessConstants.Admin.TenantID;
 
             //合并订单和订单的关系
             logistics_customer_order_merge_relation relation;
@@ -243,7 +271,7 @@ namespace Logistics_Busniess
                 {
                     var result = true;
                     result = MergeCustomerOrderDAL.Insert(customerOrderMerge, trans) &&
-                    MergeCustomerOrderRelationDAL.InsertList(relationList, trans) && MergeCustomerOrderDetailDAL.InsertList(detailList, trans);
+                    MergeCustomerOrderRelationDAL.InsertList(relationList, trans) && MergeCustomerOrderDetailDAL.InsertList(detailList, trans)&& MergeCustomerOrderStatusDAL.Insert(status,trans);
                     return result;
                 });
             }
@@ -279,7 +307,7 @@ namespace Logistics_Busniess
             {
                 detail = new logistics_customer_order_merge_detail();
                 detail.TenantID = BusinessConstants.Admin.TenantID;
-                detail.ID =p.ID;
+                detail.ID = p.ID;
                 detail.mergeOrderID = customerOrderMerge.ID;
                 detail.productName = p.productName;
                 detail.productNameEN = p.productNameEN;

@@ -1404,8 +1404,8 @@ namespace Logistics_Model
         /// <summary>
         /// deliverTime
         /// </summary>		
-        private DateTime _delivertime;
-        public DateTime deliverTime
+        private DateTime ? _delivertime;
+        public DateTime ? deliverTime 
         {
             get { return _delivertime; }
             set { _delivertime = value; }
