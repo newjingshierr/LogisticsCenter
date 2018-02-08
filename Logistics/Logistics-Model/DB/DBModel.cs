@@ -9,6 +9,11 @@ using Akmii;
 
 namespace Logistics_Model
 {
+    public class logistics_base_status
+    {
+        public string ID { get; set; }
+        public string value { get; set; }
+    }
     public class logistics_base_warehouse
     {
 
@@ -234,7 +239,7 @@ namespace Logistics_Model
         /// </summary>		
         private string _city;
         [JsonConverter(typeof(Long2StringConverter))]
-        public string  City
+        public string City
         {
             get { return _city; }
             set { _city = value; }
@@ -1404,8 +1409,8 @@ namespace Logistics_Model
         /// <summary>
         /// deliverTime
         /// </summary>		
-        private DateTime ? _delivertime;
-        public DateTime ? deliverTime 
+        private DateTime? _delivertime;
+        public DateTime? deliverTime
         {
             get { return _delivertime; }
             set { _delivertime = value; }

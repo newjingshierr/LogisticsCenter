@@ -23,4 +23,8 @@ namespace Logistics_Model
 
 
     }
+    public class GetAllChannelsRequest : BaseRequest
+    {
+
+    }
 }

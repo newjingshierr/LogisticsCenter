@@ -144,7 +144,11 @@ namespace Logistics_Model
         OrderException = 42000,
 
         [Description("Order Status Not Found")]
-        OrderStatusNotFound = 42001
+        OrderStatusNotFound = 42001,
+
+        [Description("Order Status Not Draft 0")]
+        OrderStatusNotDraft = 42002
+
 
 
         #region

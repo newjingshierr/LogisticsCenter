@@ -48,17 +48,37 @@ namespace Logistics_Model
     public enum orderMergeStepEnum
     {
         //待打包中
-        WaitForPackage = 0,
+        WaitForPackage = 1,
         //客服確認中
-        CustomerConfirm = 1,
+        CustomerConfirm = 2,
         //倉庫打包中
-        WarehousePackege = 2,
+        WarehousePackege = 3,
         //待付款
-        WaitForPay = 3,
+        WaitForPay = 4,
         //待發貨中
-        WaitForDelivery = 4
+        WaitForDelivery = 5
     }
 
+    public enum orderMergeStatusEnum
+    {
+        refeused = -1,
+        waitforapprove = 1,
+        approved =2
+    }
+
+    public enum orderStepEnum
+    {
+        //仓库打包
+        WarehousePackage = 0
+    }
+    public enum orderStatusEnum
+    {
+        
+        //仓库入库
+        WarehouseIn = 1,
+        //退货
+        ReturnGood = 2
+    }
     public enum WaitForPackageStatusEnum
     {
         unConfirm =0,

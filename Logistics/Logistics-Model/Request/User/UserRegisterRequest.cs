@@ -17,6 +17,7 @@ namespace Logistics_Model
     }
     public class RecipientsAddressGetRequest : BaseRequest
     {
+        [JsonConverter(typeof(Long2StringConverter))]
         public long id { get; set; }
     }
 
@@ -138,6 +139,7 @@ namespace Logistics_Model
 
     public class CustomerOrderDeleteRequest : BaseRequest
     {
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID { get; set; }
     }
 
@@ -217,36 +219,40 @@ namespace Logistics_Model
     }
     public class CustomerOrderSelectRequest : BaseRequestPage
     {
-        public int type { get; set; }
+        public int type { get; set; } = 0;
         public string customerOrderNo { get; set; } = "";
         public string expressNo { get; set; } = "";
+        [JsonConverter(typeof(Long2StringConverter))]
         public long expressTypeID { get; set; } = 0L;
 
         public string TransferNo { get; set; } = "";
         public long warehouseID { get; set; } = 0L;
-        public System.DateTime? InWarehouseIimeBegin { get; set; } = null;
-        public System.DateTime? InWarehouseIimeEnd { get; set; } = null;
+        public System.DateTime InWarehouseIimeBegin { get; set; }
+        public System.DateTime InWarehouseIimeEnd { get; set; }
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CustomerServiceID { get; set; } = 0L;
     }
 
     public class CustomerOrderMergeSelectRequest : BaseRequestPage
     {
         public int type { get; set; } = 0;
-        public string country { get; set; } ="";
+        public string country { get; set; } = "";
         public string currentStep { get; set; } = "";
         public string currentStatus { get; set; } = "";
         public string expressNo { get; set; } = "";
         public string customerOrderMergeNo { get; set; } = "";
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CustomerChooseChannelID { get; set; } = 0L;
         public string recipient { get; set; } = "";
-
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ChannelID { get; set; } = 0L;
-        public System.DateTime deliverTimeBegin { get; set; } 
+        public System.DateTime deliverTimeBegin { get; set; }
         public System.DateTime deliverTimeEnd { get; set; }
+        [JsonConverter(typeof(Long2StringConverter))]
         public long AgentID { get; set; } = 0L;
         public System.DateTime orderMergeTimeBegin { get; set; }
-
-       public System.DateTime orderMergeTimeEnd { get; set; }
+        public System.DateTime orderMergeTimeEnd { get; set; }
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CustomerServiceID { get; set; } = 0L;
     }
 
@@ -254,15 +260,18 @@ namespace Logistics_Model
     {
         public messageType type { get; set; }
         public string message { get; set; }
+        [JsonConverter(typeof(Long2StringConverter))]
         public long userid { get; set; }
     }
     public class OrderStatusRequest : BaseRequest
     {
+        [JsonConverter(typeof(Long2StringConverter))]
         public long userID { get; set; }
     }
     public class InsertTokenLogRequest : BaseRequest
     {
         public string token { get; set; }
+        [JsonConverter(typeof(Long2StringConverter))]
         public long userID { get; set; }
     }
 
@@ -360,12 +369,14 @@ namespace Logistics_Model
 
     public class UserCheckRequest : BaseRequest
     {
+        [JsonConverter(typeof(Long2StringConverter))]
         public long userID { get; set; }
         public string Pwd { get; set; }
     }
 
     public class GetNavgationListRequest : BaseRequest
     {
+        [JsonConverter(typeof(Long2StringConverter))]
         public long userID { get; set; }
     }
 

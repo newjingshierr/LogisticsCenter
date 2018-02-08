@@ -65,5 +65,33 @@ namespace Logistics.Controllers
 
         }
 
+
+
+
+    }
+
+    [RoutePrefix(ApiConstants.PrefixApi + "Channel")]
+    public class ChannelsController :BaseAuthController
+    {
+        [HttpGet]
+        [Route("Items")]
+        public ResponseMessage<List<logistics_quotation_channel>> GetAllChannels()
+        {
+          
+            var result = new List<logistics_quotation_channel>();
+
+            try
+            {
+                result = QuotationManager.GetAllChannels();
+
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+
+            }
+
+        }
     }
 }

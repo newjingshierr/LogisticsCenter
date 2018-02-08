@@ -132,6 +132,10 @@ namespace Logistics_Busniess
                     return result;
                 });
             }
+            if (dbResult == false)
+            {
+                throw new LogisticsException(SystemStatusEnum.OrderStatusNotDraft, $"Order Status Not Draft 0");
+            }
 
             return dbResult;
         }

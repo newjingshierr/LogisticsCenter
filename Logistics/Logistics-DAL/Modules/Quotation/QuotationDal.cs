@@ -195,7 +195,7 @@ namespace Logistics_DAL
 
         }
 
-        public static List<logistics_quotation_channel> SelectAllChannels(long TenantID)
+        public static List<logistics_quotation_channel> SelectAllChannels(long TenantID )
         {
             var list = new List<logistics_quotation_channel>();
             MySqlParameter[] parameters = {

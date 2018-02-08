@@ -148,7 +148,7 @@ namespace Logistics.Controllers
 
 
         /// <summary>
-        ///修改customerOrder
+        ///删除customerOrder，只有草稿状态的订单才可以删除；
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -324,30 +324,6 @@ namespace Logistics.Controllers
 
             if (request.type == 0) userID = this.contextInfo.userInfo.Userid;
 
-            if (request.country == null)
-            {
-                request.country = "";
-            }
-            else if (request.currentStatus == null)
-            {
-                request.currentStatus = "";
-            }
-            else if (request.currentStep == null)
-            {
-                request.currentStep = "";
-            }
-            else if (request.customerOrderMergeNo == null)
-            {
-                request.customerOrderMergeNo = "";
-            }
-            else if (request.expressNo == null)
-            {
-                request.expressNo = "";
-            }
-            else if (request.recipient == null)
-            {
-                request.recipient = null;
-            }
 
 
             try
@@ -368,17 +344,81 @@ namespace Logistics.Controllers
     }
 
 
-    [RoutePrefix(ApiConstants.PrefixApi + "CustomerOrder")]
+    //仓库打包 状态下拉框
+    [RoutePrefix(ApiConstants.PrefixApi + "CustomerOrderStatus")]
     public class CustomerOrderStatusController : BaseAuthController
     {
 
+        [HttpGet]
+        [Route("items")]
+        public ResponseMessage<List<logistics_base_status>> GetItems()
+        {
+            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderStatusController));
 
+            var result = new List<logistics_base_status>();
+            var warehouseIn = new logistics_base_status();
+            warehouseIn.ID = orderStatusEnum.WarehouseIn.ToString();
+            warehouseIn.value = "已入库";
+            result.Add(warehouseIn);
+            var returnGood = new logistics_base_status();
+            returnGood.ID = orderStatusEnum.ReturnGood.ToString();
+            returnGood.value = "已退货";
+            result.Add(returnGood);
 
+            try
+            {
+                return GetResult(result);
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+
+        }
     }
 
+    /// <summary>
+    /// 客服: 待审核，已审核，已拒绝
+    /// 仓库打包：待审核，已审核
+    /// 仓库发货：待审核，已审核
+    /// </summary>
+    [RoutePrefix(ApiConstants.PrefixApi + "CustomerOrderMergeStatus")]
+    public class CustomerOrderMergeStatusController : BaseAuthController
+    {
+        [HttpGet]
+        [Route("items")]
+        public ResponseMessage<List<logistics_base_status>> GetItems()
+        {
+            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderStatusController));
+            var result = new List<logistics_base_status>();
+            var approved = new logistics_base_status();
+            approved.ID = orderMergeStatusEnum.approved.ToString();
+            approved.value = "已审核";
 
+            result.Add(approved);
+            var refeused = new logistics_base_status();
+            refeused.ID = orderMergeStatusEnum.refeused.ToString();
+            refeused.value = "已拒绝";
 
+            result.Add(refeused);
 
+            var waitforapprove = new logistics_base_status();
+            waitforapprove.ID = orderMergeStatusEnum.waitforapprove.ToString();
+            waitforapprove.value = "待审核";
+            result.Add(waitforapprove);
 
+            try
+            {
+                return GetResult(result);
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+
+        }
+    }
 
 }

@@ -248,8 +248,15 @@ namespace Logistics_Busniess
         }
 
 
+        public static List<logistics_quotation_channel> GetAllChannels()
+        {
+
+            return QuotationDal.SelectAllChannels(BusinessConstants.Admin.TenantID);
+
+        }
 
 
 
     }
+
 }
