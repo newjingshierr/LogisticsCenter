@@ -65,6 +65,26 @@ namespace Logistics_DAL
             {
                 result = null;
             }
+            result.ForEach(o =>
+            {
+                if (o.currentStep == "2")
+                {
+                    o.currentStep = "客服确认中";
+                }
+                else if (o.currentStep == "3")
+                {
+                    o.currentStep = "仓库打包中";
+                }
+                else if (o.currentStep == "4")
+                {
+                    o.currentStep = "待付款";
+
+                }
+                else if (o.currentStep == "5")
+                {
+                    o.currentStep = "待发货";
+                }
+            });
 
             return result;
         }
@@ -80,6 +100,7 @@ namespace Logistics_DAL
                          new MySqlParameter("@_MergeOrderNo", model.MergeOrderNo),
                         new MySqlParameter("@_CustomerMark", model.CustomerMark),
                         new MySqlParameter("@_CustomerChooseChannelID", model.CustomerChooseChannelID),
+                        new MySqlParameter("@_CustomerChooseChannelName", model.CustomerChooseChannelName),
                         new MySqlParameter("@_InWeightTotal", model.InWeightTotal),
                              new MySqlParameter("@_InVolumeTotal", model.InVolumeTotal),
                              new MySqlParameter("@_InPackageCountTotal", model.InPackageCountTotal),

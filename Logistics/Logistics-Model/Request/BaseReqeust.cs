@@ -9,12 +9,14 @@ namespace Logistics_Model
     public class BaseRequest
     {
         public long TenantID { get; set; } = 890501594632818690;
+        public bool isAdmin { get; set; } = false;
     }
     public class BaseRequestPage:BaseRequest
     {
         public int PageIndex { get; set; } = 1;
 
         public int PageSize { get; set; } = 20;
+
     }
 
     public class GetItemListByUserIDRequest : BaseRequest

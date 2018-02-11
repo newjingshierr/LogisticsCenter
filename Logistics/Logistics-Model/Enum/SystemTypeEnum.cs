@@ -50,7 +50,7 @@ namespace Logistics_Model
         //待打包中
         WaitForPackage = 1,
         //客服確認中
-        CustomerConfirm = 2,
+        CustomerServiceConfirm = 2,
         //倉庫打包中
         WarehousePackege = 3,
         //待付款

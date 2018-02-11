@@ -14,6 +14,11 @@ namespace Logistics_Model
         public string ID { get; set; }
         public string value { get; set; }
     }
+    public class logistics_base_step
+    {
+        public string ID { get; set; }
+        public string value { get; set; }
+    }
     public class logistics_base_warehouse
     {
 
@@ -1102,7 +1107,8 @@ namespace Logistics_Model
     }
     public class logistics_customer_order_merge
     {
-
+        public string ChannelName { get; set; }
+        public string CustomerChooseChannelName { get; set; }
         /// <summary>
         /// TenantID
         /// </summary>		

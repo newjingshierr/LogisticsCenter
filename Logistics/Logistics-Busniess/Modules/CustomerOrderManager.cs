@@ -209,7 +209,16 @@ namespace Logistics_Busniess
                 customerOrder = CustomerOrderDAL.GetCustomerOrderByID(c.customerOrderID);
                 customerOrderList.Add(customerOrder);
             }
+
+            //获取渠道名称；
+           logistics_quotation_channel customerChooseChannel =   ChannelDAL.GetItem(item.CustomerChooseChannelID, BusinessConstants.Admin.TenantID);
+            if (customerChooseChannel == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.ChannelNotFound, $"Channel Not Found");
+            }
+
             //主订单信息
+
             logistics_customer_order_merge customerOrderMerge = new logistics_customer_order_merge();
             customerOrderMerge.TenantID = BusinessConstants.Admin.TenantID;
             customerOrderMerge.ID = IdWorker.GetID();
@@ -217,6 +226,16 @@ namespace Logistics_Busniess
             customerOrderMerge.MergeOrderNo = RuleManger.SetCurrentNo(BusinessConstants.Defkey.mergeorder);
             customerOrderMerge.CustomerMark = item.CustomerMark;
             customerOrderMerge.CustomerChooseChannelID = item.CustomerChooseChannelID;
+            customerOrderMerge.CustomerChooseChannelName = customerChooseChannel.Name;
+            customerOrderMerge.recipient = item.recipient;
+            customerOrderMerge.country = item.country;
+            customerOrderMerge.address = item.address;
+            customerOrderMerge.city = item.city;
+            customerOrderMerge.address = item.city;
+            customerOrderMerge.code = item.code;
+            customerOrderMerge.tel = item.tel;
+            customerOrderMerge.company = item.company;
+            customerOrderMerge.taxNo = item.taxNo;
             customerOrderMerge.InWeightTotal = customerOrderList.Sum(o => o.InWeight);
             customerOrderMerge.InVolumeTotal = customerOrderList.Sum(o => o.InVolume);
             customerOrderMerge.InPackageCountTotal = customerOrderList.Sum(o => o.InPackageCount);

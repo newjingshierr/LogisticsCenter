@@ -27,7 +27,7 @@ namespace Logistics_DAL
         {
             public const string logistics_base_channel_insert = "logistics_base_channel_insert";
             public const string logistics_base_channel_select_by_page = "logistics_base_channel_select_by_page";
-            public const string logistics_base_channel_select_by_id = "logistics_base_channel_select_by_id";
+            public const string logistics_quotation_channel_select_by_id = "logistics_quotation_channel_select_by_id";
             public const string logistics_base_channel_delete_by_id = "logistics_base_channel_delete_by_id";
             public const string logistics_base_channel_update_by_id = "logistics_base_channel_update_by_id";
 

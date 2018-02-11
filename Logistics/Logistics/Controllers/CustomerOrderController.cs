@@ -322,9 +322,7 @@ namespace Logistics.Controllers
             var userID = 0L;
             // tpe 为0 的情况用户查询
 
-            if (request.type == 0) userID = this.contextInfo.userInfo.Userid;
-
-
+            if (!request.isAdmin) userID = this.contextInfo.userInfo.Userid;
 
             try
             {
@@ -387,8 +385,42 @@ namespace Logistics.Controllers
     public class CustomerOrderMergeStatusController : BaseAuthController
     {
         [HttpGet]
-        [Route("items")]
-        public ResponseMessage<List<logistics_base_status>> GetItems()
+        [Route("orderconfirm")]
+        public ResponseMessage<List<logistics_base_status>> GetOrderconfirmStatus()
+        {
+            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderStatusController));
+            var result = new List<logistics_base_status>();
+            var approved = new logistics_base_status();
+            approved.ID = orderMergeStatusEnum.approved.ToString();
+            approved.value = "已审核";
+
+            result.Add(approved);
+            var refeused = new logistics_base_status();
+            refeused.ID = orderMergeStatusEnum.refeused.ToString();
+            refeused.value = "已拒绝";
+
+            result.Add(refeused);
+
+            var waitforapprove = new logistics_base_status();
+            waitforapprove.ID = orderMergeStatusEnum.waitforapprove.ToString();
+            waitforapprove.value = "待审核";
+            result.Add(waitforapprove);
+
+            try
+            {
+                return GetResult(result);
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+
+        }
+
+        [HttpGet]
+        [Route("warehousepackage")]
+        public ResponseMessage<List<logistics_base_status>> GetWarehousepackageStatus()
         {
             LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderStatusController));
             var result = new List<logistics_base_status>();
@@ -420,5 +452,42 @@ namespace Logistics.Controllers
 
         }
     }
+
+
+    [RoutePrefix(ApiConstants.PrefixApi + "OrderMergeStep")]
+    public class CustomerOrderMergeStepController : BaseAuthController
+    {
+        [HttpGet]
+        [Route("memeberwaitforapprove")]
+        public ResponseMessage<List<logistics_base_step>> GetOrderconfirmStatus()
+        {
+            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeStepController));
+            var result = new List<logistics_base_step>();
+            var CustomerServiceConfirm = new logistics_base_step();
+            CustomerServiceConfirm.ID = "2";
+            CustomerServiceConfirm.value = "客服确认";
+            result.Add(CustomerServiceConfirm);
+
+            var WaitForPackage = new logistics_base_step();
+            WaitForPackage.ID = "3";
+            WaitForPackage.value = "仓库打包";
+            result.Add(WaitForPackage);
+
+            try
+            {
+                return GetResult(result);
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+
+        }
+
+    }
+
+
+
 
 }

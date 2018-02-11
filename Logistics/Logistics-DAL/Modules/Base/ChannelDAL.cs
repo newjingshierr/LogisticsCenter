@@ -10,18 +10,18 @@ namespace Logistics_DAL
 {
     public class ChannelDAL
     {
-        public static logistics_base_channel GetItem(long ID, long TenantID)
+        public static logistics_quotation_channel GetItem(long ID, long TenantID)
         {
-            var result = new logistics_base_channel();
+            var result = new logistics_quotation_channel();
             MySqlParameter[] parameters = {
                 new MySqlParameter("@_ID",ID),
                 new MySqlParameter("@_TenantID", TenantID)
             };
 
-            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Channel.logistics_base_channel_select_by_id, parameters);
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Channel.logistics_quotation_channel_select_by_id, parameters);
             if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
             {
-                result = ConvertHelper<logistics_base_channel>.DtToModel(dbResult.Tables[0]);
+                result = ConvertHelper<logistics_quotation_channel>.DtToModel(dbResult.Tables[0]);
             }
             else
             {

@@ -138,6 +138,9 @@ namespace Logistics_Model
         UserinfoNotFound = 40002,
         [Description("TokenExpired")]
         TokenExpired = 40003,
+
+        [Description("Channel not found")]
+        ChannelNotFound = 40005,
         #endregion
         //用户订单 42000-4300
         [Description("Order Exception")]
