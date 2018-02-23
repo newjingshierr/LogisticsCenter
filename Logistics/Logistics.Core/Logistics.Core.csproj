@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication.cs" />
+    <Compile Include="Common.cs" />
     <Compile Include="IdWorker.cs" />
     <Compile Include="Log4net.cs" />
     <Compile Include="MemcachedHelper.cs" />

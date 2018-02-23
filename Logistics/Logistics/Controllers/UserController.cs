@@ -377,7 +377,12 @@ namespace Logistics.Controllers
             {
                 return GetErrorResult<List<UserInfo>>(SystemStatusEnum.InvalidRequest);
             }
-            var result = new List<UserInfo>();
+            if (Logistics.Core.Common.Islegal(request.name == null? "":request.name)|| request.name == null)
+            {
+                return null;
+            }
+
+             var result = new List<UserInfo>();
 
             try
             {

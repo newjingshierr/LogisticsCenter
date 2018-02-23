@@ -19,6 +19,7 @@ using Logistics_Model;
 using Logistics_DAL;
 using System.Net.Mail;
 using System.Data;
+using Logistics.Common;
 
 
 namespace Logistics.Console
@@ -62,17 +63,22 @@ namespace Logistics.Console
 
         static void Main(string[] args)
         {
-            var strTicket = "18721819403&sj456789&890501594632818690";
-            var ticketArray = strTicket.Split('&');
-            var strUser = ticketArray[0];
-            var strPwd = ticketArray[1];
-            var strTenantID = ticketArray[2];
+            InsertUser("member1", BusinessConstants.Role.member);
+            InsertUser("member2", BusinessConstants.Role.member);
+            InsertUser("member3", BusinessConstants.Role.member);
+            InsertUser("member4", BusinessConstants.Role.member);
 
-            //缓存中读取，进行验证token;
-          var result =  MemcachedHelper.Set("11", "11", System.DateTime.Now.AddHours(10));
+            //  var strTicket = "18721819403&sj456789&890501594632818690";
+            //  var ticketArray = strTicket.Split('&');
+            //  var strUser = ticketArray[0];
+            //  var strPwd = ticketArray[1];
+            //  var strTenantID = ticketArray[2];
 
-            var result1 = MemcachedHelper.Get("11");
-            var cachedToken = UserManger.GetTokenCahced(long.Parse(strTenantID), strUser);
+            //  //缓存中读取，进行验证token;
+            //var result =  MemcachedHelper.Set("11", "11", System.DateTime.Now.AddHours(10));
+
+            //  var result1 = MemcachedHelper.Get("11");
+            //  var cachedToken = UserManger.GetTokenCahced(long.Parse(strTenantID), strUser);
 
 
             // sendMail("fds718@163.com", "famliytree", "enzo.shi@famliytree.cn", "enzo.shi@famliytree.cn", "Infosys333", "您好！", "这是一封测试邮件!");
@@ -124,6 +130,46 @@ namespace Logistics.Console
             //p.ImportCounty(BusinessConstants.Channel.DHLStandard, "DHL标准快递国家");
             // p.ImportQuotation(BusinessConstants.Channel.DHLStandard, "DHL标准快递价格");
             System.Console.ReadLine();
+        }
+
+       public static void InsertUser(string tel, long roleType)
+        {
+            UserInfo userInfo = new UserInfo();
+            userInfo.Userid = IdWorker.GetID();
+            userInfo.Pwd = HashHelper.ComputeHash("123456");
+            userInfo.WebChatID = "";
+            userInfo.Token = "";
+            userInfo.UserName = "";
+            userInfo.TenantID = BusinessConstants.Admin.TenantID;
+            userInfo.Email = "";
+            userInfo.Tel = tel;
+            userInfo.MemeberCode = RuleManger.SetCurrentNo(BusinessConstants.Defkey.user);
+            userInfo.CreatedBy = BusinessConstants.Admin.TenantID;
+            userInfo.ModifiedBy = BusinessConstants.Admin.TenantID;
+
+
+            logistics_base_role_user_binding roleUser = new logistics_base_role_user_binding();
+            roleUser.TenantID = BusinessConstants.Admin.TenantID;
+            roleUser.ID = IdWorker.GetID();
+            roleUser.RoleID = roleType;
+            roleUser.Userid = userInfo.Userid;
+            roleUser.CreatedBy = BusinessConstants.Admin.TenantID;
+            roleUser.ModifiedBy = BusinessConstants.Admin.TenantID;
+
+            var dbResult = false;
+
+            using (var conn = ConnectionManager.GetWriteConn())
+            {
+                dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
+                {
+                    //更改balance记录；
+                    var result = true;
+                    result = UserDAL.Insert(userInfo, trans) && RoleDAL.InsertRoleUser(roleUser, trans);
+                    return result;
+                });
+            }
+
+
         }
 
         public void ImportCode(string path, string partitionSheetName)
