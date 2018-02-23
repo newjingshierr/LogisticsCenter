@@ -158,6 +158,7 @@ namespace Logistics.Console
 
             var dbResult = false;
 
+
             using (var conn = ConnectionManager.GetWriteConn())
             {
                 dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
