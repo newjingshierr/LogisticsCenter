@@ -63,10 +63,10 @@ namespace Logistics.Console
 
         static void Main(string[] args)
         {
-            InsertUser("member1", BusinessConstants.Role.member);
-            InsertUser("member2", BusinessConstants.Role.member);
-            InsertUser("member3", BusinessConstants.Role.member);
-            InsertUser("member4", BusinessConstants.Role.member);
+            InsertUser("warehouseadmin1", BusinessConstants.Role.wareHouseAdmin);
+            InsertUser("warehouseadmin2", BusinessConstants.Role.wareHouseAdmin);
+            InsertUser("warehouseadmin3", BusinessConstants.Role.wareHouseAdmin);
+            InsertUser("warehouseadmin5", BusinessConstants.Role.wareHouseAdmin);
 
             //  var strTicket = "18721819403&sj456789&890501594632818690";
             //  var ticketArray = strTicket.Split('&');

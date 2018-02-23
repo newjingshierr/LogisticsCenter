@@ -60,14 +60,19 @@ namespace Logistics.Controllers
             int totalCount = 0;
             var result = new List<logistics_customer_order>();
             var userID = 0L;
+            var warehouseAdmin = 0L;
             if (request.type == (int)CustomerOrderReqeustTypeEnum.waitForPackage)
             {
                 userID = contextInfo.userInfo.Userid;
             }
+            else if (request.type == (int)CustomerOrderReqeustTypeEnum.warehouse)
+            {
+                warehouseAdmin = contextInfo.userInfo.Userid;
+            }
 
             try
             {
-                result = CustomerOrderManager.GetItemListByPage(request, userID, ref totalCount);
+                result = CustomerOrderManager.GetItemListByPage(request, userID, warehouseAdmin,ref totalCount);
 
                 return GetResult(result, totalCount);
             }
@@ -262,7 +267,7 @@ namespace Logistics.Controllers
             var result = false;
             try
             {
-                result = CustomerOrderMergeManger.InserCustomerOrderMerge(request);
+                result = CustomerOrderMergeManger.InserCustomerOrderMerge(request, contextInfo.userInfo.Userid);
 
                 return GetResult(result);
             }

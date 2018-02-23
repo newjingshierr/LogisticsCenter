@@ -13,9 +13,9 @@ namespace Logistics_Busniess
 {
     public class CustomerOrderManager
     {
-        public static List<logistics_customer_order> GetItemListByPage(CustomerOrderSelectRequest request, long userID, ref int totalCount)
+        public static List<logistics_customer_order> GetItemListByPage(CustomerOrderSelectRequest request, long userID, long warehouseAdmin,ref int totalCount)
         {
-            return CustomerOrderDAL.GetItemListByPage(request.TenantID, userID, request.customerOrderNo, request.expressNo,
+            return CustomerOrderDAL.GetItemListByPage(request.TenantID, userID, warehouseAdmin, request.customerOrderNo, request.expressNo,
                 request.expressTypeID, request.TransferNo, request.warehouseID, request.InWarehouseIimeBegin, request.InWarehouseIimeEnd, request.CustomerServiceID,
                 request.PageIndex, request.PageSize, ref totalCount);
 
@@ -200,7 +200,7 @@ namespace Logistics_Busniess
 
         }
 
-        public static bool InserCustomerOrderMerge(CustomerOrderMergeInsertReqeust item)
+        public static bool InserCustomerOrderMerge(CustomerOrderMergeInsertReqeust item,long currentUserID)
         {
             logistics_customer_order customerOrder;
             List<logistics_customer_order> customerOrderList = new List<logistics_customer_order>();
@@ -239,7 +239,7 @@ namespace Logistics_Busniess
             customerOrderMerge.InWeightTotal = customerOrderList.Sum(o => o.InWeight);
             customerOrderMerge.InVolumeTotal = customerOrderList.Sum(o => o.InVolume);
             customerOrderMerge.InPackageCountTotal = customerOrderList.Sum(o => o.InPackageCount);
-            customerOrderMerge.CreatedBy = BusinessConstants.Admin.TenantID;
+            customerOrderMerge.CreatedBy = currentUserID;
             customerOrderMerge.deliverTime = null;
 
             //订单状态
