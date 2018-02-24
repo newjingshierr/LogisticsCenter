@@ -15,7 +15,7 @@ namespace Logistics_Busniess
     {
         public static List<logistics_customer_order> GetItemListByPage(CustomerOrderSelectRequest request, long userID, long warehouseAdmin,ref int totalCount)
         {
-            return CustomerOrderDAL.GetItemListByPage(request.TenantID, userID, warehouseAdmin, request.customerOrderNo, request.expressNo,
+            return CustomerOrderDAL.GetItemListByPage(request.TenantID, userID, warehouseAdmin, request.customerOrderNo, request.customerOrderStatus,request.expressNo,
                 request.expressTypeID, request.TransferNo, request.warehouseID, request.InWarehouseIimeBegin, request.InWarehouseIimeEnd, request.CustomerServiceID,
                 request.PageIndex, request.PageSize, ref totalCount);
 

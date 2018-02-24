@@ -709,4 +709,21 @@ namespace Logistics_Model
         public int DeliveryDoneCount { get; set; }
     }
 
+
+    public class WarehouseCustomerOrderStatusSummaryView
+    {
+        /// <summary>
+        /// 未确认订单数量
+        /// </summary>
+        public int unconfirmedCount { get; set; }
+        /// <summary>
+        /// 已确认订单数量
+        /// </summary>
+        public int confirmedCount { get; set; }
+        /// <summary>
+        /// 退货数量
+        /// </summary>
+        public int retrunGoodsCount { get; set; }
+    }
+
 }

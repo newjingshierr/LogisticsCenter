@@ -112,6 +112,7 @@ namespace Logistics_DAL
             public const string logistics_customer_order_status_delete_by_id = "logistics_customer_order_status_delete_by_id";
             public const string logistics_order_status_select_by_order_id = "logistics_order_status_select_by_order_id";
             public const string logistics_order_select_by_userid_summary = "logistics_order_select_by_userid_summary";
+            public const string logistics_customer_order_select_by_warehouseAdmin_summary = "logistics_customer_order_select_by_warehouseAdmin_summary";
             public const string logistics_customer_order_status_insert = "logistics_customer_order_status_insert";
             public const string logistics_customer_order_status_update_by_id = "logistics_customer_order_status_update_by_id";
         }

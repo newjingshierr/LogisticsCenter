@@ -28,5 +28,21 @@ namespace Logistics_Busniess
             return result;
 
         }
+
+        public static WarehouseCustomerOrderStatusSummaryView logistics_customer_order_select_by_warehouseAdmin_summary(long warehouseAdmin)
+        {
+            var result = new WarehouseCustomerOrderStatusSummaryView();
+            var model = Logistics_DAL.CustomerOrderStatusDAL.logistics_customer_order_select_by_warehouseAdmin_summary(warehouseAdmin);
+            if (model == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.OrderException, $"Order Exception");
+            }
+            else
+            {
+                result = model;
+            }
+            return result;
+
+        }
     }
 }

@@ -32,6 +32,30 @@ namespace Logistics_DAL
         }
 
 
+        public static WarehouseCustomerOrderStatusSummaryView logistics_customer_order_select_by_warehouseAdmin_summary(long warehouseAdmin, long TenantID = BusinessConstants.Admin.TenantID)
+        {
+            var result = new WarehouseCustomerOrderStatusSummaryView();
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID",TenantID),
+                new MySqlParameter("@_warehouseAdmin", warehouseAdmin),
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderStatus.logistics_customer_order_select_by_warehouseAdmin_summary, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<WarehouseCustomerOrderStatusSummaryView>.DtToModel(dbResult.Tables[0]);
+            }
+            else
+            {
+                result = null;
+            }
+
+            return result;
+        }
+
+
+
+
         public static logistics_customer_order_status SelectOrderStatusByOrderID(long orderID, long TenantID = BusinessConstants.Admin.TenantID)
         {
             var result = new logistics_customer_order_status();

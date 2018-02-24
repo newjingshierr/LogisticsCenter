@@ -221,6 +221,8 @@ namespace Logistics_Model
     {
         public int type { get; set; } = 0;
         public string customerOrderNo { get; set; } = "";
+        //不传值是-1
+        public int customerOrderStatus { get; set; } = -1;
         public string expressNo { get; set; } = "";
         [JsonConverter(typeof(Long2StringConverter))]
         public long expressTypeID { get; set; } = 0L;

@@ -34,7 +34,7 @@ namespace Logistics_DAL
         }
 
 
-        public static List<logistics_customer_order> GetItemListByPage(long TenantID, long userID,long warehouseAdmin, string customerOrderNo,
+        public static List<logistics_customer_order> GetItemListByPage(long TenantID, long userID,long warehouseAdmin, string customerOrderNo,int customerOrderStatus,
             string expressNo,
                 long expressTypeID,
                     string TransferNo,
@@ -54,6 +54,7 @@ namespace Logistics_DAL
                                      new MySqlParameter("@_userID", userID),
                                         new MySqlParameter("@_warehouseAdmin",warehouseAdmin),
                                          new MySqlParameter("@_customerOrderNo", customerOrderNo== null ?"":customerOrderNo),
+                                             new MySqlParameter("@_customerOrderStatus", customerOrderStatus),
                                               new MySqlParameter("@_expressNo", expressNo == null ? "":expressNo),
                                                 new MySqlParameter("@_expressTypeID", expressTypeID),
                                                     new MySqlParameter("@_TransferNo", TransferNo == null ? "": TransferNo),

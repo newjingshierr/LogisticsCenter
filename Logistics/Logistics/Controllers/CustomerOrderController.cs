@@ -53,6 +53,26 @@ namespace Logistics.Controllers
 
         }
 
+        [Route("WarehouseInStatus")]
+        public ResponseMessage<WarehouseCustomerOrderStatusSummaryView> SelectOrderStatusByWarehouseAdmin()
+        {
+
+            var result = new WarehouseCustomerOrderStatusSummaryView();
+            try
+            {
+                result = OrderStatus.logistics_customer_order_select_by_warehouseAdmin_summary(base.contextInfo.userInfo.Userid);
+
+                return GetResult(result);
+            }
+
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+
+        }
+
         [Route("items/page")]
         public ResponseMessage<List<logistics_customer_order>> GetItemListByPage([FromUri]CustomerOrderSelectRequest request)
         {
