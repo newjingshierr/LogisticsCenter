@@ -28,10 +28,10 @@ namespace Logistics.Controllers
             request.PageSize = 100000;
             var userID = 0L;
             int totalCount = 0;
-            var warehouseAdmin  = base.contextInfo.userInfo.Userid;
+            var warehouseAdmin = base.contextInfo.userInfo.Userid;
             var result = CustomerOrderManager.GetItemListByPage(request, userID, warehouseAdmin, ref totalCount);
             DataTable dt = Logistics.Core.Common.ToDataTable(result);
-            Logistics.Core.Common.CreateExcel(dt, "application/ms-excel", "Excel" + DateTime.Now.ToString("yyyy-MM-dd HHmmss"));
+            Logistics.Core.Common.CreateExcel(dt, "application/ms-excel", "CustomerOrder" + DateTime.Now.ToString("yyyy-MM-dd HHmmss"));
         }
 
         //仓库入库 阶段：0  状态：0 未确认 1 已确认 2 仓库退货  
@@ -108,7 +108,7 @@ namespace Logistics.Controllers
             }
             else if (request.type == (int)CustomerOrderReqeustTypeEnum.warehouse)
             {
-               /*查询仓库管理员，如果没有传值的情况是当前用户的id*/
+                /*查询仓库管理员，如果没有传值的情况是当前用户的id*/
                 if (request.warehouseAdmin != 0)
                 {
                     warehouseAdmin = request.warehouseAdmin;
@@ -118,7 +118,7 @@ namespace Logistics.Controllers
                     warehouseAdmin = contextInfo.userInfo.Userid;
                 }
                 //会员查询
-                if(request.MemberID != 0)
+                if (request.MemberID != 0)
                 {
                     userID = request.MemberID;
                 }
@@ -126,7 +126,7 @@ namespace Logistics.Controllers
 
             try
             {
-                result = CustomerOrderManager.GetItemListByPage(request, userID, warehouseAdmin,ref totalCount);
+                result = CustomerOrderManager.GetItemListByPage(request, userID, warehouseAdmin, ref totalCount);
 
                 return GetResult(result, totalCount);
             }
@@ -159,7 +159,7 @@ namespace Logistics.Controllers
             var result = false;
             try
             {
-                result = CustomerOrderManager.InserCustomerOrder(request,base.contextInfo.userInfo.Userid);
+                result = CustomerOrderManager.InserCustomerOrder(request, base.contextInfo.userInfo.Userid);
 
                 return GetResult(result);
             }

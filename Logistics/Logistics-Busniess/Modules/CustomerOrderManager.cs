@@ -118,9 +118,9 @@ namespace Logistics_Busniess
                     var currentAttachment = AttachmentDAL.GetAttachmentListByID(long.Parse(a));
 
                     logistics_base_attachment attachment = new logistics_base_attachment();
-                    attachment.ID = long.Parse(a);
-                    attachment.customerOrderID = currentAttachment.customerOrderID;
-                    attachment.customerOrderNo = currentAttachment.customerOrderNo;
+                    attachment.ID = currentAttachment.ID;
+                    attachment.customerOrderID = item.ID;
+                    attachment.customerOrderNo = customerOrderStatus.OrderNo;
                     attachment.path = currentAttachment.path;
                     attachmentList.Add(attachment);
                 }
@@ -134,7 +134,7 @@ namespace Logistics_Busniess
                 dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
                 {
                     var result = true;
-                    result = CustomerOrderDAL.Update(customerOrder, trans) && CustomerOrderStatusDAL.Update(customerOrderStatus, trans) &&AttachmentDAL.DeleteByCustomerOrderID(item.ID ,trans)&& AttachmentDAL.InsertList(attachmentList, trans);
+                    result = CustomerOrderDAL.Update(customerOrder, trans) && CustomerOrderStatusDAL.Update(customerOrderStatus, trans) && AttachmentDAL.DeleteByCustomerOrderID(item.ID, trans) && AttachmentDAL.InsertList(attachmentList, trans);
                     return result;
                 });
             }
@@ -161,13 +161,13 @@ namespace Logistics_Busniess
                 dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
                 {
                     var result = true;
-                    result = CustomerOrderDAL.Delete(BusinessConstants.Admin.TenantID, item.ID, trans) && CustomerOrderStatusDAL.Delete(BusinessConstants.Admin.TenantID, customerOrderStatus.ID, trans);
+                    result = CustomerOrderDAL.Delete(BusinessConstants.Admin.TenantID, item.ID, trans) && CustomerOrderStatusDAL.Delete(BusinessConstants.Admin.TenantID, customerOrderStatus.ID, trans) && AttachmentDAL.DeleteByCustomerOrderID(item.ID, trans);
                     return result;
                 });
             }
             if (dbResult == false)
             {
-                throw new LogisticsException(SystemStatusEnum.OrderStatusNotDraft, $"Order Status Not Draft 0");
+                throw new LogisticsException(SystemStatusEnum.CustomerOrderDeleteFailed, $"Customer Order Delete Failed");
             }
 
             return dbResult;

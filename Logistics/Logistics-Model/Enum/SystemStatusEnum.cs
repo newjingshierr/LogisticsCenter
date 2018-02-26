@@ -154,7 +154,10 @@ namespace Logistics_Model
         OrderStatusNotFound = 42001,
 
         [Description("Order Status Not Draft 0")]
-        OrderStatusNotDraft = 42002
+        OrderStatusNotDraft = 42002,
+
+        [Description("Order Status Not Draft 0")]
+        CustomerOrderDeleteFailed = 42003,
 
 
 
