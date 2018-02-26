@@ -275,7 +275,7 @@ namespace Logistics_Busniess
             customerOrderMerge.CreatedBy = currentUserID;
             customerOrderMerge.deliverTime = null;
 
-            //订单状态
+            //合并订单状态
             logistics_customer_order_merge_status status = new logistics_customer_order_merge_status();
             status.currentStatus = item.currentStatus;
             status.currentStep = item.currentStep;
@@ -284,6 +284,21 @@ namespace Logistics_Busniess
             status.mergeOrderNo = customerOrderMerge.MergeOrderNo;
             status.TenantID = BusinessConstants.Admin.TenantID;
             status.CreatedBy = BusinessConstants.Admin.TenantID;
+
+            //订单的状态更新（更新为3）
+            List<logistics_customer_order_status> customerOrderStatusList = new List<logistics_customer_order_status>();
+            foreach( var c in item.customerOrderList)
+            {
+                var customerOrderStatus = CustomerOrderStatusDAL.SelectOrderStatusByOrderID(c.customerOrderID);
+                if (customerOrderStatus == null)
+                {
+                    throw new LogisticsException(SystemStatusEnum.OrderStatusNotFound, $"Order Status Not Found");
+                }
+
+                customerOrderStatus.currentStatus ="3";
+                customerOrderStatus.ModifiedBy = BusinessConstants.Admin.TenantID;
+                customerOrderStatusList.Add(customerOrderStatus);
+            }
 
             //合并订单和订单的关系
             logistics_customer_order_merge_relation relation;
@@ -327,7 +342,10 @@ namespace Logistics_Busniess
                 {
                     var result = true;
                     result = MergeCustomerOrderDAL.Insert(customerOrderMerge, trans) &&
-                    MergeCustomerOrderRelationDAL.InsertList(relationList, trans) && MergeCustomerOrderDetailDAL.InsertList(detailList, trans) && MergeCustomerOrderStatusDAL.Insert(status, trans);
+                    MergeCustomerOrderRelationDAL.InsertList(relationList, trans) && 
+                    MergeCustomerOrderDetailDAL.InsertList(detailList, trans) &&
+                    MergeCustomerOrderStatusDAL.Insert(status, trans)&&
+                    CustomerOrderStatusDAL.UpdateList(customerOrderStatusList);
                     return result;
                 });
             }

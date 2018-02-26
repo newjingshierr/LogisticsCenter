@@ -235,22 +235,23 @@ namespace Logistics_Model
 
     public class CustomerOrderSelectRequest : BaseRequestPage
     {
-        public int type { get; set; } = 0;
+        public string step { get; set; } = "";
         public string customerOrderNo { get; set; } = "";
         //不传值是-1
         public int customerOrderStatus { get; set; } = -1;
         public string expressNo { get; set; } = "";
-        [JsonConverter(typeof(Long2StringConverter))]
+
         public long expressTypeID { get; set; } = 0L;
 
         public string TransferNo { get; set; } = "";
+
         public long warehouseID { get; set; } = 0L;
+
         public long warehouseAdmin { get; set; } = 0L;
         public System.DateTime InWarehouseIimeBegin { get; set; }
         public System.DateTime InWarehouseIimeEnd { get; set; }
-        [JsonConverter(typeof(Long2StringConverter))]
+
         public long CustomerServiceID { get; set; } = 0L;
-        [JsonConverter(typeof(Long2StringConverter))]
         public long MemberID { get; set; } = 0L;
     }
 

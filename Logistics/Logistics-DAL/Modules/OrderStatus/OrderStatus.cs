@@ -128,6 +128,17 @@ namespace Logistics_DAL
             return result == 1;
 
         }
+        public static bool UpdateList(List<logistics_customer_order_status> modelList, AkmiiMySqlTransaction trans = null)
+        {
+            var result = true;
+
+            foreach (var o in modelList)
+            {
+                result = result && Update(o, trans);
+            }
+
+            return result;
+        }
 
 
         public static bool Delete(long TenantID, long ID, AkmiiMySqlTransaction trans = null)

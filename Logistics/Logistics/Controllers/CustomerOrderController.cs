@@ -23,7 +23,7 @@ namespace Logistics.Controllers
         public void Export()
         {
             var request = new CustomerOrderSelectRequest();
-            request.type = 0;
+            request.step = "0";
             request.PageIndex = 1;
             request.PageSize = 100000;
             var userID = 0L;
@@ -100,13 +100,14 @@ namespace Logistics.Controllers
             var result = new List<logistics_customer_order>();
             var userID = 0L;
             var warehouseAdmin = 0L;
-            if (request.type == (int)CustomerOrderReqeustTypeEnum.waitForPackage)
+            if (request.step == "1")
             {
                 //待打包根据当前会员来查询
                 //待打包customerOrderStatus 传值为1
                 userID = contextInfo.userInfo.Userid;
+               // request.customerOrderStatus = 1;//只显示确认的订单
             }
-            else if (request.type == (int)CustomerOrderReqeustTypeEnum.warehouse)
+            else if (request.step == "0")
             {
                 /*查询仓库管理员，如果没有传值的情况是当前用户的id*/
                 if (request.warehouseAdmin != 0)
@@ -309,7 +310,7 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Item/Insert")]
-        public ResponseMessage<bool> InsertCustomerOrder(CustomerOrderMergeInsertReqeust request)
+        public ResponseMessage<bool> InserCustomerOrderMerge(CustomerOrderMergeInsertReqeust request)
         {
             LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));
 
@@ -342,7 +343,7 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("Item/Update")]
-        public ResponseMessage<bool> UpdateCustomerOrder(CustomerOrderMergeUpdateReqeust request)
+        public ResponseMessage<bool> UpdateCustomerOrderMerge(CustomerOrderMergeUpdateReqeust request)
         {
             LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));
 
