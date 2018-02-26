@@ -7,6 +7,8 @@ using Logistics_Model;
 using Logistics_Busniess;
 using Akmii;
 using System.Collections.Generic;
+using System.Data;
+
 
 namespace Logistics.Controllers
 {
@@ -16,6 +18,22 @@ namespace Logistics.Controllers
     [RoutePrefix(ApiConstants.PrefixApi + "CustomerOrder")]
     public class CustomerOrderController : BaseAuthController
     {
+
+        [Route("Export")]
+        public void Export()
+        {
+            var request = new CustomerOrderSelectRequest();
+            request.type = 0;
+            request.PageIndex = 1;
+            request.PageSize = 100000;
+            var userID = 0L;
+            int totalCount = 0;
+            var warehouseAdmin  = base.contextInfo.userInfo.Userid;
+            var result = CustomerOrderManager.GetItemListByPage(request, userID, warehouseAdmin, ref totalCount);
+            DataTable dt = Logistics.Core.Common.ToDataTable(result);
+            Logistics.Core.Common.CreateExcel(dt, "application/ms-excel", "Excel" + DateTime.Now.ToString("yyyy-MM-dd HHmmss"));
+        }
+
         //仓库入库 阶段：0  状态：0 未确认 1 已确认 2 仓库退货  
         //統計待打包個數 阶段 0 状态确认 1
         //客服确认阶段： 1  状态：0 未确认 1 已确认 2客服退货 3 客服拒绝
@@ -27,6 +45,7 @@ namespace Logistics.Controllers
         //統計待付款訂單數 阶段
 
         //統計已發貨訂單數
+        [HttpPost]
         [Route("Status")]
         public ResponseMessage<OrderStatusSummaryView> SelectOrderStatusByUserID()
         {
@@ -83,11 +102,26 @@ namespace Logistics.Controllers
             var warehouseAdmin = 0L;
             if (request.type == (int)CustomerOrderReqeustTypeEnum.waitForPackage)
             {
+                //待打包根据当前会员来查询
+                //待打包customerOrderStatus 传值为1
                 userID = contextInfo.userInfo.Userid;
             }
             else if (request.type == (int)CustomerOrderReqeustTypeEnum.warehouse)
             {
-                warehouseAdmin = contextInfo.userInfo.Userid;
+               /*查询仓库管理员，如果没有传值的情况是当前用户的id*/
+                if (request.warehouseAdmin != 0)
+                {
+                    warehouseAdmin = request.warehouseAdmin;
+                }
+                else
+                {
+                    warehouseAdmin = contextInfo.userInfo.Userid;
+                }
+                //会员查询
+                if(request.MemberID != 0)
+                {
+                    userID = request.MemberID;
+                }
             }
 
             try
@@ -125,7 +159,7 @@ namespace Logistics.Controllers
             var result = false;
             try
             {
-                result = CustomerOrderManager.InserCustomerOrder(request);
+                result = CustomerOrderManager.InserCustomerOrder(request,base.contextInfo.userInfo.Userid);
 
                 return GetResult(result);
             }

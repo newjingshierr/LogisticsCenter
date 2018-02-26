@@ -108,6 +108,10 @@ namespace Logistics_Model
 
         [Description("此验证码已过期，请重新获取")]
         ExpiredCodeRequest = 18,
+
+        [Description("文件上传失败")]
+        FileUploadFailedRequest = 19,
+
         /// <summary>
         /// 商户不存在
         /// </summary>

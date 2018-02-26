@@ -11,6 +11,54 @@ using Logistics.Common;
 
 namespace Logistics_Busniess
 {
+    public class FileManager
+    {
+        public static List<logistics_base_attachment> GetAttachmentListByCustomerOrderID(long customerOrderID)
+        {
+            return AttachmentDAL.GetAttachmentListByCustomerOrderID(customerOrderID);
+        }
+
+        public static long Insert(string path,long userid)
+        {
+            logistics_base_attachment file = new logistics_base_attachment();
+            file.ID = IdWorker.GetID();
+            file.TenantID = BusinessConstants.Admin.TenantID;
+            file.path = path;
+            file.CreatedBy = userid;
+            file.customerOrderID = 0L;
+            file.customerOrderNo = "";
+            var result = false;
+            result = AttachmentDAL.Insert(file);
+
+            if (result)
+            {
+                return file.ID;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public static bool update(long customerOrderID, string customerOrderNo,long userid)
+        {
+            logistics_base_attachment file = new logistics_base_attachment();
+            file.TenantID = BusinessConstants.Admin.TenantID;
+            file.customerOrderID = customerOrderID;
+            file.customerOrderNo = customerOrderNo;
+            file.ModifiedBy = userid;
+            return AttachmentDAL.Update(file);
+        }
+        public static bool DeleteByID(long fileID)
+        {
+            logistics_base_attachment file = new logistics_base_attachment();
+            file.TenantID = BusinessConstants.Admin.TenantID;
+            file.ID = fileID;
+            return AttachmentDAL.Delete(file);
+        }
+
+    }
+
     public class MessageManager
     {
         public static List<logistics_base_message> GetMessageListByLatest(long userID)
@@ -66,6 +114,7 @@ namespace Logistics_Busniess
 
     public class RecipientsAddressManager
     {
+
         public static logistics_base_recipients_address GetItem(RecipientsAddressGetRequest request)
         {
             return RecipientsAddressDAL.GetItem(request.id);

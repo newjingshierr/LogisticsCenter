@@ -11,6 +11,15 @@ namespace Logistics_DAL
     /// </summary>
     public class Proc
     {
+        public class File
+        {
+            public const string logistics_base_attachment_get_by_id = "logistics_base_attachment_get_by_id";
+            public const string logistics_base_attachment_get_by_customer_order_id = "logistics_base_attachment_get_by_customer_order_id";
+            public const string logistics_base_attachment_Insert = "logistics_base_attachment_Insert";
+            public const string logistics_base_attachment_update_by_id = "logistics_base_attachment_update_by_id";
+            public const string logistics_base_attachment_delete_by_id = "logistics_base_attachment_delete_by_id";
+            public const string logistics_base_attachment_delete_by_customer_order_id = "logistics_base_attachment_delete_by_customer_order_id";
+        }
         public class TokenLog
         {
             public const string logistics_base_token_log_delete_by_user_id = "logistics_base_token_log_delete_by_user_id";

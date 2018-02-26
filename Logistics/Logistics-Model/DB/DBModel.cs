@@ -358,6 +358,7 @@ namespace Logistics_Model
             get { return _customerorderid; }
             set { _customerorderid = value; }
         }
+        public string customerOrderNo { get; set; }
         /// <summary>
         /// Created
         /// </summary>		

@@ -4,6 +4,18 @@ using System.Collections.Generic;
 
 namespace Logistics_Model
 {
+    public class GetFileByCustomerOrderIDRequest : BaseRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long customerOrderID { get; set; }
+    }
+
+    public class FileDeleteRequest : BaseRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long id { get; set; }
+    }
+
     public class RecipientsAddressDeleteRequest : BaseRequest
     {
         [JsonConverter(typeof(Long2StringConverter))]
@@ -179,21 +191,23 @@ namespace Logistics_Model
 
         public string InWareHouseStatus { get; set; }
 
+        public List<string> AttachmentIDList { get; set; } = null;
+
     }
 
 
     public class CustomerOrderInsertReqeust : BaseRequest
     {
         [JsonConverter(typeof(Long2StringConverter))]
-        public long userid { get; set; }
-        public string expressNo { get; set; }
+        public long userid { get; set; } = 0L;
+        public string expressNo { get; set; } = "";
 
         [JsonConverter(typeof(Long2StringConverter))]
-        public long expressTypeID { get; set; }
+        public long expressTypeID { get; set; } = 0L;
 
-        public string expressTypeName { get; set; }
+        public string expressTypeName { get; set; } = "";
 
-        public string TransferNo { get; set; }
+        public string TransferNo { get; set; } = "";
 
         public decimal InPackageCount { get; set; }
 
@@ -207,16 +221,18 @@ namespace Logistics_Model
 
         public decimal InHeight { get; set; }
         [JsonConverter(typeof(Long2StringConverter))]
-        public long WareHouseID { get; set; }
+        public long WareHouseID { get; set; } = 0L;
 
         [JsonConverter(typeof(Long2StringConverter))]
-        public long CustomerServiceID { get; set; }
+        public long CustomerServiceID { get; set; } = 0L;
 
         public string InWareHouseStatus { get; set; }
 
-        public string WarehouseAdminRemark { get; set; }
+        public string WarehouseAdminRemark { get; set; } = "";
 
+        public List<string> AttachmentIDList { get; set; } = null;
     }
+
     public class CustomerOrderSelectRequest : BaseRequestPage
     {
         public int type { get; set; } = 0;
@@ -229,10 +245,13 @@ namespace Logistics_Model
 
         public string TransferNo { get; set; } = "";
         public long warehouseID { get; set; } = 0L;
+        public long warehouseAdmin { get; set; } = 0L;
         public System.DateTime InWarehouseIimeBegin { get; set; }
         public System.DateTime InWarehouseIimeEnd { get; set; }
         [JsonConverter(typeof(Long2StringConverter))]
         public long CustomerServiceID { get; set; } = 0L;
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long MemberID { get; set; } = 0L;
     }
 
     public class CustomerOrderMergeSelectRequest : BaseRequestPage

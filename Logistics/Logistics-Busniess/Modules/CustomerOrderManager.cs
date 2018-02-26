@@ -13,15 +13,15 @@ namespace Logistics_Busniess
 {
     public class CustomerOrderManager
     {
-        public static List<logistics_customer_order> GetItemListByPage(CustomerOrderSelectRequest request, long userID, long warehouseAdmin,ref int totalCount)
+        public static List<logistics_customer_order> GetItemListByPage(CustomerOrderSelectRequest request, long userID, long warehouseAdmin, ref int totalCount)
         {
-            return CustomerOrderDAL.GetItemListByPage(request.TenantID, userID, warehouseAdmin, request.customerOrderNo, request.customerOrderStatus,request.expressNo,
+            return CustomerOrderDAL.GetItemListByPage(request.TenantID, userID, warehouseAdmin, request.customerOrderNo, request.customerOrderStatus, request.expressNo,
                 request.expressTypeID, request.TransferNo, request.warehouseID, request.InWarehouseIimeBegin, request.InWarehouseIimeEnd, request.CustomerServiceID,
                 request.PageIndex, request.PageSize, ref totalCount);
 
         }
 
-        public static bool InserCustomerOrder(CustomerOrderInsertReqeust item)
+        public static bool InserCustomerOrder(CustomerOrderInsertReqeust item, long warehouseadmin)
         {
             logistics_customer_order customerOrder = new logistics_customer_order();
             customerOrder.TenantID = BusinessConstants.Admin.TenantID;
@@ -40,7 +40,7 @@ namespace Logistics_Busniess
             customerOrder.InHeight = item.InHeight;
             customerOrder.WareHouseID = item.WareHouseID;
             customerOrder.CustomerServiceID = item.CustomerServiceID;
-            customerOrder.CreatedBy = BusinessConstants.Admin.TenantID;
+            customerOrder.CreatedBy = warehouseadmin;
             customerOrder.WarehouseAdminRemark = item.WarehouseAdminRemark;
 
             logistics_customer_order_status customerOrderStatus = new logistics_customer_order_status();
@@ -50,6 +50,21 @@ namespace Logistics_Busniess
             customerOrderStatus.currentStep = OrderStepEnum.InWareHouse.ToString();
             customerOrderStatus.currentStatus = item.InWareHouseStatus;
             customerOrderStatus.CreatedBy = BusinessConstants.Admin.TenantID;
+            List<logistics_base_attachment> attachmentList = new List<logistics_base_attachment>();
+            if (item.AttachmentIDList != null)
+            {
+                foreach (var a in item.AttachmentIDList)
+                {
+                    logistics_base_attachment attachment = new logistics_base_attachment();
+                    attachment.ID = long.Parse(a);
+                    attachment.customerOrderID = customerOrder.ID;
+                    attachment.customerOrderNo = customerOrder.CustomerOrderNo;
+                    attachment.ModifiedBy = warehouseadmin;
+                    attachmentList.Add(attachment);
+                }
+            }
+
+
             var dbResult = false;
 
             using (var conn = ConnectionManager.GetWriteConn())
@@ -57,7 +72,7 @@ namespace Logistics_Busniess
                 dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
                 {
                     var result = true;
-                    result = CustomerOrderDAL.Insert(customerOrder, trans) && CustomerOrderStatusDAL.Insert(customerOrderStatus, trans);
+                    result = CustomerOrderDAL.Insert(customerOrder, trans) && CustomerOrderStatusDAL.Insert(customerOrderStatus, trans) && AttachmentDAL.UpdateList(attachmentList, trans);
                     return result;
                 });
             }
@@ -94,6 +109,24 @@ namespace Logistics_Busniess
             customerOrderStatus.currentStatus = item.InWareHouseStatus;
             customerOrderStatus.ModifiedBy = BusinessConstants.Admin.TenantID;
 
+
+            List<logistics_base_attachment> attachmentList = new List<logistics_base_attachment>();
+            if (item.AttachmentIDList != null)
+            {
+                foreach (var a in item.AttachmentIDList)
+                {
+                    var currentAttachment = AttachmentDAL.GetAttachmentListByID(long.Parse(a));
+
+                    logistics_base_attachment attachment = new logistics_base_attachment();
+                    attachment.ID = long.Parse(a);
+                    attachment.customerOrderID = currentAttachment.customerOrderID;
+                    attachment.customerOrderNo = currentAttachment.customerOrderNo;
+                    attachment.path = currentAttachment.path;
+                    attachmentList.Add(attachment);
+                }
+            }
+
+
             var dbResult = false;
 
             using (var conn = ConnectionManager.GetWriteConn())
@@ -101,7 +134,7 @@ namespace Logistics_Busniess
                 dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
                 {
                     var result = true;
-                    result = CustomerOrderDAL.Update(customerOrder, trans) && CustomerOrderStatusDAL.Update(customerOrderStatus, trans);
+                    result = CustomerOrderDAL.Update(customerOrder, trans) && CustomerOrderStatusDAL.Update(customerOrderStatus, trans) &&AttachmentDAL.DeleteByCustomerOrderID(item.ID ,trans)&& AttachmentDAL.InsertList(attachmentList, trans);
                     return result;
                 });
             }
@@ -200,7 +233,7 @@ namespace Logistics_Busniess
 
         }
 
-        public static bool InserCustomerOrderMerge(CustomerOrderMergeInsertReqeust item,long currentUserID)
+        public static bool InserCustomerOrderMerge(CustomerOrderMergeInsertReqeust item, long currentUserID)
         {
             logistics_customer_order customerOrder;
             List<logistics_customer_order> customerOrderList = new List<logistics_customer_order>();
@@ -211,7 +244,7 @@ namespace Logistics_Busniess
             }
 
             //获取渠道名称；
-           logistics_quotation_channel customerChooseChannel =   ChannelDAL.GetItem(item.CustomerChooseChannelID, BusinessConstants.Admin.TenantID);
+            logistics_quotation_channel customerChooseChannel = ChannelDAL.GetItem(item.CustomerChooseChannelID, BusinessConstants.Admin.TenantID);
             if (customerChooseChannel == null)
             {
                 throw new LogisticsException(SystemStatusEnum.ChannelNotFound, $"Channel Not Found");
@@ -245,12 +278,12 @@ namespace Logistics_Busniess
             //订单状态
             logistics_customer_order_merge_status status = new logistics_customer_order_merge_status();
             status.currentStatus = item.currentStatus;
-            status.currentStep =item.currentStep;
+            status.currentStep = item.currentStep;
             status.ID = IdWorker.GetID();
             status.mergeOrderID = customerOrderMerge.ID;
             status.mergeOrderNo = customerOrderMerge.MergeOrderNo;
             status.TenantID = BusinessConstants.Admin.TenantID;
-            status.CreatedBy  = BusinessConstants.Admin.TenantID;
+            status.CreatedBy = BusinessConstants.Admin.TenantID;
 
             //合并订单和订单的关系
             logistics_customer_order_merge_relation relation;
@@ -294,7 +327,7 @@ namespace Logistics_Busniess
                 {
                     var result = true;
                     result = MergeCustomerOrderDAL.Insert(customerOrderMerge, trans) &&
-                    MergeCustomerOrderRelationDAL.InsertList(relationList, trans) && MergeCustomerOrderDetailDAL.InsertList(detailList, trans)&& MergeCustomerOrderStatusDAL.Insert(status,trans);
+                    MergeCustomerOrderRelationDAL.InsertList(relationList, trans) && MergeCustomerOrderDetailDAL.InsertList(detailList, trans) && MergeCustomerOrderStatusDAL.Insert(status, trans);
                     return result;
                 });
             }

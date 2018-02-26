@@ -7,6 +7,7 @@ using Logistics_Model;
 using Logistics_Busniess;
 using Akmii;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Logistics.Controllers
 {
@@ -285,5 +286,89 @@ namespace Logistics.Controllers
 
     }
 
+    [RoutePrefix(ApiConstants.PrefixApi + "File")]
+    public class FileController : BaseAuthController
+    {
+        LogHelper log = LogHelper.GetLogger(typeof(FileController));
 
+        [HttpGet]
+        [Route("Attachments/items")]
+        public ResponseMessage<List<logistics_base_attachment>> SelectAttachmentsByCustomerOrderID([FromUri] GetFileByCustomerOrderIDRequest request)
+        {
+
+            if (request == null)
+            {
+                return GetErrorResult<List<logistics_base_attachment>>(SystemStatusEnum.InvalidRequest);
+            }
+
+            var result = new List<logistics_base_attachment>();
+            try
+            {
+                result = FileManager.GetAttachmentListByCustomerOrderID(request.customerOrderID);
+
+                return GetResult(result);
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+
+        }
+
+        [HttpPost]
+        [Route("upload")]
+        public ResponseMessage<string> upload()
+        {
+            var result = 0L;
+            try
+            {
+                if (HttpContext.Current.Request.Files.AllKeys.Any())
+                {
+                    var httpPostedFile = HttpContext.Current.Request.Files;
+                    if (httpPostedFile != null && httpPostedFile.Count > 0)
+                    {
+                        var file = httpPostedFile[0];
+                        string uploadPath = HttpContext.Current.Server.MapPath("/upload/");
+                        string fullPath = uploadPath + file.FileName;
+                        file.SaveAs(fullPath);
+                        result = FileManager.Insert("/upload/" + file.FileName, base.contextInfo.userInfo.Userid);
+                        if (result == 0)
+                        {
+                            return GetErrorResult<string>(SystemStatusEnum.FileUploadFailedRequest);
+                        }
+                        //Todo：文件处理操作
+                    }
+                }
+
+                return GetResult(result.ToString());
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result.ToString(), ex.Status.ToString(), (int)ex.Status);
+            }
+
+
+
+        }
+
+        [HttpDelete]
+        [Route("delete")]
+        public ResponseMessage<string> delete(FileDeleteRequest request)
+        {
+            var result = false;
+            try
+            {
+                result = FileManager.DeleteByID(request.id);
+
+                return GetResult(result.ToString());
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result.ToString(), ex.Message);
+
+            }
+        }
+    }
 }
