@@ -57,7 +57,7 @@ namespace Logistics_DAL
                         new MySqlParameter("@_TenantID", model.TenantID),
                         new MySqlParameter("@_ID",model.ID),
                         new MySqlParameter("@_customerOrderID", model.customerOrderID),
-                        new MySqlParameter("@_customerOrderNo", model.customerOrderNo),
+                        new MySqlParameter("@_customerOrderNo", model.customerOrderNo == null ?"": model.customerOrderNo),
                          new MySqlParameter("@_path", model.path),
                         new MySqlParameter("@_CreatedBy",model.CreatedBy)
             };
@@ -80,12 +80,13 @@ namespace Logistics_DAL
         {
 
             var result = true;
-
-            foreach (var o in modelList)
+            if (modelList != null)
             {
-                result = result && Insert(o, trans);
+                foreach (var o in modelList)
+                {
+                    result = result && Insert(o, trans);
+                }
             }
-
             return result;
 
         }
@@ -159,13 +160,13 @@ namespace Logistics_DAL
             int result = 0;
             if (trans == null)
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.File.logistics_base_attachment_delete_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.File.logistics_base_attachment_delete_by_customer_order_id, parameters);
             }
             else
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.File.logistics_base_attachment_delete_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.File.logistics_base_attachment_delete_by_customer_order_id, parameters);
             }
-            return result == 1;
+            return true;
 
         }
 

@@ -108,7 +108,7 @@ namespace Logistics_Busniess
             }
             customerOrderStatus.currentStatus = item.InWareHouseStatus;
             customerOrderStatus.ModifiedBy = BusinessConstants.Admin.TenantID;
-
+            var customerOrderNo = customerOrderStatus.OrderNo;
 
             List<logistics_base_attachment> attachmentList = new List<logistics_base_attachment>();
             if (item.AttachmentIDList != null)
@@ -120,7 +120,7 @@ namespace Logistics_Busniess
                     logistics_base_attachment attachment = new logistics_base_attachment();
                     attachment.ID = currentAttachment.ID;
                     attachment.customerOrderID = item.ID;
-                    attachment.customerOrderNo = customerOrderStatus.OrderNo;
+                    attachment.customerOrderNo = customerOrderNo;
                     attachment.path = currentAttachment.path;
                     attachmentList.Add(attachment);
                 }
@@ -134,9 +134,15 @@ namespace Logistics_Busniess
                 dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
                 {
                     var result = true;
+
                     result = CustomerOrderDAL.Update(customerOrder, trans) && CustomerOrderStatusDAL.Update(customerOrderStatus, trans) && AttachmentDAL.DeleteByCustomerOrderID(item.ID, trans) && AttachmentDAL.InsertList(attachmentList, trans);
                     return result;
                 });
+            }
+
+            if (dbResult == false)
+            {
+                throw new LogisticsException(SystemStatusEnum.CustomerOrdeUpdateFailed, $"CustomerOrdeUpdateFailed");
             }
 
             return dbResult;

@@ -159,8 +159,11 @@ namespace Logistics_Model
         [Description("Order Status Not Draft 0")]
         CustomerOrderDeleteFailed = 42003,
 
+        [Description("Order update failed")]
+        CustomerOrdeUpdateFailed = 42004,
 
-
+        [Description("CustomerOrdeAttachmentDeleteFailed")]
+        CustomerOrdeAttachmentDeleteFailed = 42005,
         #region
 
         #endregion
