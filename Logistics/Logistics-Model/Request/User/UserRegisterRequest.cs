@@ -98,6 +98,7 @@ namespace Logistics_Model
         public string CustomerMark { get; set; }
         [JsonConverter(typeof(Long2StringConverter))]
         public long CustomerChooseChannelID { get; set; }
+        public string CustomerChooseChannelName { get; set; }
         public string recipient { get; set; }
         public string country { get; set; }
         public string address { get; set; }
@@ -106,9 +107,30 @@ namespace Logistics_Model
         public string tel { get; set; }
         public string company { get; set; }
         public string taxNo { get; set; }
-        public List<CustomerOrderRequest> customerOrderList { get; set; }
         public List<InsertProductUpdateRequet> productList { get; set; }
-        public List<logistics_customer_order_merge_relation> relationlist { get; set; }
+        public string customerServiceMark { get; set; }
+        public string packageMark { get; set; }
+        public decimal packageWeight { get; set; } = 0;
+        public decimal packageVolume { get; set; } = 0;
+        public decimal packageLength { get; set; } = 0;
+        public decimal packageHeight { get; set; } = 0;
+        public decimal packageWidth { get; set; } = 0;
+        public decimal settlementWeight { get; set; } = 0;
+        public decimal freightFee { get; set; } = 0;
+        public decimal tax { get; set; } = 0;
+        public decimal serviceFee { get; set; } = 0;
+        public decimal remoteFee { get; set; } = 0;
+        public decimal magneticinspectionFee { get; set; }
+        public decimal totalFee { get; set; } = 0;
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long ChannelID { get; set; } = 0;
+        public string ChannelName { get; set; }
+        public string channelNo { get; set; }
+        public  System.DateTime deliverTime { get; set; }
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long AgentID { get; set; } = 0;
+        public string AgentName { get; set; }
+
 
     }
 

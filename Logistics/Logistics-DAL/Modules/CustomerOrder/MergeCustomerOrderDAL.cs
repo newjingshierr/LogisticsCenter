@@ -154,24 +154,22 @@ namespace Logistics_DAL
             MySqlParameter[] parameters = {
                         new MySqlParameter("@_TenantID", model.TenantID),
                         new MySqlParameter("@_ID",model.ID),
-                        new MySqlParameter("@_UserID",model.UserID),
-                         new MySqlParameter("@_MergeOrderNo", model.MergeOrderNo),
-                        new MySqlParameter("@_CustomerMark", model.CustomerMark),
+                        new MySqlParameter("@_CustomerMark", model.CustomerMark == null ?"":model.CustomerMark),
                         new MySqlParameter("@_CustomerChooseChannelID", model.CustomerChooseChannelID),
                         new MySqlParameter("@_InWeightTotal", model.InWeightTotal),
                              new MySqlParameter("@_InVolumeTotal", model.InVolumeTotal),
                              new MySqlParameter("@_InPackageCountTotal", model.InPackageCountTotal),
-                                  new MySqlParameter("@_recipient", model.recipient),
-                                   new MySqlParameter("@_country", model.country),
-                                    new MySqlParameter("@_address", model.address),
-                                     new MySqlParameter("@_city", model.city),
-                                      new MySqlParameter("@_code", model.code),
-                                       new MySqlParameter("@_tel", model.tel),
-                                        new MySqlParameter("@_company", model.company),
-                                         new MySqlParameter("@_taxNo", model.taxNo),
+                                  new MySqlParameter("@_recipient", model.recipient == null ?"":model.recipient),
+                                   new MySqlParameter("@_country", model.country == null ?"":model.country),
+                                    new MySqlParameter("@_address", model.address == null ?"":model.address),
+                                     new MySqlParameter("@_city", model.city == null ?"":model.city),
+                                      new MySqlParameter("@_code", model.code == null?"":model.code),
+                                       new MySqlParameter("@_tel", model.tel == null ?"":model.tel),
+                                        new MySqlParameter("@_company", model.company== null ?"":model.company),
+                                         new MySqlParameter("@_taxNo", model.taxNo == null ?"":model.taxNo),
                                           new MySqlParameter("@_declareTotal", model.declareTotal),
-                                           new MySqlParameter("@_customerServiceMark", model.customerServiceMark),
-                                            new MySqlParameter("@_packageMark", model.packageMark),
+                                           new MySqlParameter("@_customerServiceMark", model.customerServiceMark == null ? "":model.customerServiceMark),
+                                            new MySqlParameter("@_packageMark", model.packageMark == null ?"":model.packageMark),
                                              new MySqlParameter("@_packageWeight", model.packageWeight),
                                                new MySqlParameter("@_packageVolume", model.packageVolume),
                                                 new MySqlParameter("@_packageLength", model.packageLength),
@@ -185,20 +183,20 @@ namespace Logistics_DAL
                                                        new MySqlParameter("@_magneticinspectionFee", model.magneticinspectionFee),
                                                         new MySqlParameter("@_totalFee", model.totalFee),
                                                          new MySqlParameter("@_ChannelID", model.ChannelID),
-                                                          new MySqlParameter("@_channelNo", model.channelNo),
+                                                          new MySqlParameter("@_channelNo", model.channelNo == null ?"":model.channelNo),
                                                            new MySqlParameter("@_deliverTime", model.deliverTime),
                                                             new MySqlParameter("@_AgentID", model.AgentID),
-                                                             new MySqlParameter("@_CreatedBy",model.CreatedBy)
+                                                             new MySqlParameter("@_ModifiedBy",model.ModifiedBy)
             };
 
             int result = 0;
             if (trans == null)
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_update_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMerge.logistics_customer_order_merge_update_by_id, parameters);
             }
             else
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_update_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.CustomerOrderMerge.logistics_customer_order_merge_update_by_id, parameters);
             }
             return result == 1;
 

@@ -91,7 +91,6 @@ namespace Logistics_DAL
         {
 
             MySqlParameter[] parameters = {
-                        new MySqlParameter("@_TenantID", model.TenantID),
                         new MySqlParameter("@_ID",model.ID),
                          new MySqlParameter("@_mergeOrderID",model.mergeOrderID),
                         new MySqlParameter("@_productName", model.productName),
@@ -99,17 +98,17 @@ namespace Logistics_DAL
                         new MySqlParameter("@_HSCode", model.HSCode),
                         new MySqlParameter("@_declareUnitPrice",model.declareUnitPrice),
                         new MySqlParameter("@_declareTotal",model.declareTotal),
-                        new MySqlParameter("@_CreatedBy",model.CreatedBy),
+                        new MySqlParameter("@_ModifiedBy",model.ModifiedBy),
             };
 
             int result = 0;
             if (trans == null)
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_update_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMergeDetail.logistics_customer_order_merge_detail_update, parameters);
             }
             else
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_update_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.CustomerOrderMergeDetail.logistics_customer_order_merge_detail_update, parameters);
             }
             return result == 1;
 

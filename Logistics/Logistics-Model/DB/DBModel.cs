@@ -897,6 +897,7 @@ namespace Logistics_Model
     public class logistics_customer_order
     {
         //视图字段
+        public string CreatedByName { get; set; }
         public string CustomerServiceName { get; set; }
         public string WareHouseName { get; set; }
         public string MemeberCode { get; set; }
@@ -1108,6 +1109,7 @@ namespace Logistics_Model
     }
     public class logistics_customer_order_merge
     {
+        public string AgentName { get; set; }
         public string ChannelName { get; set; }
         public string CustomerChooseChannelName { get; set; }
         /// <summary>

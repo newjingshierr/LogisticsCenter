@@ -301,7 +301,7 @@ namespace Logistics_Busniess
                     throw new LogisticsException(SystemStatusEnum.OrderStatusNotFound, $"Order Status Not Found");
                 }
 
-                customerOrderStatus.currentStatus ="3";
+                customerOrderStatus.currentStatus ="3";//合并打包
                 customerOrderStatus.ModifiedBy = BusinessConstants.Admin.TenantID;
                 customerOrderStatusList.Add(customerOrderStatus);
             }
@@ -359,15 +359,9 @@ namespace Logistics_Busniess
             return dbResult;
         }
 
-        public static bool UpdateCustomerOrderMerge(CustomerOrderMergeUpdateReqeust item)
+        public static bool UpdateCustomerOrderMerge(CustomerOrderMergeUpdateReqeust item,long currentUserID)
         {
-            logistics_customer_order customerOrder;
-            List<logistics_customer_order> customerOrderList = new List<logistics_customer_order>();
-            foreach (var c in item.customerOrderList)
-            {
-                customerOrder = CustomerOrderDAL.GetCustomerOrderByID(c.customerOrderID);
-                customerOrderList.Add(customerOrder);
-            }
+
             //主订单信息
             logistics_customer_order_merge customerOrderMerge = new logistics_customer_order_merge();
             customerOrderMerge.TenantID = BusinessConstants.Admin.TenantID;
@@ -375,10 +369,29 @@ namespace Logistics_Busniess
             customerOrderMerge.UserID = item.userid;
             customerOrderMerge.CustomerMark = item.CustomerMark;
             customerOrderMerge.CustomerChooseChannelID = item.CustomerChooseChannelID;
-            customerOrderMerge.InWeightTotal = customerOrderList.Sum(o => o.InWeight);
-            customerOrderMerge.InVolumeTotal = customerOrderList.Sum(o => o.InVolume);
-            customerOrderMerge.InPackageCountTotal = customerOrderList.Sum(o => o.InPackageCount);
-            customerOrderMerge.ModifiedBy = BusinessConstants.Admin.TenantID;
+            customerOrderMerge.ModifiedBy = currentUserID;
+
+            customerOrderMerge.customerServiceMark = item.customerServiceMark;
+            customerOrderMerge.packageMark = item.packageMark;
+            customerOrderMerge.packageWeight = item.packageWeight;
+            customerOrderMerge.packageVolume = item.packageVolume;
+            customerOrderMerge.packageLength = item.packageLength;
+            customerOrderMerge.packageHeight = item.packageHeight;
+            customerOrderMerge.packageWidth = item.packageWidth;
+            customerOrderMerge.settlementWeight = item.settlementWeight;
+            customerOrderMerge.freightFee = item.settlementWeight;
+            customerOrderMerge.tax = item.tax;
+            customerOrderMerge.serviceFee = item.serviceFee;
+            customerOrderMerge.remoteFee = item.remoteFee;
+            customerOrderMerge.magneticinspectionFee = item.magneticinspectionFee;
+            customerOrderMerge.totalFee = item.totalFee;
+            customerOrderMerge.ChannelID = item.ChannelID;
+            customerOrderMerge.ChannelName = item.ChannelName;
+            customerOrderMerge.channelNo = item.channelNo;
+            customerOrderMerge.deliverTime = item.deliverTime;
+            customerOrderMerge.AgentID = item.AgentID;
+            customerOrderMerge.AgentName = item.AgentName;
+
             //产品明细
             logistics_customer_order_merge_detail detail;
             List<logistics_customer_order_merge_detail> detailList = new List<logistics_customer_order_merge_detail>();
@@ -395,7 +408,7 @@ namespace Logistics_Busniess
                 detail.declareUnitPrice = p.declareUnitPrice;
                 detail.count = p.count;
                 detail.declareTotal = p.declareUnitPrice * p.count;
-                detail.ModifiedBy = BusinessConstants.Admin.TenantID;
+                detail.ModifiedBy = currentUserID;
                 detailList.Add(detail);
             }
 
@@ -406,8 +419,7 @@ namespace Logistics_Busniess
                 dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
                 {
                     var result = true;
-                    result = MergeCustomerOrderDAL.Update(customerOrderMerge, trans) &&
-                    MergeCustomerOrderRelationDAL.UpdateList(item.relationlist, trans) && MergeCustomerOrderDetailDAL.UpdateList(detailList, trans);
+                    result = MergeCustomerOrderDAL.Update(customerOrderMerge, trans) && MergeCustomerOrderDetailDAL.UpdateList(detailList, trans);
                     return result;
                 });
             }

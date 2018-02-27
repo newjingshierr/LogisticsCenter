@@ -30,8 +30,57 @@ namespace Logistics.Controllers
             int totalCount = 0;
             var warehouseAdmin = base.contextInfo.userInfo.Userid;
             var result = CustomerOrderManager.GetItemListByPage(request, userID, warehouseAdmin, ref totalCount);
-            DataTable dt = Logistics.Core.Common.ToDataTable(result);
-            Logistics.Core.Common.CreateExcel(dt, "application/ms-excel", "CustomerOrder" + DateTime.Now.ToString("yyyy-MM-dd HHmmss"));
+
+            //DataTable dt = Logistics.Core.Common.ToDataTable(result);
+            DataTable dt = new DataTable();
+            dt.Columns.Add("客户订单号");
+            dt.Columns.Add("会员编号");
+            dt.Columns.Add("快递方式");
+            dt.Columns.Add("快递单号");
+            dt.Columns.Add("交接单号");
+            dt.Columns.Add("客服");
+            dt.Columns.Add("仓库");
+            dt.Columns.Add("初始长");
+            dt.Columns.Add("初始宽");
+            dt.Columns.Add("初始高");
+            dt.Columns.Add("初始重量(kg)");
+            dt.Columns.Add("状态");
+            dt.Columns.Add("入库时间");
+            dt.Columns.Add("创建人");
+            foreach (var o in result)
+            {
+                var currentStatusStr = "";
+                DataRow dr = dt.NewRow();
+                dr["客户订单号"] = o.CustomerOrderNo;
+                dr["会员编号"] = o.MemeberCode;
+                dr["快递方式"] = o.expressTypeName;
+                dr["快递单号"] = o.expressNo;
+                dr["交接单号"] = o.TransferNo;
+                dr["客服"] = o.CustomerServiceName;
+                dr["仓库"] = o.WareHouseName;
+                dr["初始长"] = o.InLength.ToString();
+                dr["初始宽"] = o.InWidth.ToString();
+                dr["初始高"] = o.InHeight.ToString();
+                dr["初始重量(kg)"] = o.InWeight;
+                if (o.currentStatus == "0")
+                {
+                    currentStatusStr = "未确认";
+                }
+                else if (o.currentStatus == "1")
+                {
+                    currentStatusStr = "已入库";
+                }
+                else if (o.currentStatus == "2")
+                {
+                    currentStatusStr = "仓库退货";
+                }
+                dr["状态"] = o.currentStatus = currentStatusStr;
+                dr["入库时间"] = o.InWareHouseTime;
+                dr["创建人"] = o.CreatedByName;
+                dt.Rows.Add(dr);
+            }
+
+            Logistics.Core.Common.CreateExcel(dt, "application/ms-excel", "CustomerOrder_" + DateTime.Now.ToString("yyyy-MM-dd-HH-MM-ss"));
         }
 
         //仓库入库 阶段：0  状态：0 未确认 1 已确认 2 仓库退货  
@@ -105,7 +154,7 @@ namespace Logistics.Controllers
                 //待打包根据当前会员来查询
                 //待打包customerOrderStatus 传值为1
                 userID = contextInfo.userInfo.Userid;
-               // request.customerOrderStatus = 1;//只显示确认的订单
+                // request.customerOrderStatus = 1;//只显示确认的订单
             }
             else if (request.step == "0")
             {
@@ -347,7 +396,7 @@ namespace Logistics.Controllers
         {
             LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));
 
-            if (request == null || request.customerOrderList == null || request.productList == null)
+            if (request == null|| request.productList == null)
             {
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
             }
@@ -355,7 +404,7 @@ namespace Logistics.Controllers
             var result = false;
             try
             {
-                result = CustomerOrderMergeManger.UpdateCustomerOrderMerge(request);
+                result = CustomerOrderMergeManger.UpdateCustomerOrderMerge(request,base.contextInfo.userInfo.Userid);
 
                 return GetResult(result);
             }

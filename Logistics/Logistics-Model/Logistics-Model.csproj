@@ -61,6 +61,7 @@
     <Compile Include="Constants\CacheConstants.cs" />
     <Compile Include="DB\DBModel.cs" />
     <Compile Include="DB\Product.cs" />
+    <Compile Include="DB\ReportModel.cs" />
     <Compile Include="DB\ViewModel.cs" />
     <Compile Include="Enum\SystemTypeEnum.cs" />
     <Compile Include="Enum\SystemStatusEnum.cs" />
