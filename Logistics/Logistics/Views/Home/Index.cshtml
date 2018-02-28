@@ -1,0 +1,62 @@
+﻿<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Content/jquery-1.9.1.js"></script>
+    <link href="~/Content/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <script src="~/Content/bootstrap/js/bootstrap.js"></script>
+    <script src="~/Scripts/Home/Index.js"></script>
+    <script type="text/javascript">
+        @*//打开页面的时候保存票据信息
+        var UserName = '@ViewBag.UserName';
+        var Ticket = '@ViewBag.Ticket';*@
+    </script>
+</head>
+<body>
+    <div>@*当前登录用户：'@ViewBag.UserName'*@</div>
+
+    <div id="div_test">
+
+    </div>
+
+
+    <div style="text-align:center;">
+        <div>用户名：<input type="text" id="txt_username" /></div>
+        <div>密  码：<input type="password" id="txt_password" /></div>
+        <div><input type="button" value="登录" id="btn_login" class="btn-default" /></div>
+    </div>
+
+
+</body>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+
+
+        $(function () {
+            $("#btn_login").click(function () {
+                $.ajax({
+                    type: "get",
+                    url: "http://localhost:27221/api/User/Login",
+                    data: { strUser: $("#txt_username").val(), strPwd: $("#txt_password").val() },
+                    success: function (data, status) {
+                        if (status == "success") {
+                            if (!data.bRes) {
+                                alert("登录失败");
+                                return;
+                            }
+                            alert("登录成功");
+                            //登录成功之后将用户名和用户票据带到主界面
+                            window.location = "/Home/Index?UserName=" + data.UserName + "&Ticket=" + data.Ticket;
+                        }
+                    },
+                    error: function (e) {
+                    },
+                    complete: function () {
+
+                    }
+
+                });
+            });
+        });
+</script>
+</html>

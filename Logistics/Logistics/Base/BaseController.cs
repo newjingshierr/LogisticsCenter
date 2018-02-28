@@ -1,0 +1,129 @@
+﻿
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web;
+using System.Web.Http;
+using System.Web.Http.Cors;
+using System.Web.Http.Filters;
+using Akmii.Core;
+using Logistics.Common;
+using Logistics_Model;
+using Akmii;
+using System.Web.Security;
+using System.Configuration;
+
+using Logistics_Busniess;
+using System.Web.Http.Controllers;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Logistics
+{
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    public class BaseController : ApiController
+    {
+
+        public BaseController()
+        {
+        }
+        protected ResponseMessage<T> GetErrorResult<T>(SystemStatusEnum statusCode)
+        {
+            return new ResponseMessage<T>
+            {
+                Message = statusCode.GetEnumDescription(),
+                Status = (int)statusCode
+            };
+        }
+
+        protected ResponseMessage<T> GetErrorResult<T>(T data, string message = "", int status = -1)
+        {
+            return new ResponseMessage<T>
+            {
+                Data = data,
+                Status = status,
+                Message = message
+            };
+        }
+
+        protected ResponseMessage<T> GetResult<T>(T data, int totalCount)
+        {
+            return new ResponseMessage<T>
+            {
+                Data = data,
+                TotalCount = totalCount,
+                Status = 0,
+                Message = "success"
+            };
+        }
+        protected ResponseMessage<T> GetResult<T>(T data)
+        {
+            return new ResponseMessage<T>
+            {
+                Data = data,
+                Status = 0,
+                Message = "success"
+            };
+        }
+
+
+    }
+
+    public class BaseAuthController : BaseController
+    {
+
+        public bool tokenExpired { get; set; } = false;
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+
+            if (controllerContext.Request.Headers.Authorization == null)
+            {
+                contextInfo = UserManger.GetCurrentInfo(BusinessConstants.Admin.TenantID, ConfigurationManager.AppSettings["CurrentUser"].ToString());
+            }
+            else
+            {
+                try
+                {
+                    string authorization = controllerContext.Request.Headers.Authorization.ToString();
+                    if (authorization == "undefined")
+                    {
+                        throw new LogisticsException(SystemStatusEnum.TokenExpired, $"Token Expired");
+                    }
+
+                    var strTicket = FormsAuthentication.Decrypt(authorization).UserData;
+                    var ticketArray = strTicket.Split('&');
+                    var User = ticketArray[0];
+                    _user = ticketArray[0];
+                    contextInfo = UserManger.GetCurrentInfo(BusinessConstants.Admin.TenantID, _user);
+                    if (contextInfo == null)
+                    {
+
+                        throw new LogisticsException(SystemStatusEnum.UserinfoNotFound, $"Userinfo Not Found");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw new LogisticsException(SystemStatusEnum.TokenExpired, $"Token Expired");
+                }
+            }
+            base.Initialize(controllerContext);
+        }
+
+
+        public BaseAuthController()
+        {
+
+        }
+
+          
+        protected ContextInfo contextInfo { get; set; }
+
+        protected string _user { get; set; }
+        protected string _pwd { get; set; }
+        protected string _tenantID { get; set; }
+
+    }
+}
