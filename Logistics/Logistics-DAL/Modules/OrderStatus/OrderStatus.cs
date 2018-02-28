@@ -89,6 +89,7 @@ namespace Logistics_DAL
                         new MySqlParameter("@_currentstep",model.currentStep),
                         new MySqlParameter("@_currentStatus",model.currentStatus),
                         new MySqlParameter("@_CreatedBy",model.CreatedBy),
+                        new MySqlParameter("@_userid",model.currentStep),
             };
 
             int result = 0;

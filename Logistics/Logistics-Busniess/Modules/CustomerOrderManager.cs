@@ -50,6 +50,8 @@ namespace Logistics_Busniess
             customerOrderStatus.currentStep = OrderStepEnum.InWareHouse.ToString();
             customerOrderStatus.currentStatus = item.InWareHouseStatus;
             customerOrderStatus.CreatedBy = BusinessConstants.Admin.TenantID;
+            customerOrderStatus.userID = item.userid;
+
             List<logistics_base_attachment> attachmentList = new List<logistics_base_attachment>();
             if (item.AttachmentIDList != null)
             {
@@ -370,6 +372,15 @@ namespace Logistics_Busniess
             customerOrderMerge.CustomerMark = item.CustomerMark;
             customerOrderMerge.CustomerChooseChannelID = item.CustomerChooseChannelID;
             customerOrderMerge.ModifiedBy = currentUserID;
+
+            customerOrderMerge.recipient = item.recipient;
+            customerOrderMerge.country = item.country;
+            customerOrderMerge.address = item.address;
+            customerOrderMerge.city = item.city;
+            customerOrderMerge.code = item.code;
+            customerOrderMerge.tel = item.tel;
+            customerOrderMerge.company = item.company;
+            customerOrderMerge.taxNo = item.taxNo;
 
             customerOrderMerge.customerServiceMark = item.customerServiceMark;
             customerOrderMerge.packageMark = item.packageMark;

@@ -91,21 +91,11 @@ namespace Logistics
                     {
                         throw new LogisticsException(SystemStatusEnum.TokenExpired, $"Token Expired");
                     }
-                    //else
-                    //{
-
-                    //}
 
                     var strTicket = FormsAuthentication.Decrypt(authorization).UserData;
                     var ticketArray = strTicket.Split('&');
                     var User = ticketArray[0];
                     _user = ticketArray[0];
-                    var Pwd = ticketArray[1];
-                    _pwd = ticketArray[1];
-                    var index = strTicket.IndexOf("&");
-                    //  string strUser = strTicket.Substring(0, index);
-                    //contextInfo = UserManger.GetCurrentInfoCahced(BusinessConstants.Admin.TenantID, strUser);
-                    // var currentInfo = new ContextInfo();
                     contextInfo = UserManger.GetCurrentInfo(BusinessConstants.Admin.TenantID, _user);
                     if (contextInfo == null)
                     {

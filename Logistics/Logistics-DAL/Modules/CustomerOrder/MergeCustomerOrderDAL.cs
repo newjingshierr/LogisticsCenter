@@ -186,6 +186,8 @@ namespace Logistics_DAL
                                                           new MySqlParameter("@_channelNo", model.channelNo == null ?"":model.channelNo),
                                                            new MySqlParameter("@_deliverTime", model.deliverTime),
                                                             new MySqlParameter("@_AgentID", model.AgentID),
+                                                              new MySqlParameter("@_AgentName", model.AgentName == null ? "":model.AgentName),
+                                                               new MySqlParameter("@_ChannelName", model.ChannelName == null ?"":model.ChannelName),
                                                              new MySqlParameter("@_ModifiedBy",model.ModifiedBy)
             };
 

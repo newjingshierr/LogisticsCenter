@@ -16,7 +16,7 @@ namespace Logistics_Busniess
             tokenLog.ID = IdWorker.GetID();
             tokenLog.token = item.token;
             tokenLog.Userid = item.userID;
-            tokenLog.CreatedBy = BusinessConstants.Admin.TenantID;
+            tokenLog.CreatedBy = item.userID;
             return TokenDAL.Insert(tokenLog);
         }
 
