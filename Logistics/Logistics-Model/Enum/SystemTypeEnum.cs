@@ -62,8 +62,8 @@ namespace Logistics_Model
     public enum orderMergeStatusEnum
     {
         refeused = -1,
-        waitforapprove = 1,
-        approved =2
+        waitforapprove = 0,
+        approved =1
     }
 
     public enum orderStepEnum
