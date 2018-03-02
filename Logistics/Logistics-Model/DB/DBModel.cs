@@ -9,6 +9,532 @@ using Akmii;
 
 namespace Logistics_Model
 {
+
+    /*财务*/
+    public class logistics_customer_order_merge_transaction_log
+    {
+
+        /// <summary>
+        /// TenantID
+        /// </summary>		
+        private long _tenantid;
+        public long TenantID
+        {
+            get { return _tenantid; }
+            set { _tenantid = value; }
+        }
+        /// <summary>
+        /// ID
+        /// </summary>		
+        private long _id;
+        public long ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        /// <summary>
+        /// TransationID
+        /// </summary>		
+        private long _transationid;
+        public long TransationID
+        {
+            get { return _transationid; }
+            set { _transationid = value; }
+        }
+        /// <summary>
+        /// CustomerOrderMergeID
+        /// </summary>		
+        private long _customerordermergeid;
+        public long CustomerOrderMergeID
+        {
+            get { return _customerordermergeid; }
+            set { _customerordermergeid = value; }
+        }
+        /// <summary>
+        /// CustomerOrderMergeNo
+        /// </summary>		
+        private string _customerordermergeno;
+        public string CustomerOrderMergeNo
+        {
+            get { return _customerordermergeno; }
+            set { _customerordermergeno = value; }
+        }
+        /// <summary>
+        /// Amount
+        /// </summary>		
+        private decimal _amount;
+        public decimal Amount
+        {
+            get { return _amount; }
+            set { _amount = value; }
+        }
+        /// <summary>
+        /// DataSource
+        /// </summary>		
+        private int _datasource;
+        public int DataSource
+        {
+            get { return _datasource; }
+            set { _datasource = value; }
+        }
+        /// <summary>
+        /// Comment
+        /// </summary>		
+        private string _comment;
+        public string Comment
+        {
+            get { return _comment; }
+            set { _comment = value; }
+        }
+        /// <summary>
+        /// Created
+        /// </summary>		
+        private DateTime _created;
+        public DateTime Created
+        {
+            get { return _created; }
+            set { _created = value; }
+        }
+        /// <summary>
+        /// on update CURRENT_TIMESTAMP(3)
+        /// </summary>		
+        private DateTime _modified;
+        public DateTime Modified
+        {
+            get { return _modified; }
+            set { _modified = value; }
+        }
+        /// <summary>
+        /// CreatedBy
+        /// </summary>		
+        private long _createdby;
+        public long CreatedBy
+        {
+            get { return _createdby; }
+            set { _createdby = value; }
+        }
+        /// <summary>
+        /// ModifiedBy
+        /// </summary>		
+        private long _modifiedby;
+        public long ModifiedBy
+        {
+            get { return _modifiedby; }
+            set { _modifiedby = value; }
+        }
+
+    }
+    public class logistics_customer_order_merge_transaction
+    {
+
+        /// <summary>
+        /// TenantID
+        /// </summary>		
+        private long _tenantid;
+        public long TenantID
+        {
+            get { return _tenantid; }
+            set { _tenantid = value; }
+        }
+        /// <summary>
+        /// TransationID
+        /// </summary>		
+        private long _transationid;
+        public long TransationID
+        {
+            get { return _transationid; }
+            set { _transationid = value; }
+        }
+        /// <summary>
+        /// CustomerOrderMergeID
+        /// </summary>		
+        private long _customerordermergeid;
+        public long CustomerOrderMergeID
+        {
+            get { return _customerordermergeid; }
+            set { _customerordermergeid = value; }
+        }
+        /// <summary>
+        /// CustomerOrderMergeNo
+        /// </summary>		
+        private string _customerordermergeno;
+        public string CustomerOrderMergeNo
+        {
+            get { return _customerordermergeno; }
+            set { _customerordermergeno = value; }
+        }
+        /// <summary>
+        /// Amount
+        /// </summary>		
+        private decimal _amount;
+        public decimal Amount
+        {
+            get { return _amount; }
+            set { _amount = value; }
+        }
+        /// <summary>
+        /// DataSource
+        /// </summary>		
+        private int _datasource;
+        public int DataSource
+        {
+            get { return _datasource; }
+            set { _datasource = value; }
+        }
+        /// <summary>
+        /// Comment
+        /// </summary>		
+        private string _comment;
+        public string Comment
+        {
+            get { return _comment; }
+            set { _comment = value; }
+        }
+        /// <summary>
+        /// Created
+        /// </summary>		
+        private DateTime _created;
+        public DateTime Created
+        {
+            get { return _created; }
+            set { _created = value; }
+        }
+        /// <summary>
+        /// on update CURRENT_TIMESTAMP(3)
+        /// </summary>		
+        private DateTime _modified;
+        public DateTime Modified
+        {
+            get { return _modified; }
+            set { _modified = value; }
+        }
+        /// <summary>
+        /// CreatedBy
+        /// </summary>		
+        private long _createdby;
+        public long CreatedBy
+        {
+            get { return _createdby; }
+            set { _createdby = value; }
+        }
+        /// <summary>
+        /// ModifiedBy
+        /// </summary>		
+        private long _modifiedby;
+        public long ModifiedBy
+        {
+            get { return _modifiedby; }
+            set { _modifiedby = value; }
+        }
+
+    }
+    public class logistics_customer_order_merge_balance_log
+    {
+
+        /// <summary>
+        /// TenantID
+        /// </summary>		
+        private long _tenantid;
+        public long TenantID
+        {
+            get { return _tenantid; }
+            set { _tenantid = value; }
+        }
+        /// <summary>
+        /// ID
+        /// </summary>		
+        private long _id;
+        public long ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        /// <summary>
+        /// BalanceID
+        /// </summary>		
+        private long _balanceid;
+        public long BalanceID
+        {
+            get { return _balanceid; }
+            set { _balanceid = value; }
+        }
+        /// <summary>
+        /// CustomerOrderMergeID
+        /// </summary>		
+        private long _customerordermergeid;
+        public long CustomerOrderMergeID
+        {
+            get { return _customerordermergeid; }
+            set { _customerordermergeid = value; }
+        }
+        /// <summary>
+        /// DataSource
+        /// </summary>		
+        private int _datasource;
+        public int DataSource
+        {
+            get { return _datasource; }
+            set { _datasource = value; }
+        }
+        /// <summary>
+        /// TransationID
+        /// </summary>		
+        private long _transationid;
+        public long TransationID
+        {
+            get { return _transationid; }
+            set { _transationid = value; }
+        }
+        /// <summary>
+        /// Type
+        /// </summary>		
+        private int _type;
+        public int Type
+        {
+            get { return _type; }
+            set { _type = value; }
+        }
+        /// <summary>
+        /// Direction
+        /// </summary>		
+        private bool _direction;
+        public bool Direction
+        {
+            get { return _direction; }
+            set { _direction = value; }
+        }
+        /// <summary>
+        /// Amount
+        /// </summary>		
+        private decimal _amount;
+        public decimal Amount
+        {
+            get { return _amount; }
+            set { _amount = value; }
+        }
+        /// <summary>
+        /// Orignal
+        /// </summary>		
+        private decimal _orignal;
+        public decimal Orignal
+        {
+            get { return _orignal; }
+            set { _orignal = value; }
+        }
+        /// <summary>
+        /// AfterBalance
+        /// </summary>		
+        private decimal _afterbalance;
+        public decimal AfterBalance
+        {
+            get { return _afterbalance; }
+            set { _afterbalance = value; }
+        }
+        /// <summary>
+        /// Comment
+        /// </summary>		
+        private string _comment;
+        public string Comment
+        {
+            get { return _comment; }
+            set { _comment = value; }
+        }
+        /// <summary>
+        /// BalanceDate
+        /// </summary>		
+        private int _balancedate;
+        public int BalanceDate
+        {
+            get { return _balancedate; }
+            set { _balancedate = value; }
+        }
+        /// <summary>
+        /// Created
+        /// </summary>		
+        private DateTime _created;
+        public DateTime Created
+        {
+            get { return _created; }
+            set { _created = value; }
+        }
+        /// <summary>
+        /// on update CURRENT_TIMESTAMP(3)
+        /// </summary>		
+        private DateTime _modified;
+        public DateTime Modified
+        {
+            get { return _modified; }
+            set { _modified = value; }
+        }
+        /// <summary>
+        /// CreatedBy
+        /// </summary>		
+        private long _createdby;
+        public long CreatedBy
+        {
+            get { return _createdby; }
+            set { _createdby = value; }
+        }
+        /// <summary>
+        /// ModifiedBy
+        /// </summary>		
+        private long _modifiedby;
+        public long ModifiedBy
+        {
+            get { return _modifiedby; }
+            set { _modifiedby = value; }
+        }
+        /// <summary>
+        /// Ext1
+        /// </summary>		
+        private string _ext1;
+        public string Ext1
+        {
+            get { return _ext1; }
+            set { _ext1 = value; }
+        }
+        /// <summary>
+        /// Ext2
+        /// </summary>		
+        private string _ext2;
+        public string Ext2
+        {
+            get { return _ext2; }
+            set { _ext2 = value; }
+        }
+        /// <summary>
+        /// Ext3
+        /// </summary>		
+        private string _ext3;
+        public string Ext3
+        {
+            get { return _ext3; }
+            set { _ext3 = value; }
+        }
+
+    }
+    public class logistics_customer_order_merge_balance
+    {
+
+        /// <summary>
+        /// TenantID
+        /// </summary>		
+        private long _tenantid;
+        public long TenantID
+        {
+            get { return _tenantid; }
+            set { _tenantid = value; }
+        }
+        /// <summary>
+        /// BalanceID
+        /// </summary>		
+        private long _balanceid;
+        public long BalanceID
+        {
+            get { return _balanceid; }
+            set { _balanceid = value; }
+        }
+        /// <summary>
+        /// CustomerOrderMergeID
+        /// </summary>		
+        private long _customerordermergeid;
+        public long CustomerOrderMergeID
+        {
+            get { return _customerordermergeid; }
+            set { _customerordermergeid = value; }
+        }
+        /// <summary>
+        /// CustomerOrderMergeNo
+        /// </summary>		
+        private string _customerordermergeno;
+        public string CustomerOrderMergeNo
+        {
+            get { return _customerordermergeno; }
+            set { _customerordermergeno = value; }
+        }
+        /// <summary>
+        /// UserID
+        /// </summary>		
+        private long _userid;
+        public long UserID
+        {
+            get { return _userid; }
+            set { _userid = value; }
+        }
+        /// <summary>
+        /// AgentID
+        /// </summary>		
+        private long _agentid;
+        public long AgentID
+        {
+            get { return _agentid; }
+            set { _agentid = value; }
+        }
+        /// <summary>
+        /// Amount
+        /// </summary>		
+        private decimal _amount;
+        public decimal Amount
+        {
+            get { return _amount; }
+            set { _amount = value; }
+        }
+        /// <summary>
+        /// RemainAmount
+        /// </summary>		
+        private decimal _remainamount;
+        public decimal RemainAmount
+        {
+            get { return _remainamount; }
+            set { _remainamount = value; }
+        }
+        /// <summary>
+        /// type
+        /// </summary>		
+        private int _type;
+        public int type
+        {
+            get { return _type; }
+            set { _type = value; }
+        }
+        /// <summary>
+        /// Created
+        /// </summary>		
+        private DateTime _created;
+        public DateTime Created
+        {
+            get { return _created; }
+            set { _created = value; }
+        }
+        /// <summary>
+        /// on update CURRENT_TIMESTAMP(3)
+        /// </summary>		
+        private DateTime _modified;
+        public DateTime Modified
+        {
+            get { return _modified; }
+            set { _modified = value; }
+        }
+        /// <summary>
+        /// CreatedBy
+        /// </summary>		
+        private long _createdby;
+        public long CreatedBy
+        {
+            get { return _createdby; }
+            set { _createdby = value; }
+        }
+        /// <summary>
+        /// ModifiedBy
+        /// </summary>		
+        private long _modifiedby;
+        public long ModifiedBy
+        {
+            get { return _modifiedby; }
+            set { _modifiedby = value; }
+        }
+
+    }
     public class logistics_base_status
     {
         public string ID { get; set; }

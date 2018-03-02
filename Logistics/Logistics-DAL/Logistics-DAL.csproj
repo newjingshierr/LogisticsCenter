@@ -80,6 +80,10 @@
     <Compile Include="Modules\Base\TokenDAL.cs" />
     <Compile Include="Modules\Base\WareHouseDAL.cs" />
     <Compile Include="Modules\CustomerOrder\CustomerOrderDAL.cs" />
+    <Compile Include="Modules\CustomerOrder\CustomerOrderMergeBalanceDAL.cs" />
+    <Compile Include="Modules\CustomerOrder\CustomerOrderMergeBalanceLogDAL.cs" />
+    <Compile Include="Modules\CustomerOrder\CustomerOrderMergeTransactionDAL.cs" />
+    <Compile Include="Modules\CustomerOrder\CustomerOrderMergeTransactionLogDAL.cs" />
     <Compile Include="Modules\CustomerOrder\MergeCustomerOrderDAL.cs" />
     <Compile Include="Modules\CustomerOrder\MergeCustomerOrderDetailDAL.cs" />
     <Compile Include="Modules\CustomerOrder\MergeCustomerOrderRelationDAL.cs" />

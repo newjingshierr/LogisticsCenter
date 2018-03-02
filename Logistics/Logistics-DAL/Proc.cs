@@ -78,6 +78,30 @@ namespace Logistics_DAL
             public const string logistics_customer_order_merge_update_by_id = "logistics_customer_order_merge_update_by_id";
             public const string logistics_customer_order_merge_delete_by_id = "logistics_customer_order_merge_delete_by_id";
             public const string logistics_customer_order_merge_select_by_page = "logistics_customer_order_merge_select_by_page";
+            public const string logistics_customer_order_merge_balance_ADD = "logistics_customer_order_merge_balance_ADD";
+            public const string logistics_customer_order_merge_balance_Delete = "logistics_customer_order_merge_balance_Delete";
+            public const string logistics_customer_order_merge_balance_Exists = "logistics_customer_order_merge_balance_Exists";
+            public const string logistics_customer_order_merge_balance_GetList = "logistics_customer_order_merge_balance_GetList";
+            public const string logistics_customer_order_merge_balance_GetModel = "logistics_customer_order_merge_balance_GetModel";
+            public const string logistics_customer_order_merge_balance_log_ADD = "logistics_customer_order_merge_balance_log_Delete";
+            public const string logistics_customer_order_merge_balance_log_Exists = "logistics_customer_order_merge_balance_log_Exists";
+            public const string logistics_customer_order_merge_balance_log_GetList = "logistics_customer_order_merge_balance_log_GetList";
+            public const string logistics_customer_order_merge_balance_log_GetModel = "logistics_customer_order_merge_balance_log_GetModel";
+            public const string logistics_customer_order_merge_balance_log_Update = "logistics_customer_order_merge_balance_log_Update";
+            public const string logistics_customer_order_merge_balance_Update = "logistics_customer_order_merge_balance_Update";
+            public const string logistics_customer_order_merge_transaction_ADD = "logistics_customer_order_merge_transaction_ADD";
+            public const string logistics_customer_order_merge_transaction_Delete = "logistics_customer_order_merge_transaction_Delete";
+            public const string logistics_customer_order_merge_transaction_Exists = "logistics_customer_order_merge_transaction_Exists";
+            public const string logistics_customer_order_merge_transaction_GetList = "logistics_customer_order_merge_transaction_GetList";
+            public const string logistics_customer_order_merge_transaction_GetModel = "logistics_customer_order_merge_transaction_GetModel";
+            public const string logistics_customer_order_merge_transaction_log_GetList = "logistics_customer_order_merge_transaction_log_GetList";
+            public const string logistics_customer_order_merge_transaction_log_Delete = "logistics_customer_order_merge_transaction_log_Delete";
+            public const string logistics_customer_order_merge_transaction_log_GetModel = "logistics_customer_order_merge_transaction_log_GetModel";
+            public const string logistics_customer_order_merge_transaction_log_Update = "logistics_customer_order_merge_transaction_log_Update";
+            public const string logistics_customer_order_merge_transaction_Update = "logistics_customer_order_merge_transaction_Update";
+            public const string logistics_customer_order_merge_balance_log_Delete = "logistics_customer_order_merge_balance_log_Delete";
+            public const string logistics_customer_order_merge_transaction_log_ADD = "logistics_customer_order_merge_transaction_log_ADD";
+
         }
         public class CustomerOrderMergeDetail
         {
