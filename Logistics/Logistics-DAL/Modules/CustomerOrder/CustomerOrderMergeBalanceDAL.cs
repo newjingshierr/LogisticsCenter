@@ -90,7 +90,6 @@ namespace Logistics_DAL
                         new MySqlParameter("@_TenantID", model.TenantID),
                         new MySqlParameter("@_ID",model.BalanceID),
                           new MySqlParameter("@_CustomerOrderMergeID",model.CustomerOrderMergeID),
-                        new MySqlParameter("@_CustomerOrderMergeNo", model.CustomerOrderMergeNo),
                         new MySqlParameter("@_UserID",model.UserID),
                         new MySqlParameter("@_AgentID",model.AgentID),
                         new MySqlParameter("@_Amount",model.Amount),

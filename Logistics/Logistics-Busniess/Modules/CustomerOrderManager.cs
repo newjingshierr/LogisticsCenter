@@ -8,6 +8,7 @@ using Logistics.Core;
 using Akmii.Cache.Client;
 using Logistics_DAL;
 using Logistics.Common;
+using static Logistics_Model.BusinessConstants;
 
 namespace Logistics_Busniess
 {
@@ -295,7 +296,7 @@ namespace Logistics_Busniess
 
             //订单的状态更新（更新为3）
             List<logistics_customer_order_status> customerOrderStatusList = new List<logistics_customer_order_status>();
-            foreach( var c in item.customerOrderList)
+            foreach (var c in item.customerOrderList)
             {
                 var customerOrderStatus = CustomerOrderStatusDAL.SelectOrderStatusByOrderID(c.customerOrderID);
                 if (customerOrderStatus == null)
@@ -303,7 +304,7 @@ namespace Logistics_Busniess
                     throw new LogisticsException(SystemStatusEnum.OrderStatusNotFound, $"Order Status Not Found");
                 }
 
-                customerOrderStatus.currentStatus ="3";//合并打包
+                customerOrderStatus.currentStatus = "3";//合并打包
                 customerOrderStatus.ModifiedBy = BusinessConstants.Admin.TenantID;
                 customerOrderStatusList.Add(customerOrderStatus);
             }
@@ -350,9 +351,9 @@ namespace Logistics_Busniess
                 {
                     var result = true;
                     result = MergeCustomerOrderDAL.Insert(customerOrderMerge, trans) &&
-                    MergeCustomerOrderRelationDAL.InsertList(relationList, trans) && 
+                    MergeCustomerOrderRelationDAL.InsertList(relationList, trans) &&
                     MergeCustomerOrderDetailDAL.InsertList(detailList, trans) &&
-                    MergeCustomerOrderStatusDAL.Insert(status, trans)&&
+                    MergeCustomerOrderStatusDAL.Insert(status, trans) &&
                     CustomerOrderStatusDAL.UpdateList(customerOrderStatusList);
                     return result;
                 });
@@ -361,7 +362,7 @@ namespace Logistics_Busniess
             return dbResult;
         }
 
-        public static bool UpdateCustomerOrderMerge(CustomerOrderMergeUpdateReqeust item,long currentUserID)
+        public static bool UpdateCustomerOrderMerge(CustomerOrderMergeUpdateReqeust item, long currentUserID)
         {
 
             //主订单信息
@@ -431,6 +432,37 @@ namespace Logistics_Busniess
                 {
                     var result = true;
                     result = MergeCustomerOrderDAL.Update(customerOrderMerge, trans) && MergeCustomerOrderDetailDAL.UpdateList(detailList, trans);
+
+                    if (item.currentStep == CustomerOrderMergeStep.CustomerServiceConfirm || item.currentStatus == CustomerOrderMergeStatus.confirmed)
+                    {
+                        logistics_customer_order_merge_balance balance = new logistics_customer_order_merge_balance();
+                        balance.TenantID = BusinessConstants.Admin.TenantID;
+                        balance.BalanceID = IdWorker.GetID();
+                        balance.CustomerOrderMergeID = item.ID;
+                        balance.UserID = item.userid;
+                        balance.UserID = item.AgentID;
+                        balance.Amount = item.totalFee;
+                        balance.RemainAmount = item.totalFee;
+                        balance.type = CustomerOrderMergeBalanceType.receivable;
+                        balance.CreatedBy = currentUserID;
+                        balance.ModifiedBy = currentUserID;
+
+                       // logistics_customer_order_merge_balance
+
+                        // 当前阶段是仓库入库，并且状态是已确认,产生客户应收订单
+                        result = result && CustomerOrderMergeBalanceDAL.Insert(balance, trans);
+                    }
+                    else if (item.currentStep == CustomerOrderMergeStep.WaitForPay || item.currentStatus == CustomerOrderMergeStatus.confirmed)
+                    {
+                        //当前阶段是客户付款阶段，并且状态是已确认，冲正客户应收订单，产生交易记录，交易日志
+                    }
+                    else if (item.currentStep == CustomerOrderMergeStep.WaitForDelivery || item.currentStatus == CustomerOrderMergeStatus.confirmed)
+                    {
+                        //当前阶段是仓库发货阶段，并且状态是已确认，产生代理商应付定单
+                    }
+                    //
+
+
                     return result;
                 });
             }

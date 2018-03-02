@@ -130,6 +130,8 @@ namespace Logistics_Model
         [JsonConverter(typeof(Long2StringConverter))]
         public long AgentID { get; set; } = 0;
         public string AgentName { get; set; }
+        public string currentStep { get; set; }
+        public string currentStatus { get; set; }
 
 
     }
