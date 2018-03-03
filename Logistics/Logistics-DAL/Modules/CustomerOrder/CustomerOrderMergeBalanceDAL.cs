@@ -33,9 +33,30 @@ namespace Logistics_DAL
 
             return result;
         }
+        public static logistics_customer_order_merge_balance GetMergeBalanceModelByOrderMergeID(long CustomerOrderMergeID, long TenantID = BusinessConstants.Admin.TenantID)
+        {
+            var result = new logistics_customer_order_merge_balance();
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID",TenantID),
+                new MySqlParameter("@_CustomerOrderMergeID", CustomerOrderMergeID)
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMerge.logistics_customer_order_merge_balance_GetModel_By_MergeID, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<logistics_customer_order_merge_balance>.DtToModel(dbResult.Tables[0]);
+            }
+            else
+            {
+                result = null;
+            }
 
 
-        public static List<logistics_customer_order> GetItemListByPage(long TenantID, long userID, long warehouseAdmin, string customerOrderNo, int customerOrderStatus,
+            return result;
+        }
+
+
+        public static List<logistics_customer_order> GetCustomerOrderMergeBalanceByPage(long TenantID, long userID, long warehouseAdmin, string customerOrderNo, int customerOrderStatus,
             string expressNo,
                 long expressTypeID,
                     string TransferNo,

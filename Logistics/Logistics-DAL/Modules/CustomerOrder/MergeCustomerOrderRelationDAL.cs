@@ -174,5 +174,27 @@ namespace Logistics_DAL
 
             return result;
         }
+
+        public static List<logistics_customer_order_merge_relation> GetItems(long customerOrderMergeID, long TenantID = BusinessConstants.Admin.TenantID)
+        {
+            var result = new List<logistics_customer_order_merge_relation>();
+
+            MySqlParameter[] parameters = {
+                                new MySqlParameter("@_TenantID", TenantID),
+                                new MySqlParameter("@_mergeOrderID", customerOrderMergeID),
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMergeRelation.logistics_customer_order_merge_relation_select_by_id, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<logistics_customer_order_merge_relation>.DtToList(dbResult.Tables[0]);
+            }
+            else
+            {
+                result = null;
+            }
+
+            return result;
+        }
     }
 }

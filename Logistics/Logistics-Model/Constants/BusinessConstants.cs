@@ -65,8 +65,42 @@ namespace Logistics_Model
 
         public class CustomerOrderMergeBalanceType
         {
-            public const int receivable = 0;
-            public const int payable = 1;
+            public const int customerReceivable = 0;
+            public const int agentReceivable = 1;
+            public const int customerPayable = 2;
+            public const int agentPayable = 3;
+        }
+
+        //balance log type 数据来源, 1.客户产生应收 2、客户核销应收 3、代理商产生应付 4、代理商应付核销 5、客户应付 6、客服应付核销 7、代理商应收 8、代理商应收核销
+        public class BalanceLogDataSource
+        {
+            public const int CustomerReceivable = 1;
+            public const int CustomerReceivableWriteOff = 2;
+            public const int AgentPayable = 3;
+            public const int AgentPayableWriteOff = 4;
+
+            public const int CustomerPayable = 5;
+            public const int CustomerPayableWriteOff = 6;
+            public const int AgentReceivable = 7;
+            public const int AgentReceivableWriteOff = 8;
+
+        }
+        public class BalanceLogType
+        {
+            public const int consume = 1;
+            public const int unconsume = 2;
+        }
+
+        public class TransactionDataSource
+        {
+            public const int customerConsume = 1;
+            public const int AgentPay = 2;
+        }
+
+        public class TransactionComment
+        {
+            public const string customerConsume = "客户消费核单";
+            public const string AgentPay = "代理商付款";
         }
 
         public class CustomerOrderMergeStatus

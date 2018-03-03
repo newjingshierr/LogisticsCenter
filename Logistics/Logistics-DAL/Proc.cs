@@ -83,6 +83,7 @@ namespace Logistics_DAL
             public const string logistics_customer_order_merge_balance_Exists = "logistics_customer_order_merge_balance_Exists";
             public const string logistics_customer_order_merge_balance_GetList = "logistics_customer_order_merge_balance_GetList";
             public const string logistics_customer_order_merge_balance_GetModel = "logistics_customer_order_merge_balance_GetModel";
+            public const string logistics_customer_order_merge_balance_GetModel_By_MergeID = "logistics_customer_order_merge_balance_GetModel_By_MergeID";
             public const string logistics_customer_order_merge_balance_log_ADD = "logistics_customer_order_merge_balance_log_Delete";
             public const string logistics_customer_order_merge_balance_log_Exists = "logistics_customer_order_merge_balance_log_Exists";
             public const string logistics_customer_order_merge_balance_log_GetList = "logistics_customer_order_merge_balance_log_GetList";
@@ -108,7 +109,7 @@ namespace Logistics_DAL
             public const string logistics_customer_order_merge_detail_insert = "logistics_customer_order_merge_detail_insert";
             public const string logistics_customer_order_merge_detail_update = "logistics_customer_order_merge_detail_update";
             public const string logistics_customer_order_merge_detail_delete_by_id = "logistics_customer_order_merge_detail_delete_by_id";
-            public const string logistics_customer_order_merge_detail_select_by_id = "logistics_customer_order_merge_detail_select_by_id";
+            public const string logistics_customer_order_merge_deltail_select_by_merge_id = "logistics_customer_order_merge_deltail_select_by_merge_id";
 
         }
 
@@ -118,6 +119,7 @@ namespace Logistics_DAL
             public const string logistics_customer_order_merge_status_select_by_id = "logistics_customer_order_merge_status_select_by_id";
             public const string logistics_customer_order_merge_status_update_by_id = "logistics_customer_order_merge_status_update_by_id";
             public const string logistics_customer_order_merge_status_delete_by_id = "logistics_customer_order_merge_status_delete_by_id";
+            public const string logistics_customer_order_merge_status_select_by_merge_id = "logistics_customer_order_merge_status_select_by_merge_id";
         }
 
         public class CustomerOrderMergeRelation

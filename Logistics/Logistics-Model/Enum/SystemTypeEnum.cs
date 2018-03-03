@@ -113,4 +113,10 @@ namespace Logistics_Model
         warehouse = 0,
         waitForPackage = 1
     }
+
+    public enum BalanceLogDirection
+    {
+        Positive =1,
+        Reverse = 0
+    }
 }

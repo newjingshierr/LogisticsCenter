@@ -7,7 +7,7 @@ using Logistics_Model;
 using Logistics.Common;
 using Akmii;
 
-namespace Logistics_DAL.Modules.CustomerOrder
+namespace Logistics_DAL
 {
   public  class CustomerOrderMergeTransactionLogDAL
     {

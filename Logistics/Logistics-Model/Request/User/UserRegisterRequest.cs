@@ -88,6 +88,10 @@ namespace Logistics_Model
 
     }
 
+    public class PayableReqeust : BaseRequest
+    {
+
+    }
 
     public class CustomerOrderMergeUpdateReqeust : BaseRequest
     {
@@ -277,6 +281,10 @@ namespace Logistics_Model
 
         public long CustomerServiceID { get; set; } = 0L;
         public long MemberID { get; set; } = 0L;
+    }
+    public class CustomerOrderMergeSelectItemRequest : BaseRequest
+    {
+        public long CustomerOrderMergeID { get; set; } = 0L;
     }
 
     public class CustomerOrderMergeSelectRequest : BaseRequestPage

@@ -8,6 +8,17 @@ using Akmii;
 
 namespace Logistics_Model
 {
+    public class CustomerOrderMergeItemVW
+    {
+        public logistics_customer_order_merge mergeOrder { get; set; }
+        public logistics_customer_order_merge_status mergeStatus { get; set; }
+
+       public  List<logistics_customer_order> customerOrderList { get; set; }
+
+        public List<logistics_customer_order_merge_detail> mergeDetailList { get; set; }
+
+    }
+
     public class CustomerOrderMergeVM
     {
         public string currentStatus { get; set; }

@@ -164,8 +164,10 @@ namespace Logistics_Model
 
         [Description("CustomerOrdeAttachmentDeleteFailed")]
         CustomerOrdeAttachmentDeleteFailed = 42005,
+        //合并订单 44000 - 44500
         #region
-
+        [Description("CustomerOrderMergeBalanceNotFound")]
+        CustomerOrderMergeBalanceNotFound = 44001, 
         #endregion
     }
 }

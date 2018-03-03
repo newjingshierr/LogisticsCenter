@@ -342,8 +342,8 @@ namespace Logistics_Model
         /// <summary>
         /// BalanceDate
         /// </summary>		
-        private int _balancedate;
-        public int BalanceDate
+        private DateTime _balancedate;
+        public DateTime BalanceDate
         {
             get { return _balancedate; }
             set { _balancedate = value; }

@@ -352,6 +352,25 @@ namespace Logistics.Controllers
     [RoutePrefix(ApiConstants.PrefixApi + "CustomerOrderMerge")]
     public class CustomerOrderMergeController : BaseAuthController
     {
+        [HttpGet]
+        [Route("Item")]
+        public ResponseMessage<CustomerOrderMergeItemVW> GetMergeItem([FromUri]CustomerOrderMergeSelectItemRequest request)
+        {
+          
+            var result = new CustomerOrderMergeItemVW();
+            try
+            {
+                result = CustomerOrderMergeManger.GetItem(request);
+
+                return GetResult(result);
+            }
+
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+        }
         /// <summary>
         /// 新增 merge customer Order
         /// </summary>
