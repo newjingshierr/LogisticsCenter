@@ -321,7 +321,7 @@ namespace Logistics_Busniess
                 }
 
                 customerOrderStatus.currentStatus = "3";//合并打包
-                customerOrderStatus.ModifiedBy = BusinessConstants.Admin.TenantID;
+                customerOrderStatus.ModifiedBy = currentUserID;
                 customerOrderStatusList.Add(customerOrderStatus);
             }
 
@@ -370,7 +370,7 @@ namespace Logistics_Busniess
                     MergeCustomerOrderRelationDAL.InsertList(relationList, trans) &&
                     MergeCustomerOrderDetailDAL.InsertList(detailList, trans) &&
                     MergeCustomerOrderStatusDAL.Insert(status, trans) &&
-                    CustomerOrderStatusDAL.UpdateList(customerOrderStatusList);
+                    CustomerOrderStatusDAL.UpdateList(customerOrderStatusList,trans);
                     return result;
                 });
             }
