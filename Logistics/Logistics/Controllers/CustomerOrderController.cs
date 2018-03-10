@@ -352,11 +352,37 @@ namespace Logistics.Controllers
     [RoutePrefix(ApiConstants.PrefixApi + "CustomerOrderMerge")]
     public class CustomerOrderMergeController : BaseAuthController
     {
+        [HttpPut]
+        [Route("Item/Refuse")]
+        public ResponseMessage<bool> RefuseCustomerOrderMerge(CustomerOrderMergeRefuseRequest request)
+        {
+            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));
+
+            if (request == null)
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+            }
+
+
+            var result = false;
+            try
+            {
+                result = CustomerOrderMergeManger.RefuseCustomerOrderMerge(request, contextInfo.userInfo.Userid);
+
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+
+            }
+        }
         [HttpGet]
         [Route("Item")]
         public ResponseMessage<CustomerOrderMergeItemVW> GetMergeItem([FromUri]CustomerOrderMergeSelectItemRequest request)
         {
-          
+
             var result = new CustomerOrderMergeItemVW();
             try
             {
@@ -415,7 +441,7 @@ namespace Logistics.Controllers
         {
             LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));
 
-            if (request == null|| request.productList == null)
+            if (request == null || request.productList == null)
             {
                 return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
             }
@@ -423,7 +449,7 @@ namespace Logistics.Controllers
             var result = false;
             try
             {
-                result = CustomerOrderMergeManger.UpdateCustomerOrderMerge(request,base.contextInfo.userInfo.Userid);
+                result = CustomerOrderMergeManger.UpdateCustomerOrderMerge(request, base.contextInfo.userInfo.Userid);
 
                 return GetResult(result);
             }
@@ -466,7 +492,46 @@ namespace Logistics.Controllers
 
         }
 
+        [Route("WaitForApproveStatus")]
+        public ResponseMessage<WarehouseCustomerOrderStatusSummaryView> SelectOrderStatusByWarehouseAdmin()
+        {
 
+            var result = new WarehouseCustomerOrderStatusSummaryView();
+            try
+            {
+                result = OrderStatus.logistics_customer_order_select_by_warehouseAdmin_summary(base.contextInfo.userInfo.Userid);
+
+                return GetResult(result);
+            }
+
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+
+        }
+
+        [HttpGet]
+        [Route("status/summary")]
+        public ResponseMessage<int> GetOrderMergeStatusSummary([FromUri]GetOrderMergeStatusSummaryReqeust request)
+        {
+
+            var result = 0;
+            try
+            {
+                result = CustomerOrderMergeManger.GetOrderMergeStatusSummary(request, base.contextInfo.userInfo.Userid);
+
+                return GetResult(result);
+            }
+
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+
+        }
     }
 
 

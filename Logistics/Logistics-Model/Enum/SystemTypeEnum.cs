@@ -101,6 +101,7 @@ namespace Logistics_Model
 
     public enum messageType
     {
+        all = -1,
         WarehouseIn =0,
         CustomerServiceConfirm = 1,
         WarehousePackge =2,

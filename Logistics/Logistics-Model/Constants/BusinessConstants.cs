@@ -57,6 +57,7 @@ namespace Logistics_Model
 
         public class CustomerOrderMergeStep
         {
+            public const string waitforapprove = "12";
             public const string CustomerServiceConfirm = "1";
             public const string WarehousePackege = "2";
             public const string WaitForPay = "3";

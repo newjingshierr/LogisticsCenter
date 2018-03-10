@@ -98,7 +98,7 @@ namespace Logistics_Model
         [JsonConverter(typeof(Long2StringConverter))]
         public long ID { get; set; }
         [JsonConverter(typeof(Long2StringConverter))]
-        public long userid { get; set; }
+       // public long userid { get; set; }
         public string CustomerMark { get; set; }
         [JsonConverter(typeof(Long2StringConverter))]
         public long CustomerChooseChannelID { get; set; }
@@ -282,9 +282,18 @@ namespace Logistics_Model
         public long CustomerServiceID { get; set; } = 0L;
         public long MemberID { get; set; } = 0L;
     }
+    public class CustomerOrderMergeRefuseRequest : BaseRequest
+    {
+        public long CustomerOrderMergeID { get; set; } = 0L;
+    }
+
     public class CustomerOrderMergeSelectItemRequest : BaseRequest
     {
         public long CustomerOrderMergeID { get; set; } = 0L;
+    }
+    public class GetOrderMergeStatusSummaryReqeust: BaseRequest
+    {
+        public string currentStep { get; set; } = "";
     }
 
     public class CustomerOrderMergeSelectRequest : BaseRequestPage

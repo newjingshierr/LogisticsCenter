@@ -32,7 +32,7 @@ namespace Logistics_Model
     //message
     public class GetItemListByPageRequest : BaseRequestPage
     {
-
+        public messageType messageType { get; set; } = messageType.all;
     }
 
     #endregion

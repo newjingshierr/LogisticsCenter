@@ -168,6 +168,12 @@ namespace Logistics_Model
         #region
         [Description("CustomerOrderMergeBalanceNotFound")]
         CustomerOrderMergeBalanceNotFound = 44001, 
+        [Description("CustomerOrderMergeNotFound")]
+        CustomerOrderMergeNotFound = 44002,
+        [Description("CustomerOrderMergeNotFound")]
+        CustomerOrderMergeStatusNotFound = 44003,
+        [Description("CustomerOrderMergeRelationNotFound")]
+        CustomerOrderMergeRelationNotFound = 44004
         #endregion
     }
 }

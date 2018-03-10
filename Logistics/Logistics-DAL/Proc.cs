@@ -77,6 +77,7 @@ namespace Logistics_DAL
             public const string logistics_customer_order_merge_insert = "logistics_customer_order_merge_insert";
             public const string logistics_customer_order_merge_update_by_id = "logistics_customer_order_merge_update_by_id";
             public const string logistics_customer_order_merge_delete_by_id = "logistics_customer_order_merge_delete_by_id";
+            public const string logistics_customer_order_merge_select_for_approve_by_page = "logistics_customer_order_merge_select_for_approve_by_page";
             public const string logistics_customer_order_merge_select_by_page = "logistics_customer_order_merge_select_by_page";
             public const string logistics_customer_order_merge_balance_ADD = "logistics_customer_order_merge_balance_ADD";
             public const string logistics_customer_order_merge_balance_Delete = "logistics_customer_order_merge_balance_Delete";
@@ -102,14 +103,16 @@ namespace Logistics_DAL
             public const string logistics_customer_order_merge_transaction_Update = "logistics_customer_order_merge_transaction_Update";
             public const string logistics_customer_order_merge_balance_log_Delete = "logistics_customer_order_merge_balance_log_Delete";
             public const string logistics_customer_order_merge_transaction_log_ADD = "logistics_customer_order_merge_transaction_log_ADD";
-
+            public const string logistics_customer_order_merge_status_summary = "logistics_customer_order_merge_status_summary";
+            public const string logistics_customer_order_merge_status_admin_summary = "logistics_customer_order_merge_status_admin_summary";
         }
         public class CustomerOrderMergeDetail
         {
             public const string logistics_customer_order_merge_detail_insert = "logistics_customer_order_merge_detail_insert";
             public const string logistics_customer_order_merge_detail_update = "logistics_customer_order_merge_detail_update";
             public const string logistics_customer_order_merge_detail_delete_by_id = "logistics_customer_order_merge_detail_delete_by_id";
-            public const string logistics_customer_order_merge_deltail_select_by_merge_id = "logistics_customer_order_merge_deltail_select_by_merge_id";
+            public const string logistics_customer_order_merge_detail_delete_by_merge_id = "logistics_customer_order_merge_detail_delete_by_merge_id";
+            public const string logistics_customer_order_merge_detail_select_by_merge_id = "logistics_customer_order_merge_detail_select_by_merge_id";
 
         }
 
@@ -117,8 +120,9 @@ namespace Logistics_DAL
         {
             public const string logistics_customer_order_merge_status_insert = "logistics_customer_order_merge_status_insert";
             public const string logistics_customer_order_merge_status_select_by_id = "logistics_customer_order_merge_status_select_by_id";
-            public const string logistics_customer_order_merge_status_update_by_id = "logistics_customer_order_merge_status_update_by_id";
+            public const string logistics_customer_order_merge_status_Update = "logistics_customer_order_merge_status_Update";
             public const string logistics_customer_order_merge_status_delete_by_id = "logistics_customer_order_merge_status_delete_by_id";
+            public const string logistics_customer_order_merge_status_delete_by_merge_id = "logistics_customer_order_merge_status_delete_by_merge_id";
             public const string logistics_customer_order_merge_status_select_by_merge_id = "logistics_customer_order_merge_status_select_by_merge_id";
         }
 
@@ -128,6 +132,7 @@ namespace Logistics_DAL
             public const string logistics_customer_order_merge_relation_select_by_id = "logistics_customer_order_merge_relation_select_by_id";
             public const string logistics_customer_order_merge_relation_update_by_id = "logistics_customer_order_merge_relation_update_by_id";
             public const string logistics_customer_order_merge_relation_delete_by_id = "logistics_customer_order_merge_relation_delete_by_id";
+            public const string logistics_customer_order_merge_relation_delete_by_merge_id = "logistics_customer_order_merge_relation_delete_by_merge_id";
         }
 
 

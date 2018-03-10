@@ -48,8 +48,12 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("items/page")]
-        public ResponseMessage<List<logistics_base_message>> GetItemListByPage(GetItemListByPageRequest request)
+        public ResponseMessage<List<logistics_base_message>> GetItemListByPage([FromUri]GetItemListByPageRequest request)
         {
+            if (request == null)
+            {
+                return GetErrorResult<List<logistics_base_message>>(SystemStatusEnum.InvalidRequest);
+            }
             var result = new List<logistics_base_message>();
             int totalCount = 0;
             try

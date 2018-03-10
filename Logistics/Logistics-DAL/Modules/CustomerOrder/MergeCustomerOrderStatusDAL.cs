@@ -76,7 +76,7 @@ namespace Logistics_DAL
         }
 
 
-        public static bool UpdateList(List<logistics_customer_order_merge_relation> relationList, AkmiiMySqlTransaction trans = null)
+        public static bool UpdateList(List<logistics_customer_order_merge_status> relationList, AkmiiMySqlTransaction trans = null)
         {
             bool result = true;
             foreach (var d in relationList)
@@ -86,25 +86,25 @@ namespace Logistics_DAL
             return result;
         }
 
-        public static bool Update(logistics_customer_order_merge_relation model, AkmiiMySqlTransaction trans = null)
+        public static bool Update(logistics_customer_order_merge_status model, AkmiiMySqlTransaction trans = null)
         {
 
             MySqlParameter[] parameters = {
                         new MySqlParameter("@_TenantID", model.TenantID),
                         new MySqlParameter("@_ID",model.ID),
-                         new MySqlParameter("@_mergeOrderID",model.mergeOrderID),
-                        new MySqlParameter("@_orderID", model.orderID),
-                        new MySqlParameter("@_CreatedBy",model.CreatedBy),
+                         new MySqlParameter("@_currentStep",model.currentStep),
+                        new MySqlParameter("@_currentStatus", model.currentStatus),
+                        new MySqlParameter("@_ModifiedBy",model.CreatedBy),
             };
 
             int result = 0;
             if (trans == null)
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_update_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMergeStatus.logistics_customer_order_merge_status_Update, parameters);
             }
             else
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_update_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.CustomerOrderMergeStatus.logistics_customer_order_merge_status_Update, parameters);
             }
             return result == 1;
 
@@ -127,6 +127,27 @@ namespace Logistics_DAL
             else
             {
                 result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_delete_by_id, parameters);
+            }
+            return result == 1;
+
+        }
+
+
+        public static bool DeleteByMergeID( long meregeID, AkmiiMySqlTransaction trans = null)
+        {
+
+            MySqlParameter[] parameters = {
+                        new MySqlParameter("@_MergeID",meregeID)
+            };
+
+            int result = 0;
+            if (trans == null)
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMergeStatus.logistics_customer_order_merge_status_delete_by_merge_id, parameters);
+            }
+            else
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.CustomerOrderMergeStatus.logistics_customer_order_merge_status_delete_by_merge_id, parameters);
             }
             return result == 1;
 

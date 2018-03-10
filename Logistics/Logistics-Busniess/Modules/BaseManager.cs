@@ -68,7 +68,7 @@ namespace Logistics_Busniess
 
         public static List<logistics_base_message> GetMessageListByPage(GetItemListByPageRequest request, long userID, ref int totalCount)
         {
-            return MessageDal.GetItemListByPage(request.PageIndex, request.PageSize, userID, ref totalCount);
+            return MessageDal.GetItemListByPage(request.PageIndex, request.PageSize, (int)request.messageType, userID, ref totalCount);
         }
 
         public static bool InsertMessage(MessageInsertRequest item)
@@ -79,6 +79,7 @@ namespace Logistics_Busniess
             message.type = (int)item.type;
             message.message = item.message;
             message.userid = item.userid;
+            message.CreatedBy = item.userid;
 
             return MessageDal.Insert(message);
         }

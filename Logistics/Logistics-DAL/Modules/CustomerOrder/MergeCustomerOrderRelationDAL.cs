@@ -131,6 +131,25 @@ namespace Logistics_DAL
 
         }
 
+        public static bool DeleteByMergeID(long mergeID, AkmiiMySqlTransaction trans = null)
+        {
+
+            MySqlParameter[] parameters = {
+                        new MySqlParameter("@_mergeID",mergeID),
+            };
+
+            int result = 0;
+            if (trans == null)
+            { 
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMergeRelation.logistics_customer_order_merge_relation_delete_by_merge_id, parameters);
+            }
+            else
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.CustomerOrderMergeRelation.logistics_customer_order_merge_relation_delete_by_merge_id, parameters);
+            }
+            return result == 1;
+
+        }
 
         public static List<logistics_customer_order> SelectCustomerOrderExpressIndex(string Name, long TenantID = BusinessConstants.Admin.TenantID)
         {

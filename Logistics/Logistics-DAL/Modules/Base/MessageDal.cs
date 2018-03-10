@@ -10,11 +10,12 @@ namespace Logistics_DAL
 {
     public class MessageDal : DalBase
     {
-        public static List<logistics_base_message> GetItemListByPage(int pageIndex, int pageSize, long userid, ref int totalCount, long TenantID = BusinessConstants.Admin.TenantID)
+        public static List<logistics_base_message> GetItemListByPage(int pageIndex, int pageSize, int type ,long userid, ref int totalCount, long TenantID = BusinessConstants.Admin.TenantID)
         {
             var result = new List<logistics_base_message>();
             MySqlParameter[] parameters = {
                 new MySqlParameter("@_userID",userid),
+                   new MySqlParameter("@_messageType",type),
                 new MySqlParameter("@_TenantID", TenantID),
                 new MySqlParameter("@_PageIndex", pageIndex),
                 new MySqlParameter("@_PageSize", pageSize),

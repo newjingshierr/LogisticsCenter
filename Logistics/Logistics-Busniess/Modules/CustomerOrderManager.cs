@@ -67,6 +67,16 @@ namespace Logistics_Busniess
                 }
             }
 
+            logistics_base_message message = new logistics_base_message();
+            message.ID = IdWorker.GetID();
+            message.TenantID = BusinessConstants.Admin.TenantID;
+            message.type = (int)messageType.WarehouseIn;
+            message.message = customerOrder.CustomerOrderNo;
+            message.userid = item.userid;
+            message.CreatedBy = warehouseadmin;
+
+            //   return MessageDal.Insert(message);
+
 
             var dbResult = false;
 
@@ -75,7 +85,7 @@ namespace Logistics_Busniess
                 dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
                 {
                     var result = true;
-                    result = CustomerOrderDAL.Insert(customerOrder, trans) && CustomerOrderStatusDAL.Insert(customerOrderStatus, trans) && AttachmentDAL.UpdateList(attachmentList, trans);
+                    result = CustomerOrderDAL.Insert(customerOrder, trans) && CustomerOrderStatusDAL.Insert(customerOrderStatus, trans) && AttachmentDAL.UpdateList(attachmentList, trans) && MessageDal.Insert(message, trans);
                     return result;
                 });
             }
@@ -219,10 +229,81 @@ namespace Logistics_Busniess
 
             return customerOrderList;
         }
+
+
     }
 
     public class CustomerOrderMergeManger
     {
+        public static bool RefuseCustomerOrderMerge(CustomerOrderMergeRefuseRequest request, long currentUserID)
+        {
+            //删除合并订单
+            //删除合并订单状态
+            //删除合并订单明细
+            //更新关联订单的状态为 1
+            var customerOrderMerge = MergeCustomerOrderDAL.GetItem(request.CustomerOrderMergeID);
+            if (customerOrderMerge == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.CustomerOrderMergeNotFound, $"Customer Order Merge Not Found");
+            }
+            var customerOrderMergeStatus = MergeCustomerOrderStatusDAL.GetItem(customerOrderMerge.ID);
+            if (customerOrderMergeStatus == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.CustomerOrderMergeStatusNotFound, $"Customer Order Merge Status Not Found");
+            }
+            var relationList = MergeCustomerOrderRelationDAL.GetItems(customerOrderMerge.ID);
+            if (relationList == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.CustomerOrderMergeRelationNotFound, $"Customer Order Merge Relation Not Found");
+            }
+            List<logistics_customer_order_status> customerOrderStatusList = new List<logistics_customer_order_status>();
+
+            foreach (var o in relationList)
+            {
+                var customerOrderStatus = CustomerOrderStatusDAL.SelectOrderStatusByOrderID(o.orderID);
+                if (customerOrderStatus == null)
+                {
+                    throw new LogisticsException(SystemStatusEnum.OrderStatusNotFound, $"Order Status Not Found");
+                }
+
+                customerOrderStatus.currentStatus = "1";//拒绝审批，状态更改为1；仓库打包确认
+                customerOrderStatus.ModifiedBy = currentUserID;
+                customerOrderStatusList.Add(customerOrderStatus);
+            }
+
+            var dbResult = false;
+
+            using (var conn = ConnectionManager.GetWriteConn())
+            {
+                dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
+                {
+                    var result = true;
+                    result = MergeCustomerOrderDAL.Delete(BusinessConstants.Admin.TenantID, request.CustomerOrderMergeID, trans)
+                    && MergeCustomerOrderStatusDAL.DeleteByMergeID(customerOrderMerge.ID, trans) &&
+                    MergeCustomerOrderDetailDAL.DeleteByMergeCustomerOrderID(customerOrderMerge.ID, trans) &&
+                     MergeCustomerOrderRelationDAL.DeleteByMergeID(customerOrderMerge.ID, trans) &&
+                    CustomerOrderStatusDAL.UpdateList(customerOrderStatusList, trans);
+                    return result;
+                });
+            }
+
+            return dbResult;
+
+
+        }
+
+        public static int GetOrderMergeStatusSummary(GetOrderMergeStatusSummaryReqeust request, long userid)
+        {
+            if (request.isAdmin)
+            {
+                return MergeCustomerOrderDAL.GetOrderMergeStatusAdminSummary(request.currentStep);
+            }
+            else
+            {
+                return MergeCustomerOrderDAL.GetOrderMergeStatusSummary(userid, request.currentStep);
+            }
+
+        }
         public static CustomerOrderMergeItemVW GetItem(CustomerOrderMergeSelectItemRequest reqeust)
         {
             CustomerOrderMergeItemVW vm = new CustomerOrderMergeItemVW();
@@ -241,20 +322,42 @@ namespace Logistics_Busniess
 
         public static List<CustomerOrderMergeVM> GetListByPage(CustomerOrderMergeSelectRequest request, long userID, ref int totalCount)
         {
-            return MergeCustomerOrderDAL.GetListByPage(userID,
-                  request.customerOrderMergeNo,
-                  request.CustomerChooseChannelID,
-                  request.recipient,
-                  request.country,
-                  request.ChannelID,
-                  request.deliverTimeBegin,
-                  request.deliverTimeEnd,
-                  request.AgentID,
-                  request.orderMergeTimeBegin,
-                  request.orderMergeTimeEnd,
-                  request.expressNo,
-                  request.currentStep,
-                  request.currentStatus, request.PageIndex, request.PageSize, ref totalCount);
+            if (request.currentStep == BusinessConstants.CustomerOrderMergeStep.waitforapprove)
+            {
+                return MergeCustomerOrderDAL.GetListForWaitForApproveByPage(userID,
+                            request.customerOrderMergeNo,
+                            request.CustomerChooseChannelID,
+                            request.recipient,
+                            request.country,
+                            request.ChannelID,
+                            request.deliverTimeBegin,
+                            request.deliverTimeEnd,
+                            request.AgentID,
+                            request.orderMergeTimeBegin,
+                            request.orderMergeTimeEnd,
+                            request.expressNo,
+                            request.currentStep,
+                            request.currentStatus, request.PageIndex, request.PageSize, ref totalCount);
+            }
+            else
+            {
+                return MergeCustomerOrderDAL.GetListByPage(userID,
+                 request.customerOrderMergeNo,
+                 request.CustomerChooseChannelID,
+                 request.recipient,
+                 request.country,
+                 request.ChannelID,
+                 request.deliverTimeBegin,
+                 request.deliverTimeEnd,
+                 request.AgentID,
+                 request.orderMergeTimeBegin,
+                 request.orderMergeTimeEnd,
+                 request.expressNo,
+                 request.currentStep,
+                 request.currentStatus, request.PageIndex, request.PageSize, ref totalCount);
+            }
+
+
 
         }
 
@@ -359,6 +462,17 @@ namespace Logistics_Busniess
                 detailList.Add(detail);
             }
 
+            //消息
+            logistics_base_message message = new logistics_base_message();
+            message.ID = IdWorker.GetID();
+            message.TenantID = BusinessConstants.Admin.TenantID;
+            message.type = (int)messageType.CustomerServiceConfirm;
+            message.message = customerOrderMerge.MergeOrderNo;
+            message.userid = item.userid;
+            message.CreatedBy = currentUserID;
+
+            //  return MessageDal.Insert(message);
+
             var dbResult = false;
 
             using (var conn = ConnectionManager.GetWriteConn())
@@ -370,7 +484,7 @@ namespace Logistics_Busniess
                     MergeCustomerOrderRelationDAL.InsertList(relationList, trans) &&
                     MergeCustomerOrderDetailDAL.InsertList(detailList, trans) &&
                     MergeCustomerOrderStatusDAL.Insert(status, trans) &&
-                    CustomerOrderStatusDAL.UpdateList(customerOrderStatusList,trans);
+                    CustomerOrderStatusDAL.UpdateList(customerOrderStatusList, trans) && MessageDal.Insert(message, trans);
                     return result;
                 });
             }
@@ -382,10 +496,16 @@ namespace Logistics_Busniess
         {
 
             //主订单信息
+            var customerOrderMergeModel = MergeCustomerOrderDAL.GetItem(item.ID);
+            if (customerOrderMergeModel == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.CustomerOrderMergeNotFound, $"Custome rOrder Merge Not Found");
+            }
+
             logistics_customer_order_merge customerOrderMerge = new logistics_customer_order_merge();
             customerOrderMerge.TenantID = BusinessConstants.Admin.TenantID;
             customerOrderMerge.ID = item.ID;
-            customerOrderMerge.UserID = item.userid;
+            customerOrderMerge.UserID = currentUserID;
             customerOrderMerge.CustomerMark = item.CustomerMark;
             customerOrderMerge.CustomerChooseChannelID = item.CustomerChooseChannelID;
             customerOrderMerge.ModifiedBy = currentUserID;
@@ -420,6 +540,16 @@ namespace Logistics_Busniess
             customerOrderMerge.AgentID = item.AgentID;
             customerOrderMerge.AgentName = item.AgentName;
 
+            //合并订单状态
+            var mergeOrderStatus = MergeCustomerOrderStatusDAL.GetItem(item.ID);
+            if (mergeOrderStatus == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.CustomerOrderMergeStatusNotFound, $"Customer Order Merge Status Not Found");
+            }
+            mergeOrderStatus.currentStep = item.currentStep;
+            mergeOrderStatus.currentStatus = item.currentStatus;
+            mergeOrderStatus.ModifiedBy = currentUserID;
+
             //产品明细
             logistics_customer_order_merge_detail detail;
             List<logistics_customer_order_merge_detail> detailList = new List<logistics_customer_order_merge_detail>();
@@ -440,6 +570,34 @@ namespace Logistics_Busniess
                 detailList.Add(detail);
             }
 
+            var type = -1;
+            if (item.currentStep == CustomerOrderMergeStep.CustomerServiceConfirm)
+            {
+                type = (int)messageType.CustomerServiceConfirm;
+            }
+            else if (item.currentStep == CustomerOrderMergeStep.WarehousePackege)
+            {
+                type = (int)messageType.WarehousePackge;
+            }
+            else if (item.currentStep == CustomerOrderMergeStep.WaitForPay)
+            {
+                type = (int)messageType.WaitForPay;
+            }
+            else if (item.currentStep == CustomerOrderMergeStep.WaitForDelivery )
+            {
+                type = (int)messageType.Delivered;
+            }
+
+
+
+            logistics_base_message message = new logistics_base_message();
+            message.ID = IdWorker.GetID();
+            message.TenantID = BusinessConstants.Admin.TenantID;
+            message.type = (int)messageType.WarehouseIn;
+            message.message = customerOrderMergeModel.MergeOrderNo;
+            message.userid = customerOrderMergeModel.UserID;
+            message.CreatedBy = currentUserID;
+
             var dbResult = false;
 
             using (var conn = ConnectionManager.GetWriteConn())
@@ -455,7 +613,7 @@ namespace Logistics_Busniess
                         balance.TenantID = BusinessConstants.Admin.TenantID;
                         balance.BalanceID = IdWorker.GetID();
                         balance.CustomerOrderMergeID = item.ID;
-                        balance.UserID = item.userid;
+                        balance.UserID = currentUserID;
                         balance.UserID = item.AgentID;
                         balance.Amount = item.totalFee;
                         balance.RemainAmount = item.totalFee;
@@ -483,7 +641,7 @@ namespace Logistics_Busniess
                         transaction.Amount = item.totalFee;
                         transaction.DataSource = TransactionDataSource.customerConsume;
                         transaction.Comment = TransactionComment.customerConsume;
-                        transaction.CreatedBy = item.userid;
+                        transaction.CreatedBy = currentUserID;
 
                         var transactionLog = new logistics_customer_order_merge_transaction_log();
                         transactionLog.TenantID = BusinessConstants.Admin.TenantID;
@@ -493,7 +651,7 @@ namespace Logistics_Busniess
                         transactionLog.Amount = item.totalFee;
                         transactionLog.DataSource = TransactionDataSource.customerConsume;
                         transactionLog.Comment = TransactionComment.customerConsume;
-                        transactionLog.CreatedBy = item.userid;
+                        transactionLog.CreatedBy = currentUserID;
 
                         var model = CustomerOrderMergeBalanceDAL.GetMergeBalanceModelByOrderMergeID(item.ID);
                         if (model == null)
@@ -531,7 +689,7 @@ namespace Logistics_Busniess
                         balance.TenantID = BusinessConstants.Admin.TenantID;
                         balance.BalanceID = IdWorker.GetID();
                         balance.CustomerOrderMergeID = item.ID;
-                        balance.UserID = item.userid;
+                        balance.UserID = currentUserID;
                         balance.UserID = item.AgentID;
                         balance.Amount = item.freightFee;
                         balance.RemainAmount = item.freightFee;
@@ -540,7 +698,10 @@ namespace Logistics_Busniess
                         balance.ModifiedBy = currentUserID;
                         result = result && CustomerOrderMergeBalanceDAL.Insert(balance, trans);
                     }
-                    //
+                    //状态更新 删除明细，更新明细；
+                    result = result && MergeCustomerOrderStatusDAL.Update(mergeOrderStatus, trans) &&
+                    MergeCustomerOrderDetailDAL.DeleteByMergeCustomerOrderID(item.ID, trans) &&
+                    MergeCustomerOrderDetailDAL.InsertList(detailList, trans)&& MessageDal.Insert(message, trans);
 
                     return result;
                 });

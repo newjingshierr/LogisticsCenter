@@ -135,6 +135,24 @@ namespace Logistics_DAL
 
         }
 
+        public static bool DeleteByMergeCustomerOrderID(long CustomerOrderMergeID, AkmiiMySqlTransaction trans = null)
+        {
+            MySqlParameter[] parameters = {
+                        new MySqlParameter("@_mergeID",CustomerOrderMergeID)
+            };
+
+            int result = 0;
+            if (trans == null)
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMergeDetail.logistics_customer_order_merge_detail_delete_by_merge_id, parameters);
+            }
+            else
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.CustomerOrderMergeDetail.logistics_customer_order_merge_detail_delete_by_merge_id, parameters);
+            }
+            return result == 1;
+        }
+
 
         public static List<logistics_customer_order> SelectCustomerOrderExpressIndex(string Name, long TenantID = BusinessConstants.Admin.TenantID)
         {
@@ -189,7 +207,7 @@ namespace Logistics_DAL
                                 new MySqlParameter("@_mergeOrderID", customerOrderMergeID),
             };
 
-            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMergeDetail.logistics_customer_order_merge_deltail_select_by_merge_id, parameters);
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMergeDetail.logistics_customer_order_merge_detail_select_by_merge_id, parameters);
             if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
             {
                 result = ConvertHelper<logistics_customer_order_merge_detail>.DtToList(dbResult.Tables[0]);
@@ -201,5 +219,7 @@ namespace Logistics_DAL
 
             return result;
         }
+
+
     }
 }

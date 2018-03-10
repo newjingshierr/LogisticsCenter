@@ -13,6 +13,82 @@ namespace Logistics_DAL
     public class MergeCustomerOrderDAL
     {
 
+        public static List<CustomerOrderMergeVM> GetListForWaitForApproveByPage(long userID,
+           string customerOrderMergeNo,
+           long CustomerChooseChannelID,
+           string recipient,
+           string country,
+           long ChannelID,
+           System.DateTime deliverTimeBegin,
+           System.DateTime deliverTimeEnd,
+           long AgentID,
+           System.DateTime orderMergeTimeBegin,
+            System.DateTime orderMergeTimeEnd,
+            string expressNo,
+            string currentStep,
+            string currentStatus,
+           int PageIndex, int PageSize, ref int totalCount)
+        {
+            var result = new List<CustomerOrderMergeVM>();
+            var total = new MySqlParameter("@_TotalCount", totalCount) { Direction = ParameterDirection.Output };
+
+
+
+            MySqlParameter[] parameters = {
+                                new MySqlParameter("@_TenantID", BusinessConstants.Admin.TenantID),
+                                new MySqlParameter("@_userID", userID),
+                                new MySqlParameter("@_customerOrderMergeNo", customerOrderMergeNo ==null ?"":customerOrderMergeNo),
+                                new MySqlParameter("@_CustomerChooseChannelID", CustomerChooseChannelID),
+                                new MySqlParameter("@_recipient", recipient == null ?"":recipient),
+                                new MySqlParameter("@_country", country == null ?"":country),
+                                new MySqlParameter("@_ChannelID", ChannelID),
+                                new MySqlParameter("@_deliverTimeBegin", deliverTimeBegin.ConvertDBTime()),
+                                new MySqlParameter("@_deliverTimeEnd", deliverTimeEnd.ConvertDBTime()),
+                                new MySqlParameter("@_AgentID", AgentID),
+                                new MySqlParameter("@_orderMergeTimeBegin", orderMergeTimeBegin.ConvertDBTime()),
+                                new MySqlParameter("@_orderMergeTimeEnd", orderMergeTimeEnd.ConvertDBTime()),
+                                new MySqlParameter("@_expressNo", expressNo == null ?"":expressNo),
+                                new MySqlParameter("@_currentStep", currentStep == null ?"":currentStep),
+                                new MySqlParameter("@_currentStatus", currentStatus == null ?"":currentStatus),
+                               new MySqlParameter("@_PageIndex", PageIndex),
+                               new MySqlParameter("@_PageSize", PageSize),
+                                total
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMerge.logistics_customer_order_merge_select_by_page, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<CustomerOrderMergeVM>.DtToList(dbResult.Tables[0]);
+                totalCount = (total.Value + "").Convert2Int32();
+            }
+            else
+            {
+                result = null;
+            }
+            result.ForEach(o =>
+            {
+                if (o.currentStep == "2")
+                {
+                    o.currentStep = "客服确认中";
+                }
+                else if (o.currentStep == "3")
+                {
+                    o.currentStep = "仓库打包中";
+                }
+                else if (o.currentStep == "4")
+                {
+                    o.currentStep = "待付款";
+
+                }
+                else if (o.currentStep == "5")
+                {
+                    o.currentStep = "待发货";
+                }
+            });
+
+            return result;
+        }
+
         public static List<CustomerOrderMergeVM> GetListByPage(long userID,
             string customerOrderMergeNo,
             long CustomerChooseChannelID,
@@ -215,11 +291,11 @@ namespace Logistics_DAL
             int result = 0;
             if (trans == null)
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_delete_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMerge.logistics_customer_order_merge_delete_by_id, parameters);
             }
             else
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_delete_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.CustomerOrderMerge.logistics_customer_order_merge_delete_by_id, parameters);
             }
             return result == 1;
 
@@ -285,6 +361,48 @@ namespace Logistics_DAL
             else
             {
                 result = null;
+            }
+
+            return result;
+        }
+
+        public static int GetOrderMergeStatusSummary(long userid ,string step)
+        {
+            var result = 0;
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_userid",userid),
+                new MySqlParameter("@_step", step),
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMerge.logistics_customer_order_merge_status_summary, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = Convert.ToInt32(dbResult.Tables[0].Rows[0][0]);
+            }
+            else
+            {
+                result = 0;
+            }
+
+            return result;
+        }
+
+
+        public static int GetOrderMergeStatusAdminSummary( string step)
+        {
+            var result = 0;
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_step", step),
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMerge.logistics_customer_order_merge_status_summary, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = Convert.ToInt32(dbResult.Tables[0].Rows[0][0]);
+            }
+            else
+            {
+                result = 0;
             }
 
             return result;
