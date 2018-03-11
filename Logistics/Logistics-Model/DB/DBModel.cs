@@ -2106,7 +2106,8 @@ namespace Logistics_Model
             set { _modifiedby = value; }
         }
 
-        public decimal count { get; set; }
+        //public decimal count { get; set; }
+        public int productCount { get; set; }
 
     }
     public class logistics_customer_order_merge_relation

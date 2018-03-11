@@ -164,6 +164,9 @@ namespace Logistics_Model
 
         [Description("CustomerOrdeAttachmentDeleteFailed")]
         CustomerOrdeAttachmentDeleteFailed = 42005,
+
+        [Description("Order Status is approved can not be deleted")]
+        OrderIsApprovedCanNotBeDeleted = 42006,
         //合并订单 44000 - 44500
         #region
         [Description("CustomerOrderMergeBalanceNotFound")]

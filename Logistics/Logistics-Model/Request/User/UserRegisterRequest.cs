@@ -120,12 +120,12 @@ namespace Logistics_Model
         public decimal packageHeight { get; set; } = 0;
         public decimal packageWidth { get; set; } = 0;
         public decimal settlementWeight { get; set; } = 0;
-        public decimal freightFee { get; set; } = 0;
-        public decimal tax { get; set; } = 0;
+        //public decimal freightFee { get; set; } = 0;
+        //public decimal tax { get; set; } = 0;
         public decimal serviceFee { get; set; } = 0;
         public decimal remoteFee { get; set; } = 0;
         public decimal magneticinspectionFee { get; set; }
-        public decimal totalFee { get; set; } = 0;
+        //public decimal totalFee { get; set; } = 0;
         [JsonConverter(typeof(Long2StringConverter))]
         public long ChannelID { get; set; } = 0;
         public string ChannelName { get; set; }
@@ -147,7 +147,7 @@ namespace Logistics_Model
         public string productNameEN { get; set; }
         public string HSCode { get; set; }
         public decimal declareUnitPrice { get; set; }
-        public decimal count { get; set; }
+        public int productCount { get; set; }
 
     }
 
@@ -158,7 +158,7 @@ namespace Logistics_Model
         public string productNameEN { get; set; }
         public string HSCode { get; set; }
         public decimal declareUnitPrice { get; set; }
-        public decimal count { get; set; }
+        public int productCount { get; set; }
 
     }
     public class CustomerOrderRequest

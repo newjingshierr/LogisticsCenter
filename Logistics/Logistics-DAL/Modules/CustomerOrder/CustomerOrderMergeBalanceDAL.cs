@@ -88,7 +88,7 @@ namespace Logistics_DAL
 
             MySqlParameter[] parameters = {
                         new MySqlParameter("@_TenantID", model.TenantID),
-                        new MySqlParameter("@_ID",model.BalanceID),
+                        new MySqlParameter("@_BalanceID",model.BalanceID),
                           new MySqlParameter("@_CustomerOrderMergeID",model.CustomerOrderMergeID),
                         new MySqlParameter("@_UserID",model.UserID),
                         new MySqlParameter("@_AgentID",model.AgentID),
@@ -120,12 +120,10 @@ namespace Logistics_DAL
                         new MySqlParameter("@_TenantID", model.TenantID),
                         new MySqlParameter("@_BalanceID",model.BalanceID),
                         new MySqlParameter("@_CustomerOrderMergeID", model.CustomerOrderMergeID),
-                        new MySqlParameter("@_CustomerOrderMergeNo",model.CustomerOrderMergeNo),
                         new MySqlParameter("@_UserID",model.UserID),
                         new MySqlParameter("@_Amount",model.Amount),
                         new MySqlParameter("@_RemainAmount",model.RemainAmount),
                         new MySqlParameter("@_type",model.type),
-                        new MySqlParameter("@_InWeight",model.CreatedBy),
                         new MySqlParameter("@_ModifiedBy",model.CreatedBy),
             };
 

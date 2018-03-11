@@ -85,7 +85,7 @@ namespace Logistics_DAL
             public const string logistics_customer_order_merge_balance_GetList = "logistics_customer_order_merge_balance_GetList";
             public const string logistics_customer_order_merge_balance_GetModel = "logistics_customer_order_merge_balance_GetModel";
             public const string logistics_customer_order_merge_balance_GetModel_By_MergeID = "logistics_customer_order_merge_balance_GetModel_By_MergeID";
-            public const string logistics_customer_order_merge_balance_log_ADD = "logistics_customer_order_merge_balance_log_Delete";
+            public const string logistics_customer_order_merge_balance_log_ADD = "logistics_customer_order_merge_balance_log_ADD";
             public const string logistics_customer_order_merge_balance_log_Exists = "logistics_customer_order_merge_balance_log_Exists";
             public const string logistics_customer_order_merge_balance_log_GetList = "logistics_customer_order_merge_balance_log_GetList";
             public const string logistics_customer_order_merge_balance_log_GetModel = "logistics_customer_order_merge_balance_log_GetModel";

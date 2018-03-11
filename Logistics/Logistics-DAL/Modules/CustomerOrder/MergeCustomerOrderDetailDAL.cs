@@ -58,6 +58,7 @@ namespace Logistics_DAL
                         new MySqlParameter("@_productName", model.productName),
                        new MySqlParameter("@_productNameEN", model.productNameEN),
                         new MySqlParameter("@_HSCode", model.HSCode),
+                        new MySqlParameter("@_ProductCode", model.productCount),
                         new MySqlParameter("@_declareUnitPrice",model.declareUnitPrice),
                         new MySqlParameter("@_declareTotal",model.declareTotal),
                         new MySqlParameter("@_CreatedBy",model.CreatedBy),

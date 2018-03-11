@@ -55,36 +55,37 @@ namespace Logistics_DAL
                                 total
             };
 
-            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMerge.logistics_customer_order_merge_select_by_page, parameters);
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMerge.logistics_customer_order_merge_select_for_approve_by_page, parameters);
             if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
             {
                 result = ConvertHelper<CustomerOrderMergeVM>.DtToList(dbResult.Tables[0]);
                 totalCount = (total.Value + "").Convert2Int32();
+                result.ForEach(o =>
+                {
+                    if (o.currentStep == "2")
+                    {
+                        o.currentStep = "客服确认中";
+                    }
+                    else if (o.currentStep == "3")
+                    {
+                        o.currentStep = "仓库打包中";
+                    }
+                    else if (o.currentStep == "4")
+                    {
+                        o.currentStep = "待付款";
+
+                    }
+                    else if (o.currentStep == "5")
+                    {
+                        o.currentStep = "待发货";
+                    }
+                });
             }
             else
             {
                 result = null;
             }
-            result.ForEach(o =>
-            {
-                if (o.currentStep == "2")
-                {
-                    o.currentStep = "客服确认中";
-                }
-                else if (o.currentStep == "3")
-                {
-                    o.currentStep = "仓库打包中";
-                }
-                else if (o.currentStep == "4")
-                {
-                    o.currentStep = "待付款";
-
-                }
-                else if (o.currentStep == "5")
-                {
-                    o.currentStep = "待发货";
-                }
-            });
+           
 
             return result;
         }
@@ -136,31 +137,32 @@ namespace Logistics_DAL
             {
                 result = ConvertHelper<CustomerOrderMergeVM>.DtToList(dbResult.Tables[0]);
                 totalCount = (total.Value + "").Convert2Int32();
+                result.ForEach(o =>
+                {
+                    if (o.currentStep == "2")
+                    {
+                        o.currentStep = "客服确认中";
+                    }
+                    else if (o.currentStep == "3")
+                    {
+                        o.currentStep = "仓库打包中";
+                    }
+                    else if (o.currentStep == "4")
+                    {
+                        o.currentStep = "待付款";
+
+                    }
+                    else if (o.currentStep == "5")
+                    {
+                        o.currentStep = "待发货";
+                    }
+                });
             }
             else
             {
                 result = null;
             }
-            result.ForEach(o =>
-            {
-                if (o.currentStep == "2")
-                {
-                    o.currentStep = "客服确认中";
-                }
-                else if (o.currentStep == "3")
-                {
-                    o.currentStep = "仓库打包中";
-                }
-                else if (o.currentStep == "4")
-                {
-                    o.currentStep = "待付款";
-
-                }
-                else if (o.currentStep == "5")
-                {
-                    o.currentStep = "待发货";
-                }
-            });
+           
 
             return result;
         }

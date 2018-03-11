@@ -91,6 +91,8 @@ namespace Logistics_DAL
                         new MySqlParameter("@_TransationID", model.TransationID),
                         new MySqlParameter("@_CustomerOrderMergeID",model.CustomerOrderMergeID),
                         new MySqlParameter("@_CustomerOrderMergeNo",model.CustomerOrderMergeNo),
+                        new MySqlParameter("@_DataSource",model.DataSource),
+                        new MySqlParameter("@_Amount",model.Amount),
                         new MySqlParameter("@_Comment",model.Comment),
                         new MySqlParameter("@_CreatedBy",model.CreatedBy),
                         new MySqlParameter("@_ModifiedBy",model.ModifiedBy),
