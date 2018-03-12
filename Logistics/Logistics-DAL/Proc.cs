@@ -167,6 +167,7 @@ namespace Logistics_DAL
             public const string logistics_customer_order_select_by_id = "logistics_customer_order_select_by_id";
             public const string logistics_customer_order_express_index = "logistics_customer_order_express_index";
             public const string logistics_customer_order_index = "logistics_customer_order_index";
+            public const string logistics_customer_order_GetModel = "logistics_customer_order_GetModel";
         }
 
         public class Quotation

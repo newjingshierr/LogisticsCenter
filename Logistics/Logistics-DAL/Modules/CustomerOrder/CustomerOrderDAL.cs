@@ -34,7 +34,7 @@ namespace Logistics_DAL
         }
 
 
-        public static List<logistics_customer_order> GetItemListByPage(long TenantID, long userID,long warehouseAdmin, string customerOrderNo,int customerOrderStatus,
+        public static List<logistics_customer_order> GetItemListByPage(long TenantID, long userID, long warehouseAdmin, string customerOrderNo, int customerOrderStatus,
             string expressNo,
                 long expressTypeID,
                     string TransferNo,
@@ -138,6 +138,7 @@ namespace Logistics_DAL
                         new MySqlParameter("@_InWidth",model.InWidth),
                         new MySqlParameter("@_InHeight",model.InHeight),
                         new MySqlParameter("@_WareHouseID",model.WareHouseID),
+                        new MySqlParameter("@_WarehouseAdminRemark",model.WarehouseAdminRemark),
                         new MySqlParameter("@_CustomerServiceID",model.CustomerServiceID),
                         new MySqlParameter("@_ModifiedBy",model.ModifiedBy),
             };
@@ -218,6 +219,27 @@ namespace Logistics_DAL
             }
 
             return result;
+        }
+
+        public static logistics_customer_order logistics_customer_order_GetModel(long customerOrderID)
+        {
+            var result = new logistics_customer_order();
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_ID", customerOrderID)
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_GetModel, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<logistics_customer_order>.DtToModel(dbResult.Tables[0]);
+            }
+            else
+            {
+                result = null;
+            }
+
+            return result;
+
         }
 
     }

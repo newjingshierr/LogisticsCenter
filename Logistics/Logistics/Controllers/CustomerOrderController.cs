@@ -345,6 +345,25 @@ namespace Logistics.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("order/item")]
+        public ResponseMessage<CustomerOrderView> GetCustomerOrderItem([FromUri] logistics_customer_order_GetModel_Request request)
+        {
+            var result = new CustomerOrderView();
+            try
+            {
+                result = CustomerOrderManager.logistics_customer_order_GetModel(request);
+
+                return GetResult(result);
+            }
+
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+        }
+
 
     }
 
@@ -471,6 +490,10 @@ namespace Logistics.Controllers
         public ResponseMessage<List<CustomerOrderMergeVM>> GetItemListByPage([FromUri]CustomerOrderMergeSelectRequest request)
         {
             LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderController));
+            if (request == null)
+            {
+                return GetErrorResult<List<CustomerOrderMergeVM>>(SystemStatusEnum.InvalidRequest);
+            }
             int totalCount = 0;
             var result = new List<CustomerOrderMergeVM>();
             var userID = 0L;

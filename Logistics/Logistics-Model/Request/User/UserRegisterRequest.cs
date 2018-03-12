@@ -221,6 +221,8 @@ namespace Logistics_Model
 
         public List<string> AttachmentIDList { get; set; } = null;
 
+        public string WarehouseAdminRemark { get; set; } = "";
+
     }
 
 
@@ -356,6 +358,14 @@ namespace Logistics_Model
     {
         public string customerOrderID { get; set; }
     }
+
+    public class logistics_customer_order_GetModel_Request : BaseRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long customerOrderID { get; set; }
+
+    }
+
 
     public class GeIndexRequest : BaseRequest
     {

@@ -1944,12 +1944,9 @@ namespace Logistics_Model
         /// <summary>
         /// deliverTime
         /// </summary>		
-        private DateTime? _delivertime;
-        public DateTime? deliverTime
-        {
-            get { return _delivertime; }
-            set { _delivertime = value; }
-        }
+        [JsonConverter(typeof(DateTime2IOSStringConverter))]
+        public DateTime deliverTime { get; set; }
+        
         /// <summary>
         /// AgentID
         /// </summary>		

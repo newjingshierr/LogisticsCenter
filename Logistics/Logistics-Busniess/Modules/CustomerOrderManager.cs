@@ -110,6 +110,7 @@ namespace Logistics_Busniess
             customerOrder.InHeight = item.InHeight;
             customerOrder.WareHouseID = item.WareHouseID;
             customerOrder.CustomerServiceID = item.CustomerServiceID;
+            customerOrder.WarehouseAdminRemark = item.WarehouseAdminRemark;
             customerOrder.ModifiedBy = BusinessConstants.Admin.TenantID;
 
 
@@ -232,6 +233,16 @@ namespace Logistics_Busniess
             }
 
             return customerOrderList;
+        }
+
+        public static CustomerOrderView logistics_customer_order_GetModel(logistics_customer_order_GetModel_Request request)
+        {
+            CustomerOrderView view = new CustomerOrderView();
+            view.customerOrder = CustomerOrderDAL.logistics_customer_order_GetModel(request.customerOrderID);
+            view.attachList = AttachmentDAL.GetAttachmentListByCustomerOrderID(request.customerOrderID);
+            view.orderStatus = CustomerOrderStatusDAL.SelectOrderStatusByOrderID(request.customerOrderID);
+
+            return view;
         }
 
 
@@ -405,7 +416,7 @@ namespace Logistics_Busniess
             customerOrderMerge.InVolumeTotal = customerOrderList.Sum(o => o.InVolume);
             customerOrderMerge.InPackageCountTotal = customerOrderList.Sum(o => o.InPackageCount);
             customerOrderMerge.CreatedBy = currentUserID;
-            customerOrderMerge.deliverTime = null;
+            //customerOrderMerge.deliverTime = null;
 
             //合并订单状态
             logistics_customer_order_merge_status status = new logistics_customer_order_merge_status();
@@ -642,18 +653,24 @@ namespace Logistics_Busniess
                         balance.type = CustomerOrderMergeBalanceType.customerReceivable;
                         balance.CreatedBy = currentUserID;
                         balance.ModifiedBy = currentUserID;
-                        //logistics_customer_order_merge_balance_log balanceLog = new logistics_customer_order_merge_balance_log();
-                        //balanceLog.TransationID = BusinessConstants.Admin.TenantID;
-                        //balanceLog.ID = IdWorker.GetID();
-                        //balanceLog.BalanceID = balance.BalanceID;
-                        //balanceLog.CustomerOrderMergeID = item.ID;
-                        //balanceLog.DataSource = BalanceLogDataSource.CustomerPayable;
+                        logistics_customer_order_merge_balance_log balanceLog = new logistics_customer_order_merge_balance_log();
+                        balanceLog.TransationID = BusinessConstants.Admin.TenantID;
+                        balanceLog.ID = IdWorker.GetID();
+                        balanceLog.BalanceID = balance.BalanceID;
+                        balanceLog.CustomerOrderMergeID = item.ID;
+                        balanceLog.BalanceDate = System.DateTime.Now;
+                        balanceLog.Type = 1;//产生消费
+                        balanceLog.DataSource = BalanceLogDataSource.CustomerPayable;
+                        balanceLog.Direction = true;
+                        balanceLog.Orignal = 0;
+                        balanceLog.AfterBalance = customerOrderMerge.totalFee;
+
                         mergeOrderStatus.currentStep = CustomerOrderMergeStep.WaitForPay;
                         mergeOrderStatus.currentStatus = CustomerOrderMergeStatus.waitapprove;
 
 
 
-                        result = result && CustomerOrderMergeBalanceDAL.Insert(balance, trans);
+                        result = result && CustomerOrderMergeBalanceDAL.Insert(balance, trans)&& CustomerOrderMergeBalanceLogDAL.Insert(balanceLog,trans);
                     }
                     else if (item.currentStep == CustomerOrderMergeStep.WaitForPay && item.currentStatus == CustomerOrderMergeStatus.confirmed)
                     {
@@ -725,7 +742,21 @@ namespace Logistics_Busniess
                         balance.type = CustomerOrderMergeBalanceType.agentPayable;
                         balance.CreatedBy = currentUserID;
                         balance.ModifiedBy = currentUserID;
-                        result = result && CustomerOrderMergeBalanceDAL.Insert(balance, trans);
+
+
+                        logistics_customer_order_merge_balance_log balanceLog = new logistics_customer_order_merge_balance_log();
+                        balanceLog.TransationID = BusinessConstants.Admin.TenantID;
+                        balanceLog.ID = IdWorker.GetID();
+                        balanceLog.BalanceID = balance.BalanceID;
+                        balanceLog.CustomerOrderMergeID = item.ID;
+                        balanceLog.Type = 1;//产生消费
+                        balanceLog.BalanceDate = System.DateTime.Now;
+                        balanceLog.DataSource = BalanceLogDataSource.AgentPayable;
+                        balanceLog.Direction = true;
+                        balanceLog.Orignal = 0;
+                        balanceLog.AfterBalance = customerOrderMerge.freightFee;
+
+                        result = result && CustomerOrderMergeBalanceDAL.Insert(balance, trans)&& CustomerOrderMergeBalanceLogDAL.Insert(balanceLog,trans);
                     }
                     //状态更新 删除明细，更新明细；
                     result = result && MergeCustomerOrderStatusDAL.Update(mergeOrderStatus, trans) &&

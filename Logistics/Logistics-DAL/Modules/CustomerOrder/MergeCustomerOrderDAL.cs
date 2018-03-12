@@ -207,7 +207,7 @@ namespace Logistics_DAL
                                                         new MySqlParameter("@_totalFee", model.totalFee),
                                                          new MySqlParameter("@_ChannelID", model.ChannelID),
                                                           new MySqlParameter("@_channelNo", model.channelNo),
-                                                           new MySqlParameter("@_deliverTime", model.deliverTime),
+                                                           new MySqlParameter("@_deliverTime", model.deliverTime.ConvertDBTime()),
                                                             new MySqlParameter("@_AgentID", model.AgentID),
                                                              new MySqlParameter("@_CreatedBy",model.CreatedBy)
             };
@@ -409,5 +409,7 @@ namespace Logistics_DAL
 
             return result;
         }
+
+       
     }
 }

@@ -737,4 +737,11 @@ namespace Logistics_Model
         public int retrunGoodsCount { get; set; }
     }
 
+    public class CustomerOrderView
+    {
+        public logistics_customer_order customerOrder { get; set; }
+        public logistics_customer_order_status orderStatus { get; set; }
+        public List<logistics_base_attachment> attachList { get; set;}
+    }
+
 }
