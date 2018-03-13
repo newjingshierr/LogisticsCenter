@@ -405,6 +405,7 @@ namespace Logistics_Busniess
             customerOrderMerge.CustomerChooseChannelName = customerChooseChannel.Name;
             customerOrderMerge.recipient = item.recipient;
             customerOrderMerge.country = item.country;
+            customerOrderMerge.countryCode = item.countryCode;
             customerOrderMerge.address = item.address;
             customerOrderMerge.city = item.city;
             customerOrderMerge.address = item.city;
@@ -521,61 +522,13 @@ namespace Logistics_Busniess
             customerOrderMerge.ID = item.ID;
             customerOrderMerge.ModifiedBy = currentUserID;
 
-            if (item.currentStep == CustomerOrderMergeStep.CustomerServiceConfirm && item.currentStatus == CustomerOrderMergeStatus.confirmed)
-            {
-                customerOrderMerge.recipient = item.recipient;
-                customerOrderMerge.country = item.country;
-                customerOrderMerge.address = item.address;
-                customerOrderMerge.city = item.city;
-                customerOrderMerge.code = item.code;
-                customerOrderMerge.tel = item.tel;
-                customerOrderMerge.company = item.company;
-                customerOrderMerge.taxNo = item.taxNo;
-                customerOrderMerge.CustomerChooseChannelID = item.CustomerChooseChannelID;
-                customerOrderMerge.serviceFee = item.serviceFee;
-                customerOrderMerge.remoteFee = item.remoteFee;
-                customerOrderMerge.magneticinspectionFee = item.magneticinspectionFee;
-                customerOrderMerge.customerServiceMark = item.customerServiceMark;
-                customerOrderMerge.packageMark = item.packageMark;     
-            }
-
-            if (item.currentStep == CustomerOrderMergeStep.WarehousePackege && item.currentStatus == CustomerOrderMergeStatus.confirmed)
-            {
-                customerOrderMerge.packageWeight = item.packageWeight;
-                customerOrderMerge.packageVolume = item.packageVolume;
-                customerOrderMerge.packageLength = item.packageLength;
-                customerOrderMerge.packageHeight = item.packageHeight;
-                customerOrderMerge.packageWidth = item.packageWidth;
-                customerOrderMerge.settlementWeight = item.settlementWeight;
-                GetQuotationPriceByCountryRequest priceRequest = new GetQuotationPriceByCountryRequest();
-                priceRequest.country = customerOrderMergeModel.country;
-                priceRequest.weight = item.packageWeight;
-                priceRequest.length = item.packageLength;
-                priceRequest.width = item.packageWidth;
-                priceRequest.height = item.packageHeight;
-
-                customerOrderMerge.freightFee = QuotationManager.GetPriceByChannelID(priceRequest, customerOrderMergeModel.CustomerChooseChannelID);
-                customerOrderMerge.serviceFee = Convert.ToDecimal(Convert.ToDouble(customerOrderMerge.freightFee)*0.05);
-                customerOrderMerge.tax =Convert.ToDecimal(Convert.ToDouble( customerOrderMerge.freightFee + customerOrderMergeModel.serviceFee + customerOrderMergeModel.remoteFee + customerOrderMergeModel.magneticinspectionFee)*0.03);
-                customerOrderMerge.totalFee = customerOrderMerge.freightFee + customerOrderMerge.serviceFee + customerOrderMerge.tax + customerOrderMergeModel.remoteFee + customerOrderMergeModel.magneticinspectionFee;
-            }
-            if (item.currentStep == CustomerOrderMergeStep.WaitForDelivery && item.currentStatus == CustomerOrderMergeStatus.confirmed)
-            {
-                customerOrderMerge.ChannelID = item.ChannelID;
-                customerOrderMerge.ChannelName = item.ChannelName;
-                customerOrderMerge.channelNo = item.channelNo;
-                customerOrderMerge.deliverTime = item.deliverTime;
-                customerOrderMerge.AgentID = item.AgentID;
-                customerOrderMerge.AgentName = item.AgentName;
-            }
-
             //合并订单状态
             var mergeOrderStatus = MergeCustomerOrderStatusDAL.GetItem(item.ID);
             if (mergeOrderStatus == null)
             {
                 throw new LogisticsException(SystemStatusEnum.CustomerOrderMergeStatusNotFound, $"Customer Order Merge Status Not Found");
             }
-        
+
             mergeOrderStatus.ModifiedBy = currentUserID;
 
             //产品明细
@@ -598,7 +551,10 @@ namespace Logistics_Busniess
                 detailList.Add(detail);
             }
 
+            #region 消息类型
+
             var type = -1;
+
             if (item.currentStep == CustomerOrderMergeStep.CustomerServiceConfirm)
             {
                 type = (int)messageType.CustomerServiceConfirm;
@@ -611,17 +567,17 @@ namespace Logistics_Busniess
             {
                 type = (int)messageType.WaitForPay;
             }
-            else if (item.currentStep == CustomerOrderMergeStep.WaitForDelivery )
+            else if (item.currentStep == CustomerOrderMergeStep.WaitForDelivery)
             {
                 type = (int)messageType.Delivered;
             }
-
+            #endregion
 
 
             logistics_base_message message = new logistics_base_message();
             message.ID = IdWorker.GetID();
             message.TenantID = BusinessConstants.Admin.TenantID;
-            message.type = (int)messageType.WarehouseIn;
+            message.type = type;
             message.message = customerOrderMergeModel.MergeOrderNo;
             message.userid = customerOrderMergeModel.UserID;
             message.CreatedBy = currentUserID;
@@ -637,17 +593,42 @@ namespace Logistics_Busniess
                     // 当前阶段是仓库打包，并且状态是已确认,产生客户应收订单
                     if (item.currentStep == CustomerOrderMergeStep.CustomerServiceConfirm && item.currentStatus == CustomerOrderMergeStatus.confirmed)
                     {
+                        customerOrderMerge.CustomerChooseChannelID = item.CustomerChooseChannelID;
+                        customerOrderMerge.serviceFee = item.serviceFee;
+                        customerOrderMerge.remoteFee = item.remoteFee;
+                        customerOrderMerge.magneticinspectionFee = item.magneticinspectionFee;
+                        customerOrderMerge.customerServiceMark = item.customerServiceMark;
+                        customerOrderMerge.packageMark = item.packageMark;
                         mergeOrderStatus.currentStep = CustomerOrderMergeStep.WarehousePackege;
                         mergeOrderStatus.currentStatus = CustomerOrderMergeStatus.waitapprove;
                     }
-                   else if (item.currentStep == CustomerOrderMergeStep.WarehousePackege && item.currentStatus == CustomerOrderMergeStatus.confirmed)
+                    else if (item.currentStep == CustomerOrderMergeStep.WarehousePackege && item.currentStatus == CustomerOrderMergeStatus.confirmed)
                     {
+
+                        customerOrderMerge.packageWeight = item.packageWeight;
+                        customerOrderMerge.packageVolume = item.packageVolume;
+                        customerOrderMerge.packageLength = item.packageLength;
+                        customerOrderMerge.packageHeight = item.packageHeight;
+                        customerOrderMerge.packageWidth = item.packageWidth;
+                        // customerOrderMerge.settlementWeight = item.settlementWeight;
+                        GetQuotationPriceByCountryRequest priceRequest = new GetQuotationPriceByCountryRequest();
+                        priceRequest.country = customerOrderMergeModel.countryCode;
+                        priceRequest.weight = item.packageWeight;
+                        priceRequest.length = item.packageLength;
+                        priceRequest.width = item.packageWidth;
+                        priceRequest.height = item.packageHeight;
+
+                        customerOrderMerge.freightFee = QuotationManager.GetPriceByChannelID(priceRequest, customerOrderMergeModel.CustomerChooseChannelID);
+                        customerOrderMerge.serviceFee = Convert.ToDecimal(Convert.ToDouble(customerOrderMerge.freightFee) * 0.05);
+                        customerOrderMerge.tax = Convert.ToDecimal(Convert.ToDouble(customerOrderMerge.freightFee + customerOrderMergeModel.serviceFee + customerOrderMergeModel.remoteFee + customerOrderMergeModel.magneticinspectionFee) * 0.03);
+                        customerOrderMerge.totalFee = customerOrderMerge.freightFee + customerOrderMerge.serviceFee + customerOrderMerge.tax + customerOrderMergeModel.remoteFee + customerOrderMergeModel.magneticinspectionFee;
+
                         logistics_customer_order_merge_balance balance = new logistics_customer_order_merge_balance();
                         balance.TenantID = BusinessConstants.Admin.TenantID;
                         balance.BalanceID = IdWorker.GetID();
                         balance.CustomerOrderMergeID = item.ID;
                         balance.UserID = currentUserID;
-                   
+
                         balance.Amount = customerOrderMerge.totalFee;
                         balance.RemainAmount = customerOrderMerge.totalFee;
                         balance.type = CustomerOrderMergeBalanceType.customerReceivable;
@@ -670,10 +651,12 @@ namespace Logistics_Busniess
 
 
 
-                        result = result && CustomerOrderMergeBalanceDAL.Insert(balance, trans)&& CustomerOrderMergeBalanceLogDAL.Insert(balanceLog,trans);
+                        result = result && CustomerOrderMergeBalanceDAL.Insert(balance, trans) && CustomerOrderMergeBalanceLogDAL.Insert(balanceLog, trans);
                     }
                     else if (item.currentStep == CustomerOrderMergeStep.WaitForPay && item.currentStatus == CustomerOrderMergeStatus.confirmed)
                     {
+                        customerOrderMerge.deliverTime = item.deliverTime;
+
                         //当前阶段是客户付款阶段，并且状态是已确认;产生交易记录 ,产生交易Log,  更新balance,  冲正客户应付订单
 
                         mergeOrderStatus.currentStep = CustomerOrderMergeStep.WaitForDelivery;
@@ -724,12 +707,19 @@ namespace Logistics_Busniess
                         balanceLog.BalanceDate = System.DateTime.Now;
                         balanceLog.CreatedBy = currentUserID;
 
-                        result = result && CustomerOrderMergeTransactionDAL.Insert(transaction, trans) && CustomerOrderMergeTransactionLogDAL.Insert(transactionLog,trans) &&
-                           CustomerOrderMergeBalanceDAL.Update(model, trans) && CustomerOrderMergeBalanceLogDAL.Insert(balanceLog,trans);
+                        result = result && CustomerOrderMergeTransactionDAL.Insert(transaction, trans) && CustomerOrderMergeTransactionLogDAL.Insert(transactionLog, trans) &&
+                           CustomerOrderMergeBalanceDAL.Update(model, trans) && CustomerOrderMergeBalanceLogDAL.Insert(balanceLog, trans);
 
                     }
                     else if (item.currentStep == CustomerOrderMergeStep.WaitForDelivery && item.currentStatus == CustomerOrderMergeStatus.confirmed)
                     {
+                        customerOrderMerge.ChannelID = item.ChannelID;
+                        customerOrderMerge.ChannelName = item.ChannelName;
+                        customerOrderMerge.channelNo = item.channelNo;
+
+                        customerOrderMerge.AgentID = item.AgentID;
+                        customerOrderMerge.AgentName = item.AgentName;
+
                         //当前阶段是仓库发货阶段，并且状态是已确认，产生代理商应付定单
                         logistics_customer_order_merge_balance balance = new logistics_customer_order_merge_balance();
                         balance.TenantID = BusinessConstants.Admin.TenantID;
@@ -756,12 +746,12 @@ namespace Logistics_Busniess
                         balanceLog.Orignal = 0;
                         balanceLog.AfterBalance = customerOrderMerge.freightFee;
 
-                        result = result && CustomerOrderMergeBalanceDAL.Insert(balance, trans)&& CustomerOrderMergeBalanceLogDAL.Insert(balanceLog,trans);
+                        result = result && CustomerOrderMergeBalanceDAL.Insert(balance, trans) && CustomerOrderMergeBalanceLogDAL.Insert(balanceLog, trans);
                     }
                     //状态更新 删除明细，更新明细；
-                    result = result && MergeCustomerOrderStatusDAL.Update(mergeOrderStatus, trans) &&
+                    result = result && MergeCustomerOrderDAL.Update(customerOrderMerge, trans) && MergeCustomerOrderDetailDAL.UpdateList(detailList, trans)&& MergeCustomerOrderStatusDAL.Update(mergeOrderStatus, trans) &&
                     MergeCustomerOrderDetailDAL.DeleteByMergeCustomerOrderID(item.ID, trans) &&
-                    MergeCustomerOrderDetailDAL.InsertList(detailList, trans)&& MessageDal.Insert(message, trans);
+                    MergeCustomerOrderDetailDAL.InsertList(detailList, trans) && MessageDal.Insert(message, trans);
 
                     return result;
                 });

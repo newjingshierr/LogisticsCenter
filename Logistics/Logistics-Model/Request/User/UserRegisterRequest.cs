@@ -37,6 +37,8 @@ namespace Logistics_Model
     {
         public string country { get; set; }
 
+        public string countryCode { get; set; }
+
         public string recipient { get; set; }
         public string City { get; set; }
         public string postalcode { get; set; }
@@ -55,6 +57,7 @@ namespace Logistics_Model
         [JsonConverter(typeof(Long2StringConverter))]
         public long userid { get; set; }
         public string country { get; set; }
+        public string countryCode { get; set; }
         public string recipient { get; set; }
         public string City { get; set; }
         public string postalcode { get; set; }
@@ -75,6 +78,7 @@ namespace Logistics_Model
         public long CustomerChooseChannelID { get; set; }
         public string recipient { get; set; }
         public string country { get; set; }
+        public string countryCode { get; set; }
         public string address { get; set; }
         public string city { get; set; }
         public string code { get; set; }
@@ -105,6 +109,7 @@ namespace Logistics_Model
         public string CustomerChooseChannelName { get; set; } = "";
         public string recipient { get; set; } = "";
         public string country { get; set; } = "";
+        public string countryCode { get; set; } = "";
         public string address { get; set; } = "";
         public string city { get; set; } = "";
         public string code { get; set; } = "";
@@ -119,7 +124,7 @@ namespace Logistics_Model
         public decimal packageLength { get; set; } = 0;
         public decimal packageHeight { get; set; } = 0;
         public decimal packageWidth { get; set; } = 0;
-        public decimal settlementWeight { get; set; } = 0;
+        //public decimal settlementWeight { get; set; } = 0;
         //public decimal freightFee { get; set; } = 0;
         //public decimal tax { get; set; } = 0;
         public decimal serviceFee { get; set; } = 0;

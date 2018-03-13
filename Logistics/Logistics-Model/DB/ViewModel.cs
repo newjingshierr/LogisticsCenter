@@ -13,7 +13,7 @@ namespace Logistics_Model
         public logistics_customer_order_merge mergeOrder { get; set; }
         public logistics_customer_order_merge_status mergeStatus { get; set; }
 
-       public  List<logistics_customer_order> customerOrderList { get; set; }
+        public List<logistics_customer_order> customerOrderList { get; set; }
 
         public List<logistics_customer_order_merge_detail> mergeDetailList { get; set; }
 
@@ -21,6 +21,7 @@ namespace Logistics_Model
 
     public class CustomerOrderMergeVM
     {
+        public string countryCode { get; set; }
         public string currentStatus { get; set; }
 
         public string currentStep { get; set; }
@@ -741,7 +742,7 @@ namespace Logistics_Model
     {
         public logistics_customer_order customerOrder { get; set; }
         public logistics_customer_order_status orderStatus { get; set; }
-        public List<logistics_base_attachment> attachList { get; set;}
+        public List<logistics_base_attachment> attachList { get; set; }
     }
 
 }

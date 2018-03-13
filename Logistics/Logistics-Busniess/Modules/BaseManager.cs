@@ -134,6 +134,7 @@ namespace Logistics_Busniess
             address.TenantID = BusinessConstants.Admin.TenantID;
             address.Userid = userid;
             address.country = item.country;
+            address.countryCode = item.countryCode;
             address.postalcode = item.postalcode;
             address.Tel = item.Tel;
             address.taxno = item.taxno;
@@ -152,6 +153,7 @@ namespace Logistics_Busniess
             address.Userid = item.userid;
             address.recipient = item.recipient;
             address.country = item.country;
+            address.countryCode = item.countryCode;
             address.postalcode = item.postalcode;
             address.Tel = item.Tel;
             address.taxno = item.taxno;

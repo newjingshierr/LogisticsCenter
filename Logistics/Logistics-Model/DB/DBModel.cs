@@ -719,6 +719,7 @@ namespace Logistics_Model
     }
     public class logistics_base_recipients_address
     {
+        public string countryCode { get; set;}
         public string taxno { get; set; }
         public string companyName { get; set; }
 
@@ -1635,6 +1636,7 @@ namespace Logistics_Model
     }
     public class logistics_customer_order_merge
     {
+        public string countryCode { get; set; }
         public string AgentName { get; set; }
         public string ChannelName { get; set; }
         public string CustomerChooseChannelName { get; set; }
@@ -2740,6 +2742,8 @@ namespace Logistics_Model
 
     public class logistics_base_country
     {
+
+        public string countryCode { get; set; }
 
         /// <summary>
         /// TenantID
