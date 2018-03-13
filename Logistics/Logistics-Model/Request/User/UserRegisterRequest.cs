@@ -96,24 +96,24 @@ namespace Logistics_Model
     public class CustomerOrderMergeUpdateReqeust : BaseRequest
     {
         [JsonConverter(typeof(Long2StringConverter))]
-        public long ID { get; set; }
+        public long ID { get; set; } = 0L;
         [JsonConverter(typeof(Long2StringConverter))]
-       // public long userid { get; set; }
-        public string CustomerMark { get; set; }
+        // public long userid { get; set; }
+        public string CustomerMark { get; set; } = "";
         [JsonConverter(typeof(Long2StringConverter))]
-        public long CustomerChooseChannelID { get; set; }
-        public string CustomerChooseChannelName { get; set; }
-        public string recipient { get; set; }
-        public string country { get; set; }
-        public string address { get; set; }
-        public string city { get; set; }
-        public string code { get; set; }
-        public string tel { get; set; }
-        public string company { get; set; }
-        public string taxNo { get; set; }
+        public long CustomerChooseChannelID { get; set; } = 0L;
+        public string CustomerChooseChannelName { get; set; } = "";
+        public string recipient { get; set; } = "";
+        public string country { get; set; } = "";
+        public string address { get; set; } = "";
+        public string city { get; set; } = "";
+        public string code { get; set; } = "";
+        public string tel { get; set; } = "";
+        public string company { get; set; } = "";
+        public string taxNo { get; set; } = "";
         public List<InsertProductUpdateRequet> productList { get; set; }
-        public string customerServiceMark { get; set; }
-        public string packageMark { get; set; }
+        public string customerServiceMark { get; set; } = "";
+        public string packageMark { get; set; } = "";
         public decimal packageWeight { get; set; } = 0;
         public decimal packageVolume { get; set; } = 0;
         public decimal packageLength { get; set; } = 0;
@@ -128,14 +128,14 @@ namespace Logistics_Model
         //public decimal totalFee { get; set; } = 0;
         [JsonConverter(typeof(Long2StringConverter))]
         public long ChannelID { get; set; } = 0;
-        public string ChannelName { get; set; }
-        public string channelNo { get; set; }
+        public string ChannelName { get; set; } = "";
+        public string channelNo { get; set; } = "";
         public  System.DateTime deliverTime { get; set; }
         [JsonConverter(typeof(Long2StringConverter))]
         public long AgentID { get; set; } = 0;
-        public string AgentName { get; set; }
-        public string currentStep { get; set; }
-        public string currentStatus { get; set; }
+        public string AgentName { get; set; } = "";
+        public string currentStep { get; set; } = "";
+        public string currentStatus { get; set; } = "";
 
 
     }
