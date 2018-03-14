@@ -135,7 +135,7 @@ namespace Logistics_Model
         public long ChannelID { get; set; } = 0;
         public string ChannelName { get; set; } = "";
         public string channelNo { get; set; } = "";
-        public  System.DateTime deliverTime { get; set; }
+        public System.DateTime deliverTime { get; set; }
         [JsonConverter(typeof(Long2StringConverter))]
         public long AgentID { get; set; } = 0;
         public string AgentName { get; set; } = "";
@@ -298,9 +298,23 @@ namespace Logistics_Model
     {
         public long CustomerOrderMergeID { get; set; } = 0L;
     }
-    public class GetOrderMergeStatusSummaryReqeust: BaseRequest
+    public class GetOrderMergeStatusSummaryReqeust : BaseRequest
     {
         public string currentStep { get; set; } = "";
+    }
+
+    public class WriteOffAgentCustomerOrderMergeRequest : BaseRequest
+    {
+        public decimal amount { get; set; }
+        public long CustomerOrderMergeID { get; set; }
+    }
+
+    public class CustomerOrderMergePayRequest : BaseRequest
+    {
+        public decimal amount { get; set; }
+        public int payMethod { get; set; }
+        public long CustomerOrderMergeID { get; set; }
+        public System.DateTime deliverTime { get; set; }
     }
 
     public class CustomerOrderMergeSelectRequest : BaseRequestPage

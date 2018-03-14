@@ -372,6 +372,60 @@ namespace Logistics.Controllers
     public class CustomerOrderMergeController : BaseAuthController
     {
         [HttpPut]
+        [Route("Item/WriteOff")]
+        public ResponseMessage<bool> WriteOffAgentCustomerOrderMerge(WriteOffAgentCustomerOrderMergeRequest request)
+        {
+            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));
+
+            if (request == null)
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+            }
+
+
+            var result = false;
+            try
+            {
+                result = CustomerOrderMergeManger.WriteOffAgentCustomerOrderMerge(request, contextInfo.userInfo.Userid);
+
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+
+            }
+        }
+
+        [HttpPut]
+        [Route("Item/Refuse")]
+       public ResponseMessage<bool> PayCustomerOrderMerge( CustomerOrderMergePayRequest request)
+        {
+            LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));
+
+            if (request == null)
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+            }
+
+
+            var result = false;
+            try
+            {
+                result = CustomerOrderMergeManger.PayCustomerOrderMerge(request, contextInfo.userInfo.Userid);
+
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+
+            }
+        }
+
+        [HttpPut]
         [Route("Item/Refuse")]
         public ResponseMessage<bool> RefuseCustomerOrderMerge(CustomerOrderMergeRefuseRequest request)
         {

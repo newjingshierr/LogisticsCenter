@@ -176,7 +176,9 @@ namespace Logistics_Model
         [Description("CustomerOrderMergeNotFound")]
         CustomerOrderMergeStatusNotFound = 44003,
         [Description("CustomerOrderMergeRelationNotFound")]
-        CustomerOrderMergeRelationNotFound = 44004
+        CustomerOrderMergeRelationNotFound = 44004,
+        [Description("CustomerOrderMergeWriteOffGreatThanRemainAmount")]
+        CustomerOrderMergeWriteOffGreatThanRemainAmount = 44005
         #endregion
     }
 }

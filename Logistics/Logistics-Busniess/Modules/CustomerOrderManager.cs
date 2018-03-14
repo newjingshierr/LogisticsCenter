@@ -250,6 +250,165 @@ namespace Logistics_Busniess
 
     public class CustomerOrderMergeManger
     {
+        public static bool WriteOffAgentCustomerOrderMerge(WriteOffAgentCustomerOrderMergeRequest request, long currentUserID)
+        {
+            var customerOrderMerge = MergeCustomerOrderDAL.GetItem(request.CustomerOrderMergeID);
+            if (customerOrderMerge == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.CustomerOrderMergeNotFound, $"Customer Order Merge Not Found");
+            }
+            
+            var transaction = new logistics_customer_order_merge_transaction();
+            transaction.TenantID = BusinessConstants.Admin.TenantID;
+            transaction.TransationID = IdWorker.GetID();
+            transaction.CustomerOrderMergeID = request.CustomerOrderMergeID;
+            transaction.Amount = request.amount;
+            transaction.DataSource = TransactionDataSource.AgentPay;
+            transaction.Comment = TransactionComment.AgentPay;
+            transaction.CreatedBy = currentUserID;
+
+            var transactionLog = new logistics_customer_order_merge_transaction_log();
+            transactionLog.TenantID = BusinessConstants.Admin.TenantID;
+            transactionLog.ID = IdWorker.GetID();
+            transactionLog.TransationID = transaction.TransationID;
+            transactionLog.CustomerOrderMergeID = request.CustomerOrderMergeID;
+            transactionLog.Amount = request.amount;
+            transactionLog.DataSource = TransactionDataSource.AgentPay;
+            transactionLog.Comment = TransactionComment.AgentPay;
+            transactionLog.CreatedBy = currentUserID;
+
+            var model = CustomerOrderMergeBalanceDAL.GetMergeBalanceModelByOrderMergeID(request.CustomerOrderMergeID);
+            if (model == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.CustomerOrderMergeBalanceNotFound, $"Customer OrderMerge Balance Not Found");
+            }
+
+            model.RemainAmount = model.RemainAmount -request.amount;
+            if (model.RemainAmount < 0)
+            {
+                throw new LogisticsException(SystemStatusEnum.CustomerOrderMergeWriteOffGreatThanRemainAmount, $"CustomerOrderMergeWriteOffGreatThanRemainAmount");
+            }
+            model.ModifiedBy = currentUserID;
+
+            logistics_customer_order_merge_balance_log balanceLog = new logistics_customer_order_merge_balance_log();
+            balanceLog.TransationID = BusinessConstants.Admin.TenantID;
+            balanceLog.ID = IdWorker.GetID();
+            balanceLog.BalanceID = model.BalanceID;
+            balanceLog.CustomerOrderMergeID = request.CustomerOrderMergeID;
+            balanceLog.DataSource = BalanceLogDataSource.AgentPayableWriteOff;
+            balanceLog.TransationID = transaction.TransationID;
+            balanceLog.Type = BalanceLogType.consume;
+            balanceLog.Direction = Convert.ToBoolean(BalanceLogDirection.Reverse);
+            balanceLog.Amount = request.amount;
+            balanceLog.Orignal = model.RemainAmount;
+            balanceLog.AfterBalance = model.RemainAmount - request.amount;
+            balanceLog.Comment = TransactionComment.AgentPay;
+            balanceLog.BalanceDate = System.DateTime.Now;
+            balanceLog.CreatedBy = currentUserID;
+
+            var dbResult = false;
+
+            using (var conn = ConnectionManager.GetWriteConn())
+            {
+                dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
+                {
+                    var result = true;
+                    result = result && MergeCustomerOrderDAL.Update(customerOrderMerge, trans) && CustomerOrderMergeTransactionDAL.Insert(transaction, trans) && CustomerOrderMergeTransactionLogDAL.Insert(transactionLog, trans) &&
+                          CustomerOrderMergeBalanceDAL.Update(model, trans) && CustomerOrderMergeBalanceLogDAL.Insert(balanceLog, trans);
+                    return result;
+                });
+            }
+
+            return dbResult;
+        }
+        public static bool PayCustomerOrderMerge(CustomerOrderMergePayRequest request, long currentUserID)
+        {
+
+            var customerOrderMerge = MergeCustomerOrderDAL.GetItem(request.CustomerOrderMergeID);
+            //调用支付接口；
+
+
+            customerOrderMerge.deliverTime = request.deliverTime;
+
+            if (customerOrderMerge == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.CustomerOrderMergeNotFound, $"Customer Order Merge Not Found");
+            }
+            var customerOrderMergeStatus = MergeCustomerOrderStatusDAL.GetItem(customerOrderMerge.ID);
+            if (customerOrderMergeStatus == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.CustomerOrderMergeStatusNotFound, $"Customer Order Merge Status Not Found");
+            }
+
+            customerOrderMergeStatus.currentStep = CustomerOrderMergeStep.WaitForDelivery;
+            customerOrderMergeStatus.currentStatus = CustomerOrderMergeStatus.waitapprove;
+
+            var relationList = MergeCustomerOrderRelationDAL.GetItems(customerOrderMerge.ID);
+            if (relationList == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.CustomerOrderMergeRelationNotFound, $"Customer Order Merge Relation Not Found");
+            }
+
+            var transaction = new logistics_customer_order_merge_transaction();
+            transaction.TenantID = BusinessConstants.Admin.TenantID;
+            transaction.TransationID = IdWorker.GetID();
+            transaction.CustomerOrderMergeID = request.CustomerOrderMergeID;
+            transaction.Amount = customerOrderMerge.totalFee;
+            transaction.DataSource = TransactionDataSource.customerConsume;
+            transaction.Comment = TransactionComment.customerConsume;
+            transaction.CreatedBy = currentUserID;
+
+            var transactionLog = new logistics_customer_order_merge_transaction_log();
+            transactionLog.TenantID = BusinessConstants.Admin.TenantID;
+            transactionLog.ID = IdWorker.GetID();
+            transactionLog.TransationID = transaction.TransationID;
+            transactionLog.CustomerOrderMergeID = request.CustomerOrderMergeID;
+            transactionLog.Amount = customerOrderMerge.totalFee;
+            transactionLog.DataSource = TransactionDataSource.customerConsume;
+            transactionLog.Comment = TransactionComment.customerConsume;
+            transactionLog.CreatedBy = currentUserID;
+
+            var model = CustomerOrderMergeBalanceDAL.GetMergeBalanceModelByOrderMergeID(request.CustomerOrderMergeID);
+            if (model == null)
+            {
+                throw new LogisticsException(SystemStatusEnum.CustomerOrderMergeBalanceNotFound, $"Customer OrderMerge Balance Not Found");
+            }
+            model.RemainAmount = 0;
+            model.ModifiedBy = currentUserID;
+
+
+
+            logistics_customer_order_merge_balance_log balanceLog = new logistics_customer_order_merge_balance_log();
+            balanceLog.TransationID = BusinessConstants.Admin.TenantID;
+            balanceLog.ID = IdWorker.GetID();
+            balanceLog.BalanceID = model.BalanceID;
+            balanceLog.CustomerOrderMergeID = request.CustomerOrderMergeID;
+            balanceLog.DataSource = BalanceLogDataSource.CustomerPayableWriteOff;
+            balanceLog.TransationID = transaction.TransationID;
+            balanceLog.Type = BalanceLogType.consume;
+            balanceLog.Direction = Convert.ToBoolean(BalanceLogDirection.Reverse);
+            balanceLog.Amount = customerOrderMerge.totalFee;
+            balanceLog.Orignal = customerOrderMerge.totalFee;
+            balanceLog.AfterBalance = 0;
+            balanceLog.Comment = TransactionComment.customerConsume;
+            balanceLog.BalanceDate = System.DateTime.Now;
+            balanceLog.CreatedBy = currentUserID;
+
+            var dbResult = false;
+
+            using (var conn = ConnectionManager.GetWriteConn())
+            {
+                dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
+                {
+                    var result = true;
+                    result = result && MergeCustomerOrderDAL.Update(customerOrderMerge, trans) && CustomerOrderMergeTransactionDAL.Insert(transaction, trans) && CustomerOrderMergeTransactionLogDAL.Insert(transactionLog, trans) &&
+                          CustomerOrderMergeBalanceDAL.Update(model, trans) && CustomerOrderMergeBalanceLogDAL.Insert(balanceLog, trans);
+                    return result;
+                });
+            }
+
+            return dbResult;
+        }
         public static bool RefuseCustomerOrderMerge(CustomerOrderMergeRefuseRequest request, long currentUserID)
         {
             //删除合并订单
@@ -590,15 +749,15 @@ namespace Logistics_Busniess
                 {
                     var result = true;
                     result = MergeCustomerOrderDAL.Update(customerOrderMerge, trans) && MergeCustomerOrderDetailDAL.UpdateList(detailList, trans);
-                    // 当前阶段是仓库打包，并且状态是已确认,产生客户应收订单
+
                     if (item.currentStep == CustomerOrderMergeStep.CustomerServiceConfirm && item.currentStatus == CustomerOrderMergeStatus.confirmed)
                     {
                         customerOrderMerge.CustomerChooseChannelID = item.CustomerChooseChannelID;
-                        customerOrderMerge.serviceFee = item.serviceFee;
                         customerOrderMerge.remoteFee = item.remoteFee;
                         customerOrderMerge.magneticinspectionFee = item.magneticinspectionFee;
                         customerOrderMerge.customerServiceMark = item.customerServiceMark;
                         customerOrderMerge.packageMark = item.packageMark;
+
                         mergeOrderStatus.currentStep = CustomerOrderMergeStep.WarehousePackege;
                         mergeOrderStatus.currentStatus = CustomerOrderMergeStatus.waitapprove;
                     }
@@ -610,7 +769,7 @@ namespace Logistics_Busniess
                         customerOrderMerge.packageLength = item.packageLength;
                         customerOrderMerge.packageHeight = item.packageHeight;
                         customerOrderMerge.packageWidth = item.packageWidth;
-                        // customerOrderMerge.settlementWeight = item.settlementWeight;
+
                         GetQuotationPriceByCountryRequest priceRequest = new GetQuotationPriceByCountryRequest();
                         priceRequest.country = customerOrderMergeModel.countryCode;
                         priceRequest.weight = item.packageWeight;
@@ -640,7 +799,7 @@ namespace Logistics_Busniess
                         balanceLog.BalanceID = balance.BalanceID;
                         balanceLog.CustomerOrderMergeID = item.ID;
                         balanceLog.BalanceDate = System.DateTime.Now;
-                        balanceLog.Type = 1;//产生消费
+                        balanceLog.Type = 1;//正向
                         balanceLog.DataSource = BalanceLogDataSource.CustomerPayable;
                         balanceLog.Direction = true;
                         balanceLog.Orignal = 0;
@@ -655,60 +814,6 @@ namespace Logistics_Busniess
                     }
                     else if (item.currentStep == CustomerOrderMergeStep.WaitForPay && item.currentStatus == CustomerOrderMergeStatus.confirmed)
                     {
-                        customerOrderMerge.deliverTime = item.deliverTime;
-
-                        //当前阶段是客户付款阶段，并且状态是已确认;产生交易记录 ,产生交易Log,  更新balance,  冲正客户应付订单
-
-                        mergeOrderStatus.currentStep = CustomerOrderMergeStep.WaitForDelivery;
-                        mergeOrderStatus.currentStatus = CustomerOrderMergeStatus.waitapprove;
-
-
-                        var transaction = new logistics_customer_order_merge_transaction();
-                        transaction.TenantID = BusinessConstants.Admin.TenantID;
-                        transaction.TransationID = IdWorker.GetID();
-                        transaction.CustomerOrderMergeID = item.ID;
-                        transaction.Amount = customerOrderMerge.totalFee;
-                        transaction.DataSource = TransactionDataSource.customerConsume;
-                        transaction.Comment = TransactionComment.customerConsume;
-                        transaction.CreatedBy = currentUserID;
-
-                        var transactionLog = new logistics_customer_order_merge_transaction_log();
-                        transactionLog.TenantID = BusinessConstants.Admin.TenantID;
-                        transactionLog.ID = IdWorker.GetID();
-                        transactionLog.TransationID = transaction.TransationID;
-                        transactionLog.CustomerOrderMergeID = item.ID;
-                        transactionLog.Amount = customerOrderMerge.totalFee;
-                        transactionLog.DataSource = TransactionDataSource.customerConsume;
-                        transactionLog.Comment = TransactionComment.customerConsume;
-                        transactionLog.CreatedBy = currentUserID;
-
-                        var model = CustomerOrderMergeBalanceDAL.GetMergeBalanceModelByOrderMergeID(item.ID);
-                        if (model == null)
-                        {
-                            throw new LogisticsException(SystemStatusEnum.CustomerOrderMergeBalanceNotFound, $"Customer OrderMerge Balance Not Found");
-                        }
-                        model.RemainAmount = 0;
-                        model.ModifiedBy = currentUserID;
-
-
-                        logistics_customer_order_merge_balance_log balanceLog = new logistics_customer_order_merge_balance_log();
-                        balanceLog.TransationID = BusinessConstants.Admin.TenantID;
-                        balanceLog.ID = IdWorker.GetID();
-                        balanceLog.BalanceID = model.BalanceID;
-                        balanceLog.CustomerOrderMergeID = item.ID;
-                        balanceLog.DataSource = BalanceLogDataSource.CustomerPayableWriteOff;
-                        balanceLog.TransationID = transaction.TransationID;
-                        balanceLog.Type = BalanceLogType.consume;
-                        balanceLog.Direction = Convert.ToBoolean(BalanceLogDirection.Reverse);
-                        balanceLog.Amount = customerOrderMerge.totalFee;
-                        balanceLog.Orignal = customerOrderMerge.totalFee;
-                        balanceLog.AfterBalance = 0;
-                        balanceLog.Comment = TransactionComment.customerConsume;
-                        balanceLog.BalanceDate = System.DateTime.Now;
-                        balanceLog.CreatedBy = currentUserID;
-
-                        result = result && CustomerOrderMergeTransactionDAL.Insert(transaction, trans) && CustomerOrderMergeTransactionLogDAL.Insert(transactionLog, trans) &&
-                           CustomerOrderMergeBalanceDAL.Update(model, trans) && CustomerOrderMergeBalanceLogDAL.Insert(balanceLog, trans);
 
                     }
                     else if (item.currentStep == CustomerOrderMergeStep.WaitForDelivery && item.currentStatus == CustomerOrderMergeStatus.confirmed)
@@ -739,7 +844,7 @@ namespace Logistics_Busniess
                         balanceLog.ID = IdWorker.GetID();
                         balanceLog.BalanceID = balance.BalanceID;
                         balanceLog.CustomerOrderMergeID = item.ID;
-                        balanceLog.Type = 1;//产生消费
+                        balanceLog.Type = 1;//
                         balanceLog.BalanceDate = System.DateTime.Now;
                         balanceLog.DataSource = BalanceLogDataSource.AgentPayable;
                         balanceLog.Direction = true;
@@ -749,7 +854,7 @@ namespace Logistics_Busniess
                         result = result && CustomerOrderMergeBalanceDAL.Insert(balance, trans) && CustomerOrderMergeBalanceLogDAL.Insert(balanceLog, trans);
                     }
                     //状态更新 删除明细，更新明细；
-                    result = result && MergeCustomerOrderDAL.Update(customerOrderMerge, trans) && MergeCustomerOrderDetailDAL.UpdateList(detailList, trans)&& MergeCustomerOrderStatusDAL.Update(mergeOrderStatus, trans) &&
+                    result = result && MergeCustomerOrderDAL.Update(customerOrderMerge, trans) && MergeCustomerOrderDetailDAL.UpdateList(detailList, trans) && MergeCustomerOrderStatusDAL.Update(mergeOrderStatus, trans) &&
                     MergeCustomerOrderDetailDAL.DeleteByMergeCustomerOrderID(item.ID, trans) &&
                     MergeCustomerOrderDetailDAL.InsertList(detailList, trans) && MessageDal.Insert(message, trans);
 
