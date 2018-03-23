@@ -16,6 +16,12 @@ namespace Logistics_Busniess
     {
         public static List<logistics_customer_order> GetItemListByPage(CustomerOrderSelectRequest request, long userID, long warehouseAdmin, ref int totalCount)
         {
+            //入库查询
+            if (request.step == "2")
+            {
+                return CustomerOrderDAL.GetItemListForCustomerWarehouseInByPage(BusinessConstants.Admin.TenantID, userID, request.expressNo, request.TransferNo, request.PageIndex, request.PageSize, ref  totalCount);
+            }
+
             return CustomerOrderDAL.GetItemListByPage(request.TenantID, userID, warehouseAdmin, request.customerOrderNo, request.customerOrderStatus, request.expressNo,
                 request.expressTypeID, request.TransferNo, request.warehouseID, request.InWarehouseIimeBegin, request.InWarehouseIimeEnd, request.CustomerServiceID,
                 request.PageIndex, request.PageSize, ref totalCount);
@@ -74,6 +80,8 @@ namespace Logistics_Busniess
             message.message = customerOrder.CustomerOrderNo;
             message.userid = item.userid;
             message.CreatedBy = warehouseadmin;
+            message.status = 1;
+            message.IsRead = false;
 
             //   return MessageDal.Insert(message);
 
@@ -342,6 +350,7 @@ namespace Logistics_Busniess
 
             customerOrderMergeStatus.currentStep = CustomerOrderMergeStep.WaitForDelivery;
             customerOrderMergeStatus.currentStatus = CustomerOrderMergeStatus.waitapprove;
+            customerOrderMergeStatus.ModifiedBy = currentUserID;
 
             var relationList = MergeCustomerOrderRelationDAL.GetItems(customerOrderMerge.ID);
             if (relationList == null)
@@ -401,7 +410,7 @@ namespace Logistics_Busniess
                 dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
                 {
                     var result = true;
-                    result = result && MergeCustomerOrderDAL.Update(customerOrderMerge, trans) && CustomerOrderMergeTransactionDAL.Insert(transaction, trans) && CustomerOrderMergeTransactionLogDAL.Insert(transactionLog, trans) &&
+                    result = result && MergeCustomerOrderStatusDAL.Update(customerOrderMergeStatus, trans) && MergeCustomerOrderDAL.Update(customerOrderMerge, trans) && CustomerOrderMergeTransactionDAL.Insert(transaction, trans) && CustomerOrderMergeTransactionLogDAL.Insert(transactionLog, trans) &&
                           CustomerOrderMergeBalanceDAL.Update(model, trans) && CustomerOrderMergeBalanceLogDAL.Insert(balanceLog, trans);
                     return result;
                 });
@@ -645,6 +654,8 @@ namespace Logistics_Busniess
             message.message = customerOrderMerge.MergeOrderNo;
             message.userid = item.userid;
             message.CreatedBy = currentUserID;
+            message.status = 1;
+            message.IsRead = false;
 
             //  return MessageDal.Insert(message);
 
@@ -740,6 +751,8 @@ namespace Logistics_Busniess
             message.message = customerOrderMergeModel.MergeOrderNo;
             message.userid = customerOrderMergeModel.UserID;
             message.CreatedBy = currentUserID;
+            message.status = 1;
+            message.IsRead = false;
 
             var dbResult = false;
 
@@ -756,7 +769,7 @@ namespace Logistics_Busniess
                         customerOrderMerge.remoteFee = item.remoteFee;
                         customerOrderMerge.magneticinspectionFee = item.magneticinspectionFee;
                         customerOrderMerge.customerServiceMark = item.customerServiceMark;
-                        customerOrderMerge.packageMark = item.packageMark;
+                       
 
                         mergeOrderStatus.currentStep = CustomerOrderMergeStep.WarehousePackege;
                         mergeOrderStatus.currentStatus = CustomerOrderMergeStatus.waitapprove;
@@ -764,6 +777,7 @@ namespace Logistics_Busniess
                     else if (item.currentStep == CustomerOrderMergeStep.WarehousePackege && item.currentStatus == CustomerOrderMergeStatus.confirmed)
                     {
 
+                        customerOrderMerge.CustomerChooseChannelID = item.CustomerChooseChannelID;
                         customerOrderMerge.packageWeight = item.packageWeight;
                         customerOrderMerge.packageVolume = item.packageVolume;
                         customerOrderMerge.packageLength = item.packageLength;
@@ -818,10 +832,13 @@ namespace Logistics_Busniess
                     }
                     else if (item.currentStep == CustomerOrderMergeStep.WaitForDelivery && item.currentStatus == CustomerOrderMergeStatus.confirmed)
                     {
-                        customerOrderMerge.ChannelID = item.ChannelID;
-                        customerOrderMerge.ChannelName = item.ChannelName;
+                        customerOrderMerge.CustomerChooseChannelID = item.CustomerChooseChannelID;
+                        customerOrderMerge.packageWeight = item.packageWeight;
+                        customerOrderMerge.packageVolume = item.packageVolume;
+                        customerOrderMerge.packageLength = item.packageLength;
+                        customerOrderMerge.packageHeight = item.packageHeight;
+                        customerOrderMerge.packageWidth = item.packageWidth;
                         customerOrderMerge.channelNo = item.channelNo;
-
                         customerOrderMerge.AgentID = item.AgentID;
                         customerOrderMerge.AgentName = item.AgentName;
 
@@ -854,9 +871,8 @@ namespace Logistics_Busniess
                         result = result && CustomerOrderMergeBalanceDAL.Insert(balance, trans) && CustomerOrderMergeBalanceLogDAL.Insert(balanceLog, trans);
                     }
                     //状态更新 删除明细，更新明细；
-                    result = result && MergeCustomerOrderDAL.Update(customerOrderMerge, trans) && MergeCustomerOrderDetailDAL.UpdateList(detailList, trans) && MergeCustomerOrderStatusDAL.Update(mergeOrderStatus, trans) &&
-                    MergeCustomerOrderDetailDAL.DeleteByMergeCustomerOrderID(item.ID, trans) &&
-                    MergeCustomerOrderDetailDAL.InsertList(detailList, trans) && MessageDal.Insert(message, trans);
+                    result = result && MergeCustomerOrderDAL.Update(customerOrderMerge, trans) && MergeCustomerOrderStatusDAL.Update(mergeOrderStatus, trans) &&     
+                     MessageDal.Insert(message, trans);
 
                     return result;
                 });

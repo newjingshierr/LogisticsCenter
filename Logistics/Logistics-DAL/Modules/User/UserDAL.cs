@@ -222,5 +222,26 @@ namespace Logistics_DAL
             return result;
         }
 
+        public static List<UserInfo> SelectAllUserInfo(long TenantID)
+        {
+            var result = new List<UserInfo>();
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID", TenantID)
+ 
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.User.logistics_base_userinfo_select_all, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<UserInfo>.DtToList(dbResult.Tables[0]);
+            }
+            else
+            {
+                result = null;
+            }
+
+            return result;
+        }
+
     }
 }

@@ -60,26 +60,26 @@ namespace Logistics_DAL
             {
                 result = ConvertHelper<CustomerOrderMergeVM>.DtToList(dbResult.Tables[0]);
                 totalCount = (total.Value + "").Convert2Int32();
-                result.ForEach(o =>
-                {
-                    if (o.currentStep == "2")
-                    {
-                        o.currentStep = "客服确认中";
-                    }
-                    else if (o.currentStep == "3")
-                    {
-                        o.currentStep = "仓库打包中";
-                    }
-                    else if (o.currentStep == "4")
-                    {
-                        o.currentStep = "待付款";
+                //result.ForEach(o =>
+                //{
+                //    if (o.currentStep == "2")
+                //    {
+                //        o.currentStep = "客服确认中";
+                //    }
+                //    else if (o.currentStep == "3")
+                //    {
+                //        o.currentStep = "仓库打包中";
+                //    }
+                //    else if (o.currentStep == "4")
+                //    {
+                //        o.currentStep = "待付款";
 
-                    }
-                    else if (o.currentStep == "5")
-                    {
-                        o.currentStep = "待发货";
-                    }
-                });
+                //    }
+                //    else if (o.currentStep == "5")
+                //    {
+                //        o.currentStep = "待发货";
+                //    }
+                //});
             }
             else
             {
@@ -233,19 +233,18 @@ namespace Logistics_DAL
             MySqlParameter[] parameters = {
                         new MySqlParameter("@_TenantID", model.TenantID),
                         new MySqlParameter("@_ID",model.ID),
-                        new MySqlParameter("@_CustomerMark", model.CustomerMark == null ?"":model.CustomerMark),
                         new MySqlParameter("@_CustomerChooseChannelID", model.CustomerChooseChannelID),
                         new MySqlParameter("@_InWeightTotal", model.InWeightTotal),
                              new MySqlParameter("@_InVolumeTotal", model.InVolumeTotal),
                              new MySqlParameter("@_InPackageCountTotal", model.InPackageCountTotal),
-                                  new MySqlParameter("@_recipient", model.recipient == null ?"":model.recipient),
-                                   new MySqlParameter("@_country", model.country == null ?"":model.country),
-                                    new MySqlParameter("@_address", model.address == null ?"":model.address),
-                                     new MySqlParameter("@_city", model.city == null ?"":model.city),
-                                      new MySqlParameter("@_code", model.code == null?"":model.code),
-                                       new MySqlParameter("@_tel", model.tel == null ?"":model.tel),
-                                        new MySqlParameter("@_company", model.company== null ?"":model.company),
-                                         new MySqlParameter("@_taxNo", model.taxNo == null ?"":model.taxNo),
+                                  //new MySqlParameter("@_recipient", model.recipient == null ?"":model.recipient),
+                                  // new MySqlParameter("@_country", model.country == null ?"":model.country),
+                                  //  new MySqlParameter("@_address", model.address == null ?"":model.address),
+                                  //   new MySqlParameter("@_city", model.city == null ?"":model.city),
+                                  //    new MySqlParameter("@_code", model.code == null?"":model.code),
+                                  //     new MySqlParameter("@_tel", model.tel == null ?"":model.tel),
+                                  //      new MySqlParameter("@_company", model.company== null ?"":model.company),
+                                  //       new MySqlParameter("@_taxNo", model.taxNo == null ?"":model.taxNo),
                                           new MySqlParameter("@_declareTotal", model.declareTotal),
                                            new MySqlParameter("@_customerServiceMark", model.customerServiceMark == null ? "":model.customerServiceMark),
                                             new MySqlParameter("@_packageMark", model.packageMark == null ?"":model.packageMark),

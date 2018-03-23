@@ -10,15 +10,16 @@ namespace Logistics_DAL
 {
     public class AgentDAL
     {
-        public static logistics_base_agent GetItem(long ID, long TenantID)
+        public static logistics_base_agent GetModel(long ID, long TenantID)
         {
             var result = new logistics_base_agent();
             MySqlParameter[] parameters = {
-                new MySqlParameter("@_ID",ID),
-                new MySqlParameter("@_TenantID", TenantID)
+
+                new MySqlParameter("@_TenantID", TenantID),
+                     new MySqlParameter("@_ID",ID)
             };
 
-            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_select_by_id, parameters);
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_GetModel, parameters);
             if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
             {
                 result = ConvertHelper<logistics_base_agent>.DtToModel(dbResult.Tables[0]);
@@ -47,35 +48,31 @@ namespace Logistics_DAL
             int result = 0;
             if (trans == null)
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_insert, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_ADD, parameters);
             }
             else
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_insert, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_ADD, parameters);
             }
             return result == 1;
 
         }
-        public static bool Delete(logistics_base_agent model, AkmiiMySqlTransaction trans = null)
+        public static bool Delete(long ID, long TenantID = BusinessConstants.Admin.TenantID, AkmiiMySqlTransaction trans = null)
         {
 
             MySqlParameter[] parameters = {
-                         new MySqlParameter("@_TenantID", model.TenantID),
-                        new MySqlParameter("@_ID",model.ID),
-                        new MySqlParameter("@_name", model.Name),
-                         new MySqlParameter("@_tel", model.tel),
-                          new MySqlParameter("@_mark", model.mark),
-                        new MySqlParameter("@_ModifiedBy",model.ModifiedBy)
+                         new MySqlParameter("@_TenantID", TenantID),
+                        new MySqlParameter("@_ID",ID)
             };
 
             int result = 0;
             if (trans == null)
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_delete_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_Delete, parameters);
             }
             else
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_delete_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_Delete, parameters);
             }
             return result == 1;
 
@@ -96,38 +93,57 @@ namespace Logistics_DAL
             int result = 0;
             if (trans == null)
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_update_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_Update, parameters);
             }
             else
             {
-                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_update_by_id, parameters);
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_Update, parameters);
             }
             return result == 1;
 
         }
 
-        public static List<logistics_base_agent> GetByPage(DemoGetByNameRequest request, ref int totalCount, AkmiiMySqlTransaction trans = null)
+        public static List<logistics_base_agent> GetByPage(long TenantID, long ID, string name, string tel, int pageIndex, int pageSize, ref int totalCount, AkmiiMySqlTransaction trans = null)
         {
             var list = new List<logistics_base_agent>();
             MySqlParameter[] parameters = {
-                new MySqlParameter("@_TenantID",""),
-                 new MySqlParameter("@_CreatedBy",""),
-                new MySqlParameter("@_PageIndex", request.PageIndex),
-                new MySqlParameter("@_PageSize", request.PageSize),
+                new MySqlParameter("@_TenantID",TenantID),
+                 new MySqlParameter("@_ID",ID == null?0:ID),
+                 new MySqlParameter("@_name",name == null ? "":name),
+                new MySqlParameter("@_tel", tel == null ?"":tel),
+                new MySqlParameter("@_PageIndex", pageIndex),
+                 new MySqlParameter("@_PageSize", pageSize),
                 new MySqlParameter("_totalCount", totalCount) { Direction = ParameterDirection.Output }
             };
 
-            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_select_by_page, parameters);
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_list_by_page, parameters);
             if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
             {
                 list = ConvertHelper<logistics_base_agent>.DtToList(dbResult.Tables[0]);
             }
 
-
             return list;
 
         }
 
+
+        public static List<logistics_base_agent> GetIndex(long TenantID, string name)
+        {
+            var list = new List<logistics_base_agent>();
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID",TenantID),
+                 new MySqlParameter("@_name",name),
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_select_index, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                list = ConvertHelper<logistics_base_agent>.DtToList(dbResult.Tables[0]);
+            }
+
+            return list;
+
+        }
 
     }
 }

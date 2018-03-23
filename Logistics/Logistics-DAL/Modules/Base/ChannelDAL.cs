@@ -109,7 +109,7 @@ namespace Logistics_DAL
                 new MySqlParameter("_totalCount", totalCount) { Direction = ParameterDirection.Output }
             };
 
-            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_select_by_page, parameters);
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_list_by_page, parameters);
             if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
             {
                 list = ConvertHelper<logistics_base_channel>.DtToList(dbResult.Tables[0]);

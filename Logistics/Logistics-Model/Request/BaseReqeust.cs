@@ -35,6 +35,8 @@ namespace Logistics_Model
         public messageType messageType { get; set; } = messageType.all;
     }
 
+    
+
     #endregion
 
 

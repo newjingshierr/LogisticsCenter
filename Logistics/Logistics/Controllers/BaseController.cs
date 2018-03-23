@@ -23,13 +23,13 @@ namespace Logistics.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("latest")]
-        public ResponseMessage<List<logistics_base_message>> GetItemListByLatest()
+        public ResponseMessage<List<logistics_base_message>> GetItemListByLatest([FromUri]GetItemListByPageRequest request)
         {
 
             var result = new List<logistics_base_message>();
             try
             {
-                result = MessageManager.GetMessageListByLatest(contextInfo.userInfo.Userid);
+                result = MessageManager.GetMessageListByLatest(contextInfo.userInfo.Userid, request);
 
                 return GetResult(result);
             }
@@ -70,6 +70,52 @@ namespace Logistics.Controllers
 
         }
 
+
+        /// <summary>
+        ///更新消息
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("Item/update")]
+        public ResponseMessage<bool> UpdateMessage(MessageUpdateRequest request)
+        {
+            LogHelper log = LogHelper.GetLogger(typeof(MessageController));
+
+            if (request == null)
+            {
+                return GetErrorResult<bool>(SystemStatusEnum.InvalidRequest);
+            }
+
+            logistics_base_message message = new logistics_base_message();
+            message.ID = request.ID;
+            message.status = request.status;
+            message.title = request.title;
+            message.message = request.message;
+            message.ModifiedBy = contextInfo.userInfo.Userid;
+            message.TenantID = BusinessConstants.Admin.TenantID;
+
+            var result = false;
+            try
+            {
+                result = MessageManager.Update(message);
+
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+
+            }
+
+        }
+
+        /// <summary>
+        /// 新增消息
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("item")]
         public ResponseMessage<string> Insert(MessageInsertRequest request)
@@ -89,6 +135,58 @@ namespace Logistics.Controllers
 
         }
 
+        /// <summary>
+        /// 获取消息未读数量
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("unread")]
+        public ResponseMessage<int> UnRead()
+        {
+
+            var result = 0;
+            try
+            {
+                result = MessageManager.UnReadMessageCount(contextInfo.userInfo.Userid);
+
+                return GetResult(result);
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult((int)result, ex.Message);
+            }
+
+        }
+        
+        /// <summary>
+        /// 未读信息是否已读进行更新
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("unreadupdate")]
+        public ResponseMessage<string> unreadupdate( )
+        {
+
+            var result = false;
+            try
+            {
+                result = MessageManager.logistics_base_message_unread_update(contextInfo.userInfo.Userid);
+
+                return GetResult(result.ToString());
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result.ToString(), ex.Message);
+            }
+
+        }
+
+        //[HttpGet]
+        //[Route("items/unread")]
+        //public ResponseMessage<int> GetUnReadMessageCount()
+        //{
+
+        //}
 
     }
 
@@ -183,6 +281,131 @@ namespace Logistics.Controllers
 
     }
 
+    [RoutePrefix(ApiConstants.PrefixApi + "Agent")]
+    public class AgentController : BaseAuthController
+    {
+        LogHelper log = LogHelper.GetLogger(typeof(AgentController));
+
+        [HttpGet]
+        [Route("index")]
+        public ResponseMessage<List<logistics_base_agent>> GetIndex([FromUri] GetAgentIndexRequest request)
+        {
+            var result = new List<logistics_base_agent>();
+            try
+            {
+                result = AgentManager.GetIndex(request);
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+            }
+        }
+
+        [HttpGet]
+        [Route("page")]
+        public ResponseMessage<List<logistics_base_agent>> GetListByPage([FromUri] GetAgentPageRequest request)
+        {
+            int totalCount = 0;
+            var result = new List<logistics_base_agent>();
+            try
+            {
+                result = AgentManager.GetListByPage(request, this.contextInfo.userInfo.Userid, ref totalCount);
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+            }
+        }
+
+
+        [HttpPost]
+        [Route("Item")]
+        public ResponseMessage<string> Insert(InsertAgentRequest request)
+        {
+
+            var result = false;
+            try
+            {
+                result = AgentManager.Insert(request, contextInfo.userInfo.Userid);
+
+                return GetResult(result.ToString());
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result.ToString(), ex.Message);
+
+            }
+        }
+
+        [HttpPut]
+        [Route("Item")]
+        public ResponseMessage<string> Update(UpdateAgentRequest request)
+        {
+
+            var result = false;
+            try
+            {
+                result = AgentManager.update(request, this.contextInfo.userInfo.Userid);
+
+                return GetResult(result.ToString());
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result.ToString(), ex.Message);
+
+            }
+
+        }
+
+
+        [HttpDelete]
+        [Route("Item")]
+        public ResponseMessage<string> Delete([FromUri] DeleteAgentRequest request)
+        {
+
+            var result = false;
+            try
+            {
+                result = AgentManager.DeleteByID(request);
+
+                return GetResult(result.ToString());
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result.ToString(), ex.Message);
+
+            }
+
+
+        }
+
+        [HttpGet]
+        [Route("Item")]
+        public ResponseMessage<logistics_base_agent> GetItem([FromUri] GetAgentModelRequest request)
+        {
+
+            var result = new logistics_base_agent();
+            try
+            {
+                result = AgentManager.GetModel(request);
+                return GetResult(result);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(result, ex.Status.ToString(), (int)ex.Status);
+            }
+        }
+
+
+
+    }
+
+
     [RoutePrefix(ApiConstants.PrefixApi + "RecipientsAddress")]
     public class RecipientsAddressController : BaseAuthController
     {
@@ -235,6 +458,8 @@ namespace Logistics.Controllers
             var result = false;
             try
             {
+                request.userid = this.contextInfo.userInfo.Userid;
+
                 result = RecipientsAddressManager.update(request);
 
                 return GetResult(result.ToString());

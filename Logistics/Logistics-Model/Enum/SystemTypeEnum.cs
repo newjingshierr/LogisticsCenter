@@ -106,7 +106,8 @@ namespace Logistics_Model
         CustomerServiceConfirm = 1,
         WarehousePackge =2,
         WaitForPay =3,
-        Delivered = 4
+        Delivered = 4,
+        SystemMessage = 100
     }
 
     public enum CustomerOrderReqeustTypeEnum

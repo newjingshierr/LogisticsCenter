@@ -11,6 +11,17 @@ namespace Logistics_DAL
     /// </summary>
     public class Proc
     {
+        public class Agent
+        {
+            public const string logistics_base_agent_ADD = "logistics_base_agent_ADD";
+            public const string logistics_base_agent_Delete = "logistics_base_agent_Delete";
+            public const string logistics_base_agent_Exists = "logistics_base_agent_Exists";
+            public const string logistics_base_agent_list_by_page = "logistics_base_agent_list_by_page";
+            public const string logistics_base_agent_select_index = "logistics_base_agent_select_index";
+            public const string logistics_base_agent_Update = "logistics_base_agent_Update";
+            public const string logistics_base_agent_GetModel = "logistics_base_agent_GetModel";
+
+        }
         public class File
         {
             public const string logistics_base_attachment_get_by_id = "logistics_base_attachment_get_by_id";
@@ -136,17 +147,6 @@ namespace Logistics_DAL
         }
 
 
-
-        public class Agent
-        {
-            public const string logistics_base_agent_insert = "logistics_base_agent_insert";
-            public const string logistics_base_agent_select_where = "logistics_base_agent_select_where";
-            public const string logistics_base_agent_select_by_page = "logistics_base_agent_select_by_page";
-            public const string logistics_base_agent_select_by_id = "logistics_base_agent_select_by_id";
-            public const string logistics_base_agent_delete_by_id = "logistics_base_agent_select_all";
-            public const string logistics_base_agent_update_by_id = "logistics_base_agent_update_by_id";
-        }
-
         public class CustomerOrderStatus
         {
             public const string logistics_customer_order_status_delete_by_id = "logistics_customer_order_status_delete_by_id";
@@ -164,6 +164,7 @@ namespace Logistics_DAL
             public const string logistics_customer_order_insert = "logistics_customer_order_insert";
             public const string logistics_customer_order_select_by_where = "logistics_customer_order_select_by_where";
             public const string logistics_customer_order_select_by_page = "logistics_customer_order_select_by_page";
+            public const string logistics_customer_order_Customer_Warehouse_In_select_by_page = "logistics_customer_order_Customer_Warehouse_In_select_by_page";
             public const string logistics_customer_order_select_by_id = "logistics_customer_order_select_by_id";
             public const string logistics_customer_order_express_index = "logistics_customer_order_express_index";
             public const string logistics_customer_order_index = "logistics_customer_order_index";
@@ -232,7 +233,8 @@ namespace Logistics_DAL
             public const string logistics_base_userinfo_select_member_index = "logistics_base_userinfo_select_member_index";
             public const string logistics_base_userinfo_select_customer_service_index = "logistics_base_userinfo_select_customer_service_index";
             public const string logistics_base_userinfo_select_warehouse_admin_index = "logistics_base_userinfo_select_warehouse_admin_index";
- 
+            public const string logistics_base_userinfo_select_all = "logistics_base_userinfo_select_all";
+
         }
 
 
@@ -253,8 +255,12 @@ namespace Logistics_DAL
             public const string logistics_base_sms_validate_select = "logistics_base_sms_validate_select";
             public const string logistics_base_sms_validate_check = "logistics_base_sms_validate_check";
             public const string logistics_base_message_select_by_latest = "logistics_base_message_select_by_latest";
+            public const string logistics_base_system_message_select_by_latest = "logistics_base_system_message_select_by_latest";
             public const string logistics_base_message_select_by_page = "logistics_base_message_select_by_page";
             public const string logistics_base_message_insert = "logistics_base_message_insert";
+            public const string logistics_base_message_update = "logistics_base_message_update";
+            public const string logistics_base_message_unread = "logistics_base_message_unread";
+            public const string logistics_base_message_unread_update = "logistics_base_message_unread_update";
         }
     }
 }

@@ -719,7 +719,7 @@ namespace Logistics_Model
     }
     public class logistics_base_recipients_address
     {
-        public string countryCode { get; set;}
+        public string countryCode { get; set; }
         public string taxno { get; set; }
         public string companyName { get; set; }
 
@@ -1948,7 +1948,7 @@ namespace Logistics_Model
         /// </summary>		
         [JsonConverter(typeof(DateTime2IOSStringConverter))]
         public DateTime deliverTime { get; set; }
-        
+
         /// <summary>
         /// AgentID
         /// </summary>		
@@ -2014,6 +2014,7 @@ namespace Logistics_Model
         /// ID
         /// </summary>		
         private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long ID
         {
             get { return _id; }
@@ -2023,6 +2024,7 @@ namespace Logistics_Model
         /// mergeOrderID
         /// </summary>		
         private long _mergeorderid;
+        [JsonConverter(typeof(Long2StringConverter))]
         public long mergeOrderID
         {
             get { return _mergeorderid; }
@@ -2428,7 +2430,15 @@ namespace Logistics_Model
     }
     public class logistics_base_message
     {
-
+        public int status { get; set; }
+        /// <summary>
+        /// 标题
+        /// </summary>
+        public string title { get; set; }
+        /// <summary>
+        /// 是否已读
+        /// </summary>
+        public bool IsRead { get; set; }
         /// <summary>
         /// TenantID
         /// </summary>		

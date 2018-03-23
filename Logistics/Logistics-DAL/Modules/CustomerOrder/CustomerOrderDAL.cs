@@ -81,6 +81,38 @@ namespace Logistics_DAL
             return result;
         }
 
+        public static List<logistics_customer_order> GetItemListForCustomerWarehouseInByPage(long TenantID , long userID, string expressNo , string TransferNo,
+                            int PageIndex,
+                                 int PageSize,
+                                    ref int totalCount)
+        {
+            var result = new List<logistics_customer_order>();
+            var total = new MySqlParameter("@_TotalCount", totalCount) { Direction = ParameterDirection.Output };
+
+            MySqlParameter[] parameters = {
+                                new MySqlParameter("@_TenantID", TenantID),
+                                     new MySqlParameter("@_userID", userID),
+                                              new MySqlParameter("@_expressNo", expressNo == null ?"":expressNo),
+                                              new MySqlParameter("@_TransferNo", TransferNo == null ?"":TransferNo),
+                                                new MySqlParameter("@_PageIndex", PageIndex),
+                                                     new MySqlParameter("@_PageSize", PageSize),
+                                total
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrder.logistics_customer_order_Customer_Warehouse_In_select_by_page, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = ConvertHelper<logistics_customer_order>.DtToList(dbResult.Tables[0]);
+                totalCount = (total.Value + "").Convert2Int32();
+            }
+            else
+            {
+                result = null;
+            }
+
+            return result;
+        }
+
 
         public static bool Insert(logistics_customer_order model, AkmiiMySqlTransaction trans = null)
         {

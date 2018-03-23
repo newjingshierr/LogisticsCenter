@@ -173,6 +173,11 @@ namespace Logistics.Controllers
                     userID = request.MemberID;
                 }
             }
+            else if (request.step == "2")
+            {
+                //入库查询
+                userID = contextInfo.userInfo.Userid;
+            }
 
             try
             {
@@ -399,7 +404,7 @@ namespace Logistics.Controllers
         }
 
         [HttpPut]
-        [Route("Item/Refuse")]
+        [Route("Item/pay")]
        public ResponseMessage<bool> PayCustomerOrderMerge( CustomerOrderMergePayRequest request)
         {
             LogHelper log = LogHelper.GetLogger(typeof(CustomerOrderMergeController));

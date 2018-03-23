@@ -4,6 +4,50 @@ using System.Collections.Generic;
 
 namespace Logistics_Model
 {
+    public class UpdateAgentRequest : BaseRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long ID { get; set; }
+        public string name { get; set; }
+        public string tel { get; set; }
+        public string mark { get; set; }
+    }
+
+    public class InsertAgentRequest : BaseRequest
+    {
+        public string name { get; set; }
+        public string tel { get; set; }
+        public string mark { get; set; }
+    }
+
+    public class GetAgentModelRequest : BaseRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long ID { get; set; }
+    }
+    public class GetAgentPageRequest : BaseRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long ID { get; set; }
+        public string name { get; set; }
+        public string tel { get; set; }
+
+        public int pageIndex { get; set; }
+
+        public int pageSize { get; set; }
+    }
+
+    public class GetAgentIndexRequest : BaseRequest
+    {
+        public string name { get; set; }
+    }
+
+    public class DeleteAgentRequest : BaseRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long ID { get; set; }
+    }
+
     public class GetFileByCustomerOrderIDRequest : BaseRequest
     {
         [JsonConverter(typeof(Long2StringConverter))]
@@ -107,33 +151,27 @@ namespace Logistics_Model
         [JsonConverter(typeof(Long2StringConverter))]
         public long CustomerChooseChannelID { get; set; } = 0L;
         public string CustomerChooseChannelName { get; set; } = "";
-        public string recipient { get; set; } = "";
-        public string country { get; set; } = "";
-        public string countryCode { get; set; } = "";
-        public string address { get; set; } = "";
-        public string city { get; set; } = "";
-        public string code { get; set; } = "";
-        public string tel { get; set; } = "";
-        public string company { get; set; } = "";
-        public string taxNo { get; set; } = "";
+        //public string recipient { get; set; } = "";
+        //public string country { get; set; } = "";
+        //public string countryCode { get; set; } = "";
+        //public string address { get; set; } = "";
+        //public string city { get; set; } = "";
+        //public string code { get; set; } = "";
+        //public string tel { get; set; } = "";
+        //public string company { get; set; } = "";
+        //public string taxNo { get; set; } = "";
         public List<InsertProductUpdateRequet> productList { get; set; }
         public string customerServiceMark { get; set; } = "";
-        public string packageMark { get; set; } = "";
+
         public decimal packageWeight { get; set; } = 0;
         public decimal packageVolume { get; set; } = 0;
         public decimal packageLength { get; set; } = 0;
         public decimal packageHeight { get; set; } = 0;
         public decimal packageWidth { get; set; } = 0;
-        //public decimal settlementWeight { get; set; } = 0;
-        //public decimal freightFee { get; set; } = 0;
-        //public decimal tax { get; set; } = 0;
-        public decimal serviceFee { get; set; } = 0;
+
         public decimal remoteFee { get; set; } = 0;
         public decimal magneticinspectionFee { get; set; }
-        //public decimal totalFee { get; set; } = 0;
         [JsonConverter(typeof(Long2StringConverter))]
-        public long ChannelID { get; set; } = 0;
-        public string ChannelName { get; set; } = "";
         public string channelNo { get; set; } = "";
         public System.DateTime deliverTime { get; set; }
         [JsonConverter(typeof(Long2StringConverter))]
@@ -340,12 +378,24 @@ namespace Logistics_Model
         public long CustomerServiceID { get; set; } = 0L;
     }
 
+    public class MessageUpdateRequest : BaseRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long  ID { get; set; }
+        public int status { get; set; }
+        public string title { get; set; }
+        public string message { get; set; }
+      
+    }
+
     public class MessageInsertRequest : BaseRequest
     {
         public messageType type { get; set; }
+        public string title { get; set; }
         public string message { get; set; }
         [JsonConverter(typeof(Long2StringConverter))]
         public long userid { get; set; }
+        public int status { get; set; }
     }
     public class OrderStatusRequest : BaseRequest
     {

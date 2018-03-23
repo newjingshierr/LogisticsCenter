@@ -15,6 +15,7 @@ namespace Logistics_Model
 
     public class DemoGetByNameRequest
     {
+
         public string name { get; set; } = "";
 
         public int PageIndex { get; set; } = 1;
