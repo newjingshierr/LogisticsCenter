@@ -261,6 +261,7 @@ namespace Logistics_DAL
             public const string logistics_base_message_update = "logistics_base_message_update";
             public const string logistics_base_message_unread = "logistics_base_message_unread";
             public const string logistics_base_message_unread_update = "logistics_base_message_unread_update";
+            public const string logistics_base_message_delete = "logistics_base_message_delete";
         }
     }
 }

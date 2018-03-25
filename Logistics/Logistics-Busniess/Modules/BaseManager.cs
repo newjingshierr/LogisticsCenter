@@ -61,6 +61,10 @@ namespace Logistics_Busniess
 
     public class MessageManager
     {
+        public static bool logistics_base_message_delete(long ID)
+        {
+            return MessageDal.logistics_base_message_delete(ID);
+        }
         public static List<logistics_base_message> GetMessageListByLatest(long userID, GetItemListByPageRequest request)
         {
             if (request.messageType == messageType.SystemMessage)

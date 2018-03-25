@@ -5,27 +5,51 @@ using System.Collections.Generic;
 using System.Data;
 using Logistics_Model;
 using Logistics.Common;
+using Akmii;
 
 namespace Logistics_DAL
 {
     public class MessageDal : DalBase
     {
+        public static bool logistics_base_message_delete(long ID, AkmiiMySqlTransaction trans = null)
+        {
+
+            MySqlParameter[] parameters = {
+                         new MySqlParameter("@_TenantID",BusinessConstants.Admin.TenantID),
+                        new MySqlParameter("@_ID",ID)
+            };
+
+            int result = 0;
+            if (trans == null)
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Base.logistics_base_message_delete, parameters);
+            }
+            else
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.Base.logistics_base_message_delete, parameters);
+            }
+            return result == 1;
+
+        }
         public static List<logistics_base_message> GetItemListByPage(int pageIndex, int pageSize, int type, long userid, ref int totalCount, long TenantID = BusinessConstants.Admin.TenantID)
         {
             var result = new List<logistics_base_message>();
+            var total = new MySqlParameter("@_TotalCount", totalCount) { Direction = ParameterDirection.Output };
+
             MySqlParameter[] parameters = {
                 new MySqlParameter("@_userID",userid),
                    new MySqlParameter("@_messageType",type),
                 new MySqlParameter("@_TenantID", TenantID),
                 new MySqlParameter("@_PageIndex", pageIndex),
                 new MySqlParameter("@_PageSize", pageSize),
-                new MySqlParameter("_totalCount", totalCount) { Direction = ParameterDirection.Output }
+                total
             };
 
             var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Base.logistics_base_message_select_by_page, parameters);
             if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
             {
                 result = ConvertHelper<logistics_base_message>.DtToList(dbResult.Tables[0]);
+                totalCount = (total.Value + "").Convert2Int32();
             }
             else
             {
@@ -83,7 +107,7 @@ namespace Logistics_DAL
                         new MySqlParameter("@_ID",model.ID),
                           new MySqlParameter("@_type",model.type),
                           new MySqlParameter("@_status", model.status),
-                          new MySqlParameter("@_title", model.title),
+                          new MySqlParameter("@_title", model.message),
                         new MySqlParameter("@_message", model.message),
                         new MySqlParameter("@_IsRead", model.IsRead),
                           new MySqlParameter("@_userid", model.userid),

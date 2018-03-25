@@ -17,6 +17,30 @@ namespace Logistics.Controllers
         LogHelper log = LogHelper.GetLogger(typeof(UserController));
 
         /// <summary>
+        /// 消息删除接口
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("delete")]
+        public ResponseMessage<string> delete(MessageDeleteRequest request)
+        {
+            var result = false;
+            try
+            {
+                result = MessageManager.logistics_base_message_delete(request.id);
+
+                return GetResult(result.ToString());
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(result.ToString(), ex.Message);
+
+            }
+        }
+
+
+        /// <summary>
         /// 獲取用戶的消息
         /// </summary>
         /// <param name="request"></param>

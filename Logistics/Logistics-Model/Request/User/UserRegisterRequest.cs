@@ -4,6 +4,12 @@ using System.Collections.Generic;
 
 namespace Logistics_Model
 {
+    public class MessageDeleteRequest : BaseRequest
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long id { get; set; }
+    }
+
     public class UpdateAgentRequest : BaseRequest
     {
         [JsonConverter(typeof(Long2StringConverter))]
