@@ -20,7 +20,14 @@ using Logistics_DAL;
 using System.Net.Mail;
 using System.Data;
 using Logistics.Common;
-
+using NPOI.XWPF.UserModel;
+using System.Text.RegularExpressions;
+using NPOI.POIFS.FileSystem;
+using Spire.Doc;
+using System.Diagnostics;
+using Microsoft.SharePoint;
+using Microsoft.SharePoint.Client;
+using System.Configuration;
 
 namespace Logistics.Console
 {
@@ -60,13 +67,76 @@ namespace Logistics.Console
         public IRow row;
         public int columnsCount;
 
+        static void UploadSPFile(byte[] documentStream, string documentName)
+        {
+            using (var clientObj = new ClientContext(ConfigurationManager.AppSettings["url"].ToString()))
+            {
+                clientObj.AuthenticationMode = ClientAuthenticationMode.Default;
+                System.Security.SecureString sssss = new System.Security.SecureString();
+                string userPsw = ConfigurationManager.AppSettings["PWD"];
+                string userName = ConfigurationManager.AppSettings["UserName"];
+                foreach (char charCode in userPsw)
+                {
+                    sssss.AppendChar(charCode);
+                }
+                SharePointOnlineCredentials sharepointOnlineCC = new SharePointOnlineCredentials(userName, sssss);
+                clientObj.Credentials = sharepointOnlineCC;
+
+                clientObj.Load(clientObj.Web);
+                clientObj.Load(clientObj.Site.RootWeb);
+              
+
+                List documentsList = clientObj.Web.Lists.GetByTitle("Investment");
+                clientObj.Load(documentsList.Fields);
+                clientObj.ExecuteQuery();
+
+                var fileCreationInformation = new FileCreationInformation();
+                fileCreationInformation.Content = documentStream;
+                fileCreationInformation.Overwrite = true;
+                fileCreationInformation.Url = "https://hcn.sharepoint.cn/sites/UAT/Investment" + "/" + documentName+".docx";
+                Microsoft.SharePoint.Client.File uploadFile = documentsList.RootFolder.Files.Add(fileCreationInformation);
+                uploadFile.ListItemAllFields["Project_x0020_name"] = "India";
+                uploadFile.ListItemAllFields.Update();
+                clientObj.ExecuteQuery();
+
+                //var spListField1s = clientObj.Web.Lists;
+                //clientObj.Load(spListField1s);
+                //clientObj.ExecuteQuery();
+                //var allList = spListField1s.ToList();
+
+
+                //var tableName = "AkmiiSync_" + item.WFName.Replace(" ", "_").Replace("-", "_") + "_" + item.ID;
+                //BeginSyncOneLoop(clientObj, item);
+                //BeginSyncWorkFlowTasksOneLoop(clientObj, item, tableName);
+                //BeginSyncWorkFlowTasksWhichFormIdIsEmpty(clientObj, item, tableName);
+
+            }
+        }
 
         static void Main(string[] args)
         {
-            InsertUser("warehouseadmin1", BusinessConstants.Role.wareHouseAdmin);
-            InsertUser("warehouseadmin2", BusinessConstants.Role.wareHouseAdmin);
-            InsertUser("warehouseadmin3", BusinessConstants.Role.wareHouseAdmin);
-            InsertUser("warehouseadmin5", BusinessConstants.Role.wareHouseAdmin);
+            var doc = new Spire.Doc.Document();
+            doc.LoadFromFile("InvestmentProjectTemplate.docx");
+            doc.Replace("${projectName}", "India", false, false);
+            var guid = Guid.NewGuid().ToString();
+            doc.SaveToFile("s" + guid + ".docx", FileFormat.Docx);
+            doc.Close();
+            string localFilePath = Path.GetFileName("s" + guid + ".docx");
+            string tempFilePath = string.Format("{0}{1}", Path.GetTempPath(), guid);
+            System.IO.File.Copy(localFilePath, tempFilePath, true);
+
+            FileStream fs = new FileStream(tempFilePath, FileMode.Open, FileAccess.Read);
+            BinaryReader br = new BinaryReader(fs);
+            byte[] fileContent = br.ReadBytes((int)fs.Length);
+            UploadSPFile(fileContent, guid);
+
+
+
+
+            //InsertUser("warehouseadmin1", BusinessConstants.Role.wareHouseAdmin);
+            //InsertUser("warehouseadmin2", BusinessConstants.Role.wareHouseAdmin);
+            //InsertUser("warehouseadmin3", BusinessConstants.Role.wareHouseAdmin);
+            //InsertUser("warehouseadmin5", BusinessConstants.Role.wareHouseAdmin);
 
             //  var strTicket = "18721819403&sj456789&890501594632818690";
             //  var ticketArray = strTicket.Split('&');
@@ -129,10 +199,10 @@ namespace Logistics.Console
             //p.ImportPartion(BusinessConstants.Channel.DHLStandard, "DHL标准快递分区");
             //p.ImportCounty(BusinessConstants.Channel.DHLStandard, "DHL标准快递国家");
             // p.ImportQuotation(BusinessConstants.Channel.DHLStandard, "DHL标准快递价格");
-            System.Console.ReadLine();
+            //  System.Console.ReadLine();
         }
 
-       public static void InsertUser(string tel, long roleType)
+        public static void InsertUser(string tel, long roleType)
         {
             UserInfo userInfo = new UserInfo();
             userInfo.Userid = IdWorker.GetID();
@@ -222,7 +292,7 @@ namespace Logistics.Console
             //    }
             //    workbook.Write(fs);
             //}
-            HSSFWorkbook wk =new HSSFWorkbook();
+            HSSFWorkbook wk = new HSSFWorkbook();
             ISheet tb = wk.CreateSheet("33");
 
 
@@ -231,11 +301,11 @@ namespace Logistics.Console
                 IRow row = tb.CreateRow(i);
                 row.CreateCell(0).SetCellValue("11");
                 row.CreateCell(1).SetCellValue(dt.Rows[i][0].ToString());
-            
+
             }
 
 
-            using (FileStream fs = File.OpenWrite(importPath))
+            using (FileStream fs = System.IO.File.OpenWrite(importPath))
             {
                 wk.Write(fs);   //向打开的这个xls文件中写入mySheet表并保存。
 
@@ -251,7 +321,7 @@ namespace Logistics.Console
             FileStream fs = null;
             IRow row = null;
             ISheet sheet = null;
-            ICell cell = null;
+            NPOI.SS.UserModel.ICell cell = null;
             try
             {
                 if (dt != null && dt.Rows.Count > 0)
@@ -279,7 +349,7 @@ namespace Logistics.Console
                             cell.SetCellValue(dt.Rows[i][j].ToString());
                         }
                     }
-                    using (fs = File.OpenWrite(@"D:/import.xls"))
+                    using (fs = System.IO.File.OpenWrite(@"D:/import.xls"))
                     {
                         workbook.Write(fs);//向打开的这个xls文件中写入数据
                         result = true;

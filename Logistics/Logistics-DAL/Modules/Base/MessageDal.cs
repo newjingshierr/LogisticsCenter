@@ -107,7 +107,7 @@ namespace Logistics_DAL
                         new MySqlParameter("@_ID",model.ID),
                           new MySqlParameter("@_type",model.type),
                           new MySqlParameter("@_status", model.status),
-                          new MySqlParameter("@_title", model.message),
+                          new MySqlParameter("@_title", model.title),
                         new MySqlParameter("@_message", model.message),
                         new MySqlParameter("@_IsRead", model.IsRead),
                           new MySqlParameter("@_userid", model.userid),
