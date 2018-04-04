@@ -102,7 +102,7 @@ namespace Logistics_Model
     public enum messageType
     {
         all = -1,
-        WarehouseIn =0,
+        WarehouseIn =0,//仓库已入库or 客户待打包；
         CustomerServiceConfirm = 1,
         WarehousePackge =2,
         WaitForPay =3,

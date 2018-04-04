@@ -132,7 +132,7 @@ namespace Logistics_DAL
             var list = new List<logistics_base_agent>();
             MySqlParameter[] parameters = {
                 new MySqlParameter("@_TenantID",TenantID),
-                 new MySqlParameter("@_name",name),
+                 new MySqlParameter("@_name",name == null ?"": name),
             };
 
             var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Agent.logistics_base_agent_select_index, parameters);

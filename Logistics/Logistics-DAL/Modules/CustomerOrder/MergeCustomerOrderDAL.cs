@@ -12,6 +12,26 @@ namespace Logistics_DAL
 {
     public class MergeCustomerOrderDAL
     {
+        public static int logistics_customer_order_merge_get_unpay(long userid, long TenantID = BusinessConstants.Admin.TenantID)
+        {
+            var result = 0;
+            MySqlParameter[] parameters = {
+                new MySqlParameter("@_TenantID", TenantID),
+                new MySqlParameter("@_userid", userid),
+            };
+
+            var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.CustomerOrderMerge.logistics_customer_order_merge_get_unpay, parameters);
+            if (dbResult.Tables.Count > 0 && dbResult.Tables[0].Rows.Count > 0)
+            {
+                result = Convert.ToInt32(dbResult.Tables[0].Rows[0][0]);
+            }
+            else
+            {
+                result = 0;
+            }
+
+            return result;
+        }
 
         public static List<CustomerOrderMergeVM> GetListForWaitForApproveByPage(long userID,
            string customerOrderMergeNo,
@@ -265,6 +285,8 @@ namespace Logistics_DAL
                                                            new MySqlParameter("@_deliverTime", model.deliverTime.ConvertDBTime()),
                                                             new MySqlParameter("@_AgentID", model.AgentID),
                                                               new MySqlParameter("@_AgentName", model.AgentName == null ? "":model.AgentName),
+                                                               new MySqlParameter("@_WarehouseAdminID", model.WarehouseAdminID),
+                                                               new MySqlParameter("@_CustomerServiceID", model.CustomerServiceID),
                                                                new MySqlParameter("@_ChannelName", model.ChannelName == null ?"":model.ChannelName),
                                                              new MySqlParameter("@_ModifiedBy",model.ModifiedBy)
             };

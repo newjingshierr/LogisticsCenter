@@ -79,11 +79,12 @@ namespace Logistics_DAL
 
             return result;
         }
-        public static List<logistics_base_message> GetSystemMessagesByLatest(long TenantID = BusinessConstants.Admin.TenantID)
+        public static List<logistics_base_message> GetSystemMessagesByLatest(long userid,long TenantID = BusinessConstants.Admin.TenantID)
         {
             var result = new List<logistics_base_message>();
             MySqlParameter[] parameters = {
-                new MySqlParameter("@_TenantID", TenantID)
+                new MySqlParameter("@_TenantID", TenantID),
+                new MySqlParameter("@_userid", userid),
             };
 
             var dbResult = AkmiiMySqlHelper.GetDataSet(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Base.logistics_base_system_message_select_by_latest, parameters);
@@ -111,6 +112,7 @@ namespace Logistics_DAL
                         new MySqlParameter("@_message", model.message),
                         new MySqlParameter("@_IsRead", model.IsRead),
                           new MySqlParameter("@_userid", model.userid),
+                          new MySqlParameter("@_orderID", model.orderID),
                         new MySqlParameter("@_CreatedBy",model.CreatedBy)
             };
 
@@ -164,6 +166,46 @@ namespace Logistics_DAL
                 result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.Base.logistics_base_message_update, parameters);
             }
             return result == 1;
+
+        }
+
+
+        public static bool logistics_base_message_type_update_by_title(logistics_base_message model, AkmiiMySqlTransaction trans = null)
+        {
+
+            MySqlParameter[] parameters = {
+                          new MySqlParameter("@_TenantID", model.TenantID),
+                         new MySqlParameter("@_title", model.title),
+                        new MySqlParameter("@_type", model.type),
+                        new MySqlParameter("@_ModifiedBy",model.ModifiedBy)
+            };
+
+            int result = 0;
+            if (trans == null)
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(ConnectionManager.GetWriteConn(), CommandType.StoredProcedure, Proc.Base.logistics_base_message_type_update_by_title, parameters);
+            }
+            else
+            {
+                result = AkmiiMySqlHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, Proc.Base.logistics_base_message_type_update_by_title, parameters);
+            }
+            return result == 1;
+
+        }
+
+
+        public static bool logistics_base_message_type_update_by_title_list(List<logistics_base_message> modelList, AkmiiMySqlTransaction trans = null)
+        {
+
+            var result = true;
+            if (modelList != null)
+            {
+                foreach (var o in modelList)
+                {
+                    result = result && logistics_base_message_type_update_by_title(o, trans);
+                }
+            }
+            return result;
 
         }
 

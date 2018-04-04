@@ -8,6 +8,13 @@ using Akmii;
 
 namespace Logistics_Model
 {
+    public class FileView
+    {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long fileID { get; set; }
+        public string fileURL { get; set; }
+    }
+
     public class CustomerOrderMergeItemVW
     {
         public logistics_customer_order_merge mergeOrder { get; set; }

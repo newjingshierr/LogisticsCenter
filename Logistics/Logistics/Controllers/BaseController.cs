@@ -8,6 +8,7 @@ using Logistics_Busniess;
 using Akmii;
 using System.Collections.Generic;
 using System.Linq;
+using Logistics.Core;
 
 namespace Logistics.Controllers
 {
@@ -569,11 +570,20 @@ namespace Logistics.Controllers
 
         }
 
+
+        /// <summary>
+        /// fileType = 0 用户上传； 会更新用户URL
+        /// 仓库入库：1；
+        /// 发布新闻：1；
+        /// </summary>
+        /// <param name="reqeust"></param>
+        /// <returns>文件的ID 和路径</returns>
         [HttpPost]
-        [Route("upload")]
-        public ResponseMessage<string> upload()
+        [Route("upload/user")]
+        public ResponseMessage<FileView> uploadUser()
         {
             var result = 0L;
+            FileView fileView = new FileView();
             try
             {
                 if (HttpContext.Current.Request.Files.AllKeys.Any())
@@ -583,23 +593,83 @@ namespace Logistics.Controllers
                     {
                         var file = httpPostedFile[0];
                         string uploadPath = HttpContext.Current.Server.MapPath("/upload/");
-                        string fullPath = uploadPath + file.FileName;
+                        var srcName = file.FileName.Substring(0, file.FileName.LastIndexOf("."));
+                        var newName = srcName + Core.Common.GetTimeStamp(DateTime.Now);
+                        string fullPath = uploadPath + file.FileName.Replace(srcName, newName);
                         file.SaveAs(fullPath);
-                        result = FileManager.Insert("/upload/" + file.FileName, base.contextInfo.userInfo.Userid);
+                        result = FileManager.Insert(fullPath, base.contextInfo.userInfo);
+
+
+                        fileView.fileID = result;
+                        fileView.fileURL = "/upload/" + file.FileName.Replace(srcName, newName);
+
                         if (result == 0)
                         {
-                            return GetErrorResult<string>(SystemStatusEnum.FileUploadFailedRequest);
+                            return GetErrorResult<FileView>(SystemStatusEnum.FileUploadFailedRequest);
                         }
                         //Todo：文件处理操作
                     }
                 }
 
-                return GetResult(result.ToString());
+                return GetResult(fileView);
             }
             catch (LogisticsException ex)
             {
                 log.Error(ex.Message);
-                return GetErrorResult(result.ToString(), ex.Status.ToString(), (int)ex.Status);
+                return GetErrorResult(fileView, ex.Status.ToString(), (int)ex.Status);
+            }
+
+
+
+        }
+
+
+        /// <summary>
+        /// fileType = 0 用户上传； 会更新用户URL
+        /// 仓库入库：1；
+        /// 发布新闻：1；
+        /// </summary>
+        /// <param name="reqeust"></param>
+        /// <returns>文件的ID 和路径</returns>
+        [HttpPost]
+        [Route("upload")]
+        public ResponseMessage<FileView> upload()
+        {
+            var result = 0L;
+            FileView fileView = new FileView();
+            try
+            {
+                if (HttpContext.Current.Request.Files.AllKeys.Any())
+                {               
+                    var httpPostedFile = HttpContext.Current.Request.Files;
+                    if (httpPostedFile != null && httpPostedFile.Count > 0)
+                    {
+                        var file = httpPostedFile[0];
+                        string uploadPath = HttpContext.Current.Server.MapPath("/upload/");
+                        var srcName = file.FileName.Substring(0, file.FileName.LastIndexOf("."));
+                        var newName = srcName + Core.Common.GetTimeStamp(DateTime.Now);
+                        string fullPath = uploadPath + file.FileName.Replace(srcName, newName);
+                        file.SaveAs(fullPath);
+                        result = FileManager.Insert(fullPath, base.contextInfo.userInfo);
+
+
+                        fileView.fileID = result;
+                        fileView.fileURL = "/upload/"+ file.FileName.Replace(srcName, newName);
+
+                        if (result == 0)
+                        {
+                            return GetErrorResult<FileView>(SystemStatusEnum.FileUploadFailedRequest);
+                        }
+                        //Todo：文件处理操作
+                    }
+                }
+
+                return GetResult(fileView);
+            }
+            catch (LogisticsException ex)
+            {
+                log.Error(ex.Message);
+                return GetErrorResult(fileView, ex.Status.ToString(), (int)ex.Status);
             }
 
 

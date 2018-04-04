@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace Logistics_Model
 {
+    public class FileTypeReqeust: BaseRequest
+    {
+       public int type { get; set; }
+    }
     public class MessageDeleteRequest : BaseRequest
     {
         [JsonConverter(typeof(Long2StringConverter))]
@@ -45,7 +49,7 @@ namespace Logistics_Model
 
     public class GetAgentIndexRequest : BaseRequest
     {
-        public string name { get; set; }
+        public string name { get; set; } = "";
     }
 
     public class DeleteAgentRequest : BaseRequest
@@ -335,6 +339,7 @@ namespace Logistics_Model
     }
     public class CustomerOrderMergeRefuseRequest : BaseRequest
     {
+        [JsonConverter(typeof(Long2StringConverter))]
         public long CustomerOrderMergeID { get; set; } = 0L;
     }
 

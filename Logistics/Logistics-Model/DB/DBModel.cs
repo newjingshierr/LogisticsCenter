@@ -9,9 +9,200 @@ using Akmii;
 
 namespace Logistics_Model
 {
+    public class logistics_base_question_reply
+    {
 
-    /*财务*/
-    public class logistics_customer_order_merge_transaction_log
+        /// <summary>
+        /// TenantID
+        /// </summary>		
+        private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long TenantID
+        {
+            get { return _tenantid; }
+            set { _tenantid = value; }
+        }
+        /// <summary>
+        /// ID
+        /// </summary>		
+        private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        /// <summary>
+        /// questionID
+        /// </summary>		
+        private long _questionid;
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long questionID
+        {
+            get { return _questionid; }
+            set { _questionid = value; }
+        }
+        /// <summary>
+        /// reply
+        /// </summary>		
+        private string _reply;
+        public string reply
+        {
+            get { return _reply; }
+            set { _reply = value; }
+        }
+        /// <summary>
+        /// customerServiceID
+        /// </summary>		
+        private long _customerserviceid;
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long customerServiceID
+        {
+            get { return _customerserviceid; }
+            set { _customerserviceid = value; }
+        }
+        /// <summary>
+        /// Created
+        /// </summary>		
+        private DateTime _created;
+        public DateTime Created
+        {
+            get { return _created; }
+            set { _created = value; }
+        }
+        /// <summary>
+        /// on update CURRENT_TIMESTAMP(3)
+        /// </summary>		
+        private DateTime _modified;
+        public DateTime Modified
+        {
+            get { return _modified; }
+            set { _modified = value; }
+        }
+        /// <summary>
+        /// CreatedBy
+        /// </summary>		
+        private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long CreatedBy
+        {
+            get { return _createdby; }
+            set { _createdby = value; }
+        }
+        /// <summary>
+        /// ModifiedBy
+        /// </summary>		
+        private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long ModifiedBy
+        {
+            get { return _modifiedby; }
+            set { _modifiedby = value; }
+        }
+
+    }
+    public class logistics_base_question
+    {
+
+        /// <summary>
+        /// TenantID
+        /// </summary>		
+        private long _tenantid;
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long TenantID
+        {
+            get { return _tenantid; }
+            set { _tenantid = value; }
+        }
+        /// <summary>
+        /// ID
+        /// </summary>		
+        private long _id;
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        /// <summary>
+        /// userid
+        /// </summary>		
+        private long _userid;
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long userid
+        {
+            get { return _userid; }
+            set { _userid = value; }
+        }
+        /// <summary>
+        /// Created
+        /// </summary>		
+        private DateTime _created;
+        public DateTime Created
+        {
+            get { return _created; }
+            set { _created = value; }
+        }
+        /// <summary>
+        /// on update CURRENT_TIMESTAMP(3)
+        /// </summary>		
+        private DateTime _modified;
+        public DateTime Modified
+        {
+            get { return _modified; }
+            set { _modified = value; }
+        }
+        /// <summary>
+        /// CreatedBy
+        /// </summary>		
+        private long _createdby;
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long CreatedBy
+        {
+            get { return _createdby; }
+            set { _createdby = value; }
+        }
+        /// <summary>
+        /// ModifiedBy
+        /// </summary>		
+        private long _modifiedby;
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long ModifiedBy
+        {
+            get { return _modifiedby; }
+            set { _modifiedby = value; }
+        }
+        /// <summary>
+        /// title
+        /// </summary>		
+        private string _title;
+        public string title
+        {
+            get { return _title; }
+            set { _title = value; }
+        }
+        /// <summary>
+        /// message
+        /// </summary>		
+        private string _message;
+        public string message
+        {
+            get { return _message; }
+            set { _message = value; }
+        }
+        /// <summary>
+        /// IsReply
+        /// </summary>		
+        private bool _isreply;
+        public bool IsReply
+        {
+            get { return _isreply; }
+            set { _isreply = value; }
+        }
+    }
+
+        /*财务*/
+        public class logistics_customer_order_merge_transaction_log
     {
 
         /// <summary>
@@ -1636,6 +1827,10 @@ namespace Logistics_Model
     }
     public class logistics_customer_order_merge
     {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long WarehouseAdminID { get; set; }
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long CustomerServiceID { get; set; }
         public string countryCode { get; set; }
         public string AgentName { get; set; }
         public string ChannelName { get; set; }
@@ -2430,6 +2625,8 @@ namespace Logistics_Model
     }
     public class logistics_base_message
     {
+        [JsonConverter(typeof(Long2StringConverter))]
+        public long orderID { get; set; }
         public int status { get; set; }
         /// <summary>
         /// 标题
@@ -2616,6 +2813,8 @@ namespace Logistics_Model
     }
     public class UserInfo
     {
+        public string HeaderURL { get; set; }
+
         [JsonConverter(typeof(Long2StringConverter))]
         public long TenantID { get; set; }
         public string Email { get; set; }

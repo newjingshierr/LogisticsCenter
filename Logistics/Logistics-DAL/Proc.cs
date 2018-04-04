@@ -11,6 +11,25 @@ namespace Logistics_DAL
     /// </summary>
     public class Proc
     {
+        public class Question
+        {
+            public const string logistics_base_question_ADD = "logistics_base_question_ADD";
+            public const string logistics_base_question_Delete = "logistics_base_question_Delete";
+            public const string logistics_base_question_Update = "logistics_base_question_Update";
+            public const string logistics_base_question_GetModel = "logistics_base_question_GetModel";
+            public const string logistics_base_question_by_page = "logistics_base_question_by_page";
+
+        }
+        public class QuestionReply
+        {
+            public const string logistics_base_question_reply_ADD = "logistics_base_question_reply_ADD";
+            public const string logistics_base_question_reply_Update = "logistics_base_question_reply_Update";
+            public const string logistics_base_question_reply_GetModel = "logistics_base_question_reply_GetModel";
+            public const string logistics_base_question_reply_by_question_id = "logistics_base_question_reply_by_question_id";
+            public const string logistics_base_question_reply_delete_by_quesiton_id = "logistics_base_question_reply_delete_by_quesiton_id";
+
+        }
+
         public class Agent
         {
             public const string logistics_base_agent_ADD = "logistics_base_agent_ADD";
@@ -84,6 +103,7 @@ namespace Logistics_DAL
 
         public class CustomerOrderMerge
         {
+            public const string logistics_customer_order_merge_get_unpay = "logistics_customer_order_merge_get_unpay";
             public const string logistics_customer_order_merge_select_by_id = "logistics_customer_order_merge_select_by_id";
             public const string logistics_customer_order_merge_insert = "logistics_customer_order_merge_insert";
             public const string logistics_customer_order_merge_update_by_id = "logistics_customer_order_merge_update_by_id";
@@ -262,6 +282,7 @@ namespace Logistics_DAL
             public const string logistics_base_message_unread = "logistics_base_message_unread";
             public const string logistics_base_message_unread_update = "logistics_base_message_unread_update";
             public const string logistics_base_message_delete = "logistics_base_message_delete";
+            public const string logistics_base_message_type_update_by_title = "logistics_base_message_type_update_by_title";
         }
     }
 }

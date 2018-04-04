@@ -240,6 +240,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="SwaggerUI\lib\.DS_Store" />
     <Content Include="Views\Home\User.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

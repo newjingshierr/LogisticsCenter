@@ -18,19 +18,29 @@ namespace Logistics_Busniess
             return AttachmentDAL.GetAttachmentListByCustomerOrderID(customerOrderID);
         }
 
-        public static long Insert(string path, long userid)
+        public static long Insert(string path, UserInfo userInfo)
         {
+           
+            var dbResult = false;
             logistics_base_attachment file = new logistics_base_attachment();
-            file.ID = IdWorker.GetID();
-            file.TenantID = BusinessConstants.Admin.TenantID;
-            file.path = path;
-            file.CreatedBy = userid;
-            file.customerOrderID = 0L;
-            file.customerOrderNo = "";
-            var result = false;
-            result = AttachmentDAL.Insert(file);
 
-            if (result)
+            using (var conn = ConnectionManager.GetWriteConn())
+            {
+                dbResult = Akmii.Core.DataAccess.AkmiiMySqlHelper.ExecuteInTransaction(conn, (trans) =>
+                {
+                    var result = true;
+                    file.ID = IdWorker.GetID();
+                    file.TenantID = BusinessConstants.Admin.TenantID;
+                    file.path = path;
+                    file.CreatedBy = userInfo.Userid;
+                    file.customerOrderID = 0L;
+                    file.customerOrderNo = "";
+                    result = result && AttachmentDAL.Insert(file,trans);;
+                    return result;
+                });
+            }
+
+            if (dbResult)
             {
                 return file.ID;
             }
@@ -69,7 +79,7 @@ namespace Logistics_Busniess
         {
             if (request.messageType == messageType.SystemMessage)
             {
-                return MessageDal.GetSystemMessagesByLatest();
+                return MessageDal.GetSystemMessagesByLatest(userID);
             }
 
             return MessageDal.GetItemListByLatest(userID);

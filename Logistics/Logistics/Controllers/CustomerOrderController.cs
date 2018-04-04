@@ -247,7 +247,7 @@ namespace Logistics.Controllers
             var result = false;
             try
             {
-                result = CustomerOrderManager.UpdateCustomerOrder(request);
+                result = CustomerOrderManager.UpdateCustomerOrder(request, base.contextInfo.userInfo.Userid);
 
                 return GetResult(result);
             }
@@ -376,6 +376,37 @@ namespace Logistics.Controllers
     [RoutePrefix(ApiConstants.PrefixApi + "CustomerOrderMerge")]
     public class CustomerOrderMergeController : BaseAuthController
     {
+
+        /// <summary>
+        /// 获取未支付合并订单数
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("unplay/count")]
+        public ResponseMessage<int> logistics_customer_order_merge_get_unpay()
+        {
+
+            var result = 0;
+            try
+            {
+                result = CustomerOrderMergeManger.logistics_customer_order_merge_get_unpay(base.contextInfo.userInfo.Userid);
+
+                return GetResult(result);
+            }
+
+            catch (Exception ex)
+            {
+                return GetErrorResult(result, ex.Message);
+
+            }
+
+        }
+
+        /// <summary>
+        /// 合并订单代理商反冲
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("Item/WriteOff")]
         public ResponseMessage<bool> WriteOffAgentCustomerOrderMerge(WriteOffAgentCustomerOrderMergeRequest request)
@@ -403,6 +434,11 @@ namespace Logistics.Controllers
             }
         }
 
+        /// <summary>
+        /// 合并订单支付接口
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("Item/pay")]
        public ResponseMessage<bool> PayCustomerOrderMerge( CustomerOrderMergePayRequest request)
@@ -430,6 +466,13 @@ namespace Logistics.Controllers
             }
         }
 
+        /// <summary>
+        /// 客服-订单确认-拒绝接口
+        /// 合并订单拒绝之后，关联的订单将重新进入待打包状态；
+        /// 并更新关联的订单的消息通知状态为未读状态；
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("Item/Refuse")]
         public ResponseMessage<bool> RefuseCustomerOrderMerge(CustomerOrderMergeRefuseRequest request)
@@ -456,6 +499,11 @@ namespace Logistics.Controllers
 
             }
         }
+        /// <summary>
+        /// 查看单挑合并订单接口
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("Item")]
         public ResponseMessage<CustomerOrderMergeItemVW> GetMergeItem([FromUri]CustomerOrderMergeSelectItemRequest request)
@@ -480,6 +528,7 @@ namespace Logistics.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
+        
         [HttpPost]
         [Route("Item/Insert")]
         public ResponseMessage<bool> InserCustomerOrderMerge(CustomerOrderMergeInsertReqeust request)
@@ -509,7 +558,7 @@ namespace Logistics.Controllers
 
 
         /// <summary>
-        /// 新增 merge customer Order
+        ///  更新合并订单接口
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -593,7 +642,7 @@ namespace Logistics.Controllers
             }
 
         }
-
+        
         [HttpGet]
         [Route("status/summary")]
         public ResponseMessage<int> GetOrderMergeStatusSummary([FromUri]GetOrderMergeStatusSummaryReqeust request)
